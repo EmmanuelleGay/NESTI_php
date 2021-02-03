@@ -244,4 +244,12 @@ class BaseDao
         $q = $pdo->prepare($sql);
         $q->execute([EntityUtil::get($entity, get_called_class()::$entityPrimaryKey) ?? null]); // if entity doesn't exist, null instead of pk
     }
+
+    /**
+     * Get the value of entityPrimaryKey
+     */ 
+    public static function getEntityPrimaryKey()
+    {
+        return get_called_class()::$entityPrimaryKey;
+    }
 }
