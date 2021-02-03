@@ -1,7 +1,3 @@
-<?php
-include(PATH_TEMPLATE.'nav.php');
-
-?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -11,7 +7,7 @@ include(PATH_TEMPLATE.'nav.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nesti</title>
 
-    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="<?=$vars['baseUrl'] ?> /css/style.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
@@ -20,7 +16,15 @@ include(PATH_TEMPLATE.'nav.php');
 </head>
 
 <body>
-<p>coucou</p>
+
+
+
+<?php
+//inclus le contenu
+include $vars['templatePath'];
+
+?>
+
 </body>
 
 </html>

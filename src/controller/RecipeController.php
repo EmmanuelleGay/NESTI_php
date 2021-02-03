@@ -11,7 +11,7 @@ require_once PATH_MODEL.'dao/RecipeDao.php';
 
 class RecipeController extends BaseController{
 
-        private $recipe;
+        protected $recipe;
       
         /**
          * __construct
@@ -21,9 +21,13 @@ class RecipeController extends BaseController{
         public function __construct(){
 
             FormatUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
+            FormatUtil::sanitize($_GET);
     
             $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_STRING);
             $action = filter_input(INPUT_GET,'action',FILTER_SANITIZE_STRING);
+
+       //     $id = $_GET['id'];
+        //    $action = $_GET['action'];
 
             // action is first slug in url, id second
          //   @[$action, $id] = SiteUtil::getUrlParameters();
@@ -102,12 +106,12 @@ class RecipeController extends BaseController{
             }else{
                 // Add shared parameters to the existing ones
                 $vars = array_merge($vars, [
-                    'baseUrl' => SiteUtil::url(), // absolute url of project base
-                    'user' => $this->user,         // current user
+                    'baseUrl' => SiteUtil::url().'public', // absolute url of public folder
+                    'recipe' => $this->recipe,         // current user
                     'templatePath' => PATH_TEMPLATE."recipe/$templateName.php"
                 ]);
         //pour que ca fonctionne pour toutes les aciton, on passe le nom du template
-                include_once PATH_TEMPLATE."recipe/$templateName.php";
+                include_once PATH_TEMPLATE."common/base.php";
             //    echo $this->twig->render("$templateName.twig", $vars); // render twig template
             }
         }

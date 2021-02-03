@@ -3,7 +3,7 @@ define('PATH_CTRL','src/controller/');
 define('PATH_MODEL','src/model/');
 define('PATH_ENTITY','src/model/entity/');
 define('PATH_TOOLS','src/tools/');
-define('PATH_TEMPLATE','src/view/template/');
+define('PATH_TEMPLATE','view/');
 define('PATH_CONFIG','config/');
 
 /*

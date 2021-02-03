@@ -20,9 +20,9 @@ class BaseDao
     public static function findOneBy(String $key, $value)
     {
         $pdo = Database::connect();
-        $req = $pdo->prepare("SELECT * FROM " . self::$tableName . " WHERE $key = ?");
+        $req = $pdo->prepare("SELECT * FROM " . get_called_class()::$tableName . " WHERE $key = ?");
         $req->execute([$value]);
-        $entity = $req->fetchObject(self::$entityClass); // set entity properties to fetched column values
+        $entity = $req->fetchObject(get_called_class()::$entityClass); // set entity properties to fetched column values
         if (!$entity) { // fetchObject returns boolean false if no row found, whereas we want null
             $entity = null;
         }
@@ -37,7 +37,7 @@ class BaseDao
      */
     public static function findById($id)
     {
-        return self::findOneBy(self::$entityPrimaryKey, $id);
+        return get_called_class()::findOneBy(get_called_class()::$entityPrimaryKey, $id);
     }
 
     /**
@@ -47,15 +47,12 @@ class BaseDao
      */
     public static function findAll(): array
     {
-        FormatUtil::dump("SELECT * FROM " . self::$tableName . " ORDER BY ".self::$entityPrimaryKey." DESC");
-        FormatUtil::dump(self::getClass());
-
         $pdo = Database::connect();
-        $req = $pdo->prepare("SELECT * FROM " . self::$tableName . " ORDER BY ".self::$entityPrimaryKey." DESC");
+        $req = $pdo->prepare("SELECT * FROM " . get_called_class()::$tableName . " ORDER BY ".get_called_class()::$entityPrimaryKey." DESC");
         $req->execute();
 
         $entities = [];
-        while ($entity = $req->fetchObject(self::$entityClass)) { // set entity properties to fetched column values
+        while ($entity = $req->fetchObject(get_called_class()::$entityClass)) { // set entity properties to fetched column values
             $entities[] = $entity;
         };
         return $entities;
@@ -117,11 +114,11 @@ class BaseDao
     public static function findAllBy(String $key, $value)
     {
         $pdo = Database::connect();
-        $req = $pdo->prepare("SELECT * FROM " . self::$tableName . " WHERE $key = ?");
+        $req = $pdo->prepare("SELECT * FROM " . get_called_class()::$tableName . " WHERE $key = ?");
         $req->execute([$value]);
 
         $entities = [];
-        while ($entity = $req->fetchObject(self::$entityClass)) { // set entity properties to fetched column values
+        while ($entity = $req->fetchObject(get_called_class()::$entityClass)) { // set entity properties to fetched column values
             $entities[] = $entity;
         };
         return $entities;
@@ -136,11 +133,11 @@ class BaseDao
     public static function saveOrUpdate(&$entity)
     {
         $pdo = Database::connect();
-        if (!empty(EntityUtil::get($entity, self::$entityPrimaryKey))) {
-            self::update($entity);  // if entity has a primary key set, it already exists in data source
+        if (!empty(EntityUtil::get($entity, get_called_class()::$entityPrimaryKey))) {
+            get_called_class()::update($entity);  // if entity has a primary key set, it already exists in data source
         } else {
-            $pk = self::save($entity); // If no primary key set, insert new row
-            EntityUtil::set($entity, self::$entityPrimaryKey, $pk);
+            $pk = get_called_class()::save($entity); // If no primary key set, insert new row
+            EntityUtil::set($entity, get_called_class()::$entityPrimaryKey, $pk);
         }
     }
 
@@ -154,14 +151,14 @@ class BaseDao
     {
         $pdo = Database::connect();
 
-        $columnNames = self::getColumnNames();
+        $columnNames = get_called_class()::getColumnNames();
 
         // update conditions are in the form "COLUMN_NAME = ?, COLUMN_NAME2 = ?, ..."
         $conditions = array_map(function ($columnName) {
             return "$columnName = ?";
         }, $columnNames);
 
-        $sql = "UPDATE " . self::$tableName . " SET " . implode(',', $conditions) . " WHERE " . self::$entityPrimaryKey . " = ?";
+        $sql = "UPDATE " . get_called_class()::$tableName . " SET " . implode(',', $conditions) . " WHERE " . get_called_class()::$entityPrimaryKey . " = ?";
 
         $q = $pdo->prepare($sql);
 
@@ -172,7 +169,7 @@ class BaseDao
             $columnNames
         );
         // Add primary key to list of values
-        $values[] = EntityUtil::get($entity, self::$entityPrimaryKey);
+        $values[] = EntityUtil::get($entity, get_called_class()::$entityPrimaryKey);
 
         $q->execute($values);
     }
@@ -189,14 +186,14 @@ class BaseDao
     {
         $pdo = Database::connect();
 
-        $columnNames = self::getColumnNames(false);
+        $columnNames = get_called_class()::getColumnNames(false);
 
         // Need a list of question marks of same size as the list of column names
         $questionMarks = array_map(function ($columnName) {
             return '?';
         }, $columnNames);
 
-        $sql = "INSERT INTO " . self::$tableName . " (" . implode(',', $columnNames) . ") 
+        $sql = "INSERT INTO " . get_called_class()::$tableName . " (" . implode(',', $columnNames) . ") 
         values(" . implode(',', $questionMarks) . ")";
         FormatUtil::dump($sql);
         $q = $pdo->prepare($sql);
@@ -219,13 +216,13 @@ class BaseDao
     public static function getColumnNames(bool $includePk = false): array
     {
         $pdo = Database::connect();
-        $q = $pdo->prepare("DESCRIBE " . self::$tableName);
+        $q = $pdo->prepare("DESCRIBE " . get_called_class()::$tableName);
         $q->execute();
         $columnNames = $q->fetchAll(PDO::FETCH_COLUMN);
 
         if (!$includePk) {
             // Get index of primary key in table schema (usually but not always first)
-            $primaryKeyIndex = array_search(self::$entityPrimaryKey, $columnNames);
+            $primaryKeyIndex = array_search(get_called_class()::$entityPrimaryKey, $columnNames);
             unset($columnNames[$primaryKeyIndex]); // unset it
         }
 
@@ -243,8 +240,8 @@ class BaseDao
     public static function delete($entity)
     {
         $pdo = Database::connect();
-        $sql = "DELETE FROM " . self::$tableName . " WHERE " . self::$entityPrimaryKey . " = ?";
+        $sql = "DELETE FROM " . get_called_class()::$tableName . " WHERE " . get_called_class()::$entityPrimaryKey . " = ?";
         $q = $pdo->prepare($sql);
-        $q->execute([EntityUtil::get($entity, self::$entityPrimaryKey) ?? null]); // if entity doesn't exist, null instead of pk
+        $q->execute([EntityUtil::get($entity, get_called_class()::$entityPrimaryKey) ?? null]); // if entity doesn't exist, null instead of pk
     }
 }

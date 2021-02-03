@@ -6,4 +6,7 @@ require_once PATH_MODEL.'entity/BaseEntity.php';
 
 class BaseController {
 
+
+    protected  $entity;
+
 }
