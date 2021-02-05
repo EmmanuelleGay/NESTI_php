@@ -1,7 +1,7 @@
 <?php
 
 class Users extends BaseEntity{
-    private $idUser;
+    private $idUsers;
     private $lastName;
     private $firstName;
     private $email;
@@ -153,9 +153,9 @@ class Users extends BaseEntity{
     /**
      * Get the value of idUser
      */
-    public function getIdUser()
+    public function getIdUsers()
     {
-        return $this->idUser;
+        return $this->idUsers;
     }
 
     /**
@@ -163,9 +163,9 @@ class Users extends BaseEntity{
      *
      * @return  self
      */
-    public function setIdUser($idUser)
+    public function setIdUsers($idUsers)
     {
-        $this->idUser = $idUser;
+        $this->idUsers = $idUsers;
 
         return $this;
     }

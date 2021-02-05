@@ -13,7 +13,7 @@ class BaseDao
 {
     public const FLAGS = ['active'  => 'a',
         'waiting' => 'w',
-        'deleted' => 'b' ];
+        'banned' => 'b' ];
 
     public static function getTableName(): String{
         return strtolower(self::getEntityClass());

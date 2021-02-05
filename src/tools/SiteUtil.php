@@ -27,7 +27,6 @@ class SiteUtil{
     public static function toAbsolute(String $relativePath=""): String{
         return dirname( __FILE__ ) . "/../../$relativePath";
     }
-
     
      /**
      * url

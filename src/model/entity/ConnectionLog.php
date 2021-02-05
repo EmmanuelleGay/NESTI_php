@@ -3,22 +3,22 @@
 class ConnectionLog extends BaseEntity{
     private $idUserLog;
     private $dateConnection;
-    private $idUser;
+    private $idUsers;
 
-    public function getUser(): ?User{ 
-        return $this->getRelatedEntity("User");
+    public function getUser(): ?Users{ 
+        return $this->getRelatedEntity("Users");
     }
 
-    public function setUser(User $u){
+    public function setUser(Users $u){
         $this->setRelatedEntity($u);
     }
 
     /**
      * Get the value of idUser
      */ 
-    public function getIdUser()
+    public function getIdUsers()
     {
-        return $this->idUser;
+        return $this->idUsers;
     }
 
     /**
@@ -26,9 +26,9 @@ class ConnectionLog extends BaseEntity{
      *
      * @return  self
      */ 
-    public function setIdUser($idUser)
+    public function setIdUsers($idUsers)
     {
-        $this->idUser = $idUser;
+        $this->idUsers = $idUsers;
 
         return $this;
     }
