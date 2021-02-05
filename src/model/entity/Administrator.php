@@ -1,10 +1,15 @@
 <?php
+class Administrator extends Users{
+    private $idAdministrator;
 
 
-class Administrator extends User{
-    protected $idAdministrator;
+    public function getImportations(): array{
+        return $this->getRelatedEntities("Importation"); 
+    }
 
-    
+    public function getLots(): array{
+        return $this->getIndirectlyRelatedEntities("Lot", "Importation"); 
+    }
 
     /**
      * Get the value of idAdministrator

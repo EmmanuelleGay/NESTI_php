@@ -1,30 +1,73 @@
 <?php
 
-
 class IngredientRecipe extends BaseEntity{
+    private $idProduct;
+    private $idRecipe;
+    private $quantity;
+    private $recipePosition;
+    private $idUnit;
+    
+    public function getIngredient(): Ingredient{
+        return $this->getRelatedEntity("Ingredient");
+    }
 
-    protected $idProduct;
-    protected $idRecipe;
-    protected $quantiy;
-    protected $recipePosition;
-    protected $idUnit;
+    public function setIngredient(Ingredient $i){
+        $this->setRelatedEntity($i);
+    }
 
-    /**
-     * Get the value of idProduct
-     */ 
-    public function getIdProduct()
-    {
-        return $this->idProduct;
+    public function getRecipe(): Recipe{
+        return $this->getRelatedEntity("Recipe");
+    }
+    public function setRecipe(Recipe $r){
+        $this->setRelatedEntity($r);
+    }
+
+    public function getUnit(): Unit{
+        return $this->getRelatedEntity("Unit");
+    }
+
+    public function setUnit(Unit $u){
+        $this->setRelatedEntity($u);
     }
 
     /**
-     * Set the value of idProduct
+     * Get the value of idUnit
+     */ 
+    public function getIdUnit()
+    {
+        return $this->idUnit;
+    }
+
+    /**
+     * Set the value of idUnit
      *
      * @return  self
      */ 
-    public function setIdProduct($idProduct)
+    public function setIdUnit($idUnit)
     {
-        $this->idProduct = $idProduct;
+        $this->idUnit = $idUnit;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of quantity
+     */ 
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * Set the value of quantity
+     *
+     * @return  self
+     */ 
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
@@ -50,21 +93,21 @@ class IngredientRecipe extends BaseEntity{
     }
 
     /**
-     * Get the value of quantiy
+     * Get the value of idProduct
      */ 
-    public function getQuantiy()
+    public function getIdProduct()
     {
-        return $this->quantiy;
+        return $this->idProduct;
     }
 
     /**
-     * Set the value of quantiy
+     * Set the value of idProduct
      *
      * @return  self
      */ 
-    public function setQuantiy($quantiy)
+    public function setIdProduct($idProduct)
     {
-        $this->quantiy = $quantiy;
+        $this->idProduct = $idProduct;
 
         return $this;
     }
@@ -85,26 +128,6 @@ class IngredientRecipe extends BaseEntity{
     public function setRecipePosition($recipePosition)
     {
         $this->recipePosition = $recipePosition;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of idUnit
-     */ 
-    public function getIdUnit()
-    {
-        return $this->idUnit;
-    }
-
-    /**
-     * Set the value of idUnit
-     *
-     * @return  self
-     */ 
-    public function setIdUnit($idUnit)
-    {
-        $this->idUnit = $idUnit;
 
         return $this;
     }

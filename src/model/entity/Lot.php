@@ -1,17 +1,33 @@
 <?php
 
-
 class Lot extends BaseEntity{
-    protected $idArticle;
-    protected $SupplierOrder;
-    protected $unitCost;
-    protected $dateReception;
-    protected $quantity;
+    private $idSupplierOrder;
+    private $unitCost;
+    private $dateCreation;
+    private $quantity;
+    private $idArticle;
+
+    public function getArticle(): ?Article{
+        return $this->getRelatedEntity("Article");
+    }
+
+    public function setArticle(Article $a){
+        $this->setRelatedEntity($a);
+    }
+
+
+    public function getImportations(): array{
+        return $this->getRelatedEntities("Importation");
+    }
+
+    public function getAdmins(): array{
+        return $this->getIndirectlyRelatedEntities("Users", "Importation", BaseDao::FLAGS['active']); 
+    }
 
 
     /**
      * Get the value of idArticle
-     */ 
+     */
     public function getIdArticle()
     {
         return $this->idArticle;
@@ -21,7 +37,7 @@ class Lot extends BaseEntity{
      * Set the value of idArticle
      *
      * @return  self
-     */ 
+     */
     public function setIdArticle($idArticle)
     {
         $this->idArticle = $idArticle;
@@ -30,68 +46,48 @@ class Lot extends BaseEntity{
     }
 
     /**
-     * Get the value of SupplierOrder
-     */ 
-    public function getSupplierOrder()
+     * Get the value of idSupplierOrder
+     */
+    public function getIdSupplierOrder()
     {
-        return $this->SupplierOrder;
+        return $this->idSupplierOrder;
     }
 
     /**
-     * Set the value of SupplierOrder
+     * Set the value of idSupplierOrder
      *
      * @return  self
-     */ 
-    public function setSupplierOrder($SupplierOrder)
+     */
+    public function setIdSupplierOrder($idSupplierOrder)
     {
-        $this->SupplierOrder = $SupplierOrder;
+        $this->idSupplierOrder = $idSupplierOrder;
 
         return $this;
     }
 
     /**
-     * Get the value of unitCost
-     */ 
-    public function getUnitCost()
+     * Get the value of dateCreation
+     */
+    public function getDateCreation()
     {
-        return $this->unitCost;
+        return $this->dateCreation;
     }
 
     /**
-     * Set the value of unitCost
+     * Set the value of dateCreation
      *
      * @return  self
-     */ 
-    public function setUnitCost($unitCost)
+     */
+    public function setDateCreation($dateCreation)
     {
-        $this->unitCost = $unitCost;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of dateReception
-     */ 
-    public function getDateReception()
-    {
-        return $this->dateReception;
-    }
-
-    /**
-     * Set the value of dateReception
-     *
-     * @return  self
-     */ 
-    public function setDateReception($dateReception)
-    {
-        $this->dateReception = $dateReception;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     /**
      * Get the value of quantity
-     */ 
+     */
     public function getQuantity()
     {
         return $this->quantity;
@@ -101,10 +97,30 @@ class Lot extends BaseEntity{
      * Set the value of quantity
      *
      * @return  self
-     */ 
+     */
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of unitCost
+     */
+    public function getUnitCost()
+    {
+        return $this->unitCost;
+    }
+
+    /**
+     * Set the value of unitCost
+     *
+     * @return  self
+     */
+    public function setUnitCost($unitCost)
+    {
+        $this->unitCost = $unitCost;
 
         return $this;
     }

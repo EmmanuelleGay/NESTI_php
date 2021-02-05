@@ -1,10 +1,14 @@
 <?php
 
-
 class Product extends BaseEntity{
 
-    protected $idProduct;
-    protected $name;
+    private $idProduct;
+    private $name;
+
+
+    public function getArticles(): array{
+        return $this->getRelatedEntities("Article", BaseDao::FLAGS['active']);
+    }
     
 
     /**

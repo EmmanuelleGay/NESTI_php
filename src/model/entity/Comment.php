@@ -1,80 +1,50 @@
 <?php
 
+class Comment extends BaseEntity{
+    private $idComment;
+    private $commentTitle;
+    private $commentContent;
+    private $dateCreation;
+    private $flag;
+    private $idRecipe;
+    private $idUser;
+    private $idModerator;
 
-class Comment extends BaseEntity
-{
-
-    protected $idComment;
-    protected $idRecipe;
-    protected $idUser;
-    protected $idModerator;
-    protected $commentTitle;
-    protected $commentContent;
-    protected $dateCreation;
-    protected $flag;
-
-    //faire getters et setters + methodes de base + methodes de relation (ex : unGetRecipe)
-
-
-    //retorune un objet de type recette
-    public function getRecipe()
-    {
-        return RecipeDao::findById($this->idRecipe);
+    
+    public function getModerator(): ?Moderator{
+        return $this->getRelatedEntity("Moderator");
+    }
+    public function setModerator(Moderator $m){
+        $this->setRelatedEntity($m);
     }
 
-    //idnetique mais on est pas obligé de connaitre le nom de l'id => le recipe est jsute le nom de la classe
-    public function getRecipe2()
-    {
-        //return CommentDao::findOneToOne($this,"Recipe");
-
-        //option deux, car on n'a une methode pour récupérer le dao de la class en cours
-        return self::getDAOClass()::findOneToOne($this,"Recipe");
+    public function getUser(): ?User{
+        return $this->getRelatedEntity("User");
     }
 
-
-    /**
-     * Get the value of idComment
-     */ 
-    public function getIdComment()
-    {
-        return $this->idComment;
+    public function setUser(User $user){
+        $this->setRelatedEntity($user);
     }
 
-    /**
-     * Set the value of idComment
-     *
-     * @return  self
-     */ 
-    public function setIdComment($idComment)
-    {
-        $this->idComment = $idComment;
-
-        return $this;
+    public function getRecipe(): ?Recipe{
+        return $this->getRelatedEntity("Recipe");
     }
 
-    /**
-     * Get the value of idRecipe
-     */ 
-    public function getIdRecipe()
-    {
-        return $this->idRecipe;
+    public function setRecipe(Recipe $recipe){
+        $this->setRelatedEntity($recipe);
     }
-
-    /**
-     * Set the value of idRecipe
-     *
-     * @return  self
-     */ 
-    public function setIdRecipe($idRecipe)
-    {
-        $this->idRecipe = $idRecipe;
-
-        return $this;
+    
+    public function getImage(): ?Image{
+        return $this->getRelatedEntity("Image");
+    }
+    
+    public function setImage(Image $i){
+        $this->setRelatedEntity($i);
     }
 
     /**
      * Get the value of idUser
-     */ 
+     */
     public function getIdUser()
     {
         return $this->idUser;
@@ -84,7 +54,7 @@ class Comment extends BaseEntity
      * Set the value of idUser
      *
      * @return  self
-     */ 
+     */
     public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
@@ -93,28 +63,28 @@ class Comment extends BaseEntity
     }
 
     /**
-     * Get the value of idModerator
-     */ 
-    public function getIdModerator()
+     * Get the value of idComment
+     */
+    public function getIdComment()
     {
-        return $this->idModerator;
+        return $this->idComment;
     }
 
     /**
-     * Set the value of idModerator
+     * Set the value of idComment
      *
      * @return  self
-     */ 
-    public function setIdModerator($idModerator)
+     */
+    public function setIdComment($idComment)
     {
-        $this->idModerator = $idModerator;
+        $this->idComment = $idComment;
 
         return $this;
     }
 
     /**
      * Get the value of commentTitle
-     */ 
+     */
     public function getCommentTitle()
     {
         return $this->commentTitle;
@@ -124,7 +94,7 @@ class Comment extends BaseEntity
      * Set the value of commentTitle
      *
      * @return  self
-     */ 
+     */
     public function setCommentTitle($commentTitle)
     {
         $this->commentTitle = $commentTitle;
@@ -134,7 +104,7 @@ class Comment extends BaseEntity
 
     /**
      * Get the value of commentContent
-     */ 
+     */
     public function getCommentContent()
     {
         return $this->commentContent;
@@ -144,7 +114,7 @@ class Comment extends BaseEntity
      * Set the value of commentContent
      *
      * @return  self
-     */ 
+     */
     public function setCommentContent($commentContent)
     {
         $this->commentContent = $commentContent;
@@ -154,7 +124,7 @@ class Comment extends BaseEntity
 
     /**
      * Get the value of dateCreation
-     */ 
+     */
     public function getDateCreation()
     {
         return $this->dateCreation;
@@ -164,7 +134,7 @@ class Comment extends BaseEntity
      * Set the value of dateCreation
      *
      * @return  self
-     */ 
+     */
     public function setDateCreation($dateCreation)
     {
         $this->dateCreation = $dateCreation;
@@ -174,7 +144,7 @@ class Comment extends BaseEntity
 
     /**
      * Get the value of flag
-     */ 
+     */
     public function getFlag()
     {
         return $this->flag;
@@ -184,10 +154,50 @@ class Comment extends BaseEntity
      * Set the value of flag
      *
      * @return  self
-     */ 
+     */
     public function setFlag($flag)
     {
         $this->flag = $flag;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idRecipe
+     */
+    public function getIdRecipe()
+    {
+        return $this->idRecipe;
+    }
+
+    /**
+     * Set the value of idRecipe
+     *
+     * @return  self
+     */
+    public function setIdRecipe($idRecipe)
+    {
+        $this->idRecipe = $idRecipe;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idUser1
+     */ 
+    public function getIdModerator()
+    {
+        return $this->idModerator;
+    }
+
+    /**
+     * Set the value of idUser1
+     *
+     * @return  self
+     */ 
+    public function setIdModerator($idModerator)
+    {
+        $this->idModerator = $idModerator;
 
         return $this;
     }

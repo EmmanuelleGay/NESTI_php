@@ -1,10 +1,10 @@
 <?php
+class Chef extends Users{
+    private $idChef;
 
-
-class Chef extends User{
-    protected $idChef;
-
-    
+    public function getRecipes(): array{
+        return $this->getRelatedEntities("Recipe", BaseDao::FLAGS['active']);
+    }
 
     /**
      * Get the value of idChef

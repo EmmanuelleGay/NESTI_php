@@ -1,10 +1,15 @@
 <?php
+class Moderator extends Users{
+    private $idModerator;
 
 
-class Moderator extends User{
-    protected $idModerator;
+    public function getApprovedComment(): array{
+        return $this->getRelatedEntities("Comment");
+    }
 
-    
+    public function setApprovedComment(Comment $c){
+        $this->setRelatedEntity($c);
+    }
 
     /**
      * Get the value of idModerator

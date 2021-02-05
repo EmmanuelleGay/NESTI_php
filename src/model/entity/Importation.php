@@ -1,57 +1,39 @@
 <?php
 
-
 class Importation extends BaseEntity{
+    private $idAdministrator;
+    private $idArticle;
+    private $idSupplierOrder;
+    private $dateImportation;
 
-    protected $idAdministrator;
-    protected $idArticle;
-    protected $idSupplierOrder;
-    protected $importationDate;
     
-
-    /**
-     * Get the value of idAdministrator
-     */ 
-    public function getIdAdministrator()
-    {
-        return $this->idAdministrator;
+    public function getAdministrator(): ?Administrator{ 
+        return $this->getRelatedEntity("Administrator");
     }
 
-    /**
-     * Set the value of idAdministrator
-     *
-     * @return  self
-     */ 
-    public function setIdAdministrator($idAdministrator)
-    {
-        $this->idAdministrator = $idAdministrator;
-
-        return $this;
+    public function setAdministrator(Administrator $a){
+        $this->setRelatedEntity($a);
     }
 
-    /**
-     * Get the value of idArticle
-     */ 
-    public function getIdArticle()
-    {
-        return $this->idArticle;
+    public function getArticle(): ?Article{ 
+        return $this->getRelatedEntity("Article");
     }
 
-    /**
-     * Set the value of idArticle
-     *
-     * @return  self
-     */ 
-    public function setIdArticle($idArticle)
-    {
-        $this->idArticle = $idArticle;
+    public function setArticle(Article $a){
+        $this->setRelatedEntity($a);
+    }
 
-        return $this;
+    public function getLot(): ?Lot{ 
+        return $this->getRelatedEntity("Lot");
+    }
+
+    public function setLot(Lot $l){
+        $this->setRelatedEntity($l);
     }
 
     /**
      * Get the value of idSupplierOrder
-     */ 
+     */
     public function getIdSupplierOrder()
     {
         return $this->idSupplierOrder;
@@ -61,7 +43,7 @@ class Importation extends BaseEntity{
      * Set the value of idSupplierOrder
      *
      * @return  self
-     */ 
+     */
     public function setIdSupplierOrder($idSupplierOrder)
     {
         $this->idSupplierOrder = $idSupplierOrder;
@@ -70,21 +52,21 @@ class Importation extends BaseEntity{
     }
 
     /**
-     * Get the value of importationDate
-     */ 
-    public function getImportationDate()
+     * Get the value of dateImportation
+     */
+    public function getDateImportation()
     {
-        return $this->importationDate;
+        return $this->dateImportation;
     }
 
     /**
-     * Set the value of importationDate
+     * Set the value of dateImportation
      *
      * @return  self
-     */ 
-    public function setImportationDate($importationDate)
+     */
+    public function setDateImportation($dateImportation)
     {
-        $this->importationDate = $importationDate;
+        $this->dateImportation = $dateImportation;
 
         return $this;
     }

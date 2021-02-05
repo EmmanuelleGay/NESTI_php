@@ -1,5 +1,4 @@
 <?php
-//require_once PATH_MODEL.'entity/BaseEntity.php';
 
 class Recipe extends BaseEntity{
     private $idRecipe;
@@ -9,30 +8,33 @@ class Recipe extends BaseEntity{
     private $portions;
     private $flag;
     private $preparationTime;
+    private $idChef;
     private $idImage;
 
-    //on receupere en rpeimier parametre l'instance actuel 'ici recette) , le second arguement l'entité' ou on a la relation
     public function getComments(): array{
-        return self::getDAOClass()::findOneToMany($this,"Comment");
+        return $this->getRelatedEntities("Comment");
     }
     public function getParagraphs(): array{
-        return self::getDAOClass()::findOneToMany($this,"Paragraph");
+        return $this->getRelatedEntities("Paragraph");
     }
     public function getIngredientRecipes(): array{
-        return self::getDAOClass()::findOneToMany($this,"IngredientRecipe");
+        return $this->getRelatedEntities("IngredientRecipe");
     }
-    /*public function getImage(): ?Image{
-        return self::getDAOClass()::findOneToOne($this,"Image");
+    public function getImage(): ?Image{
+        return $this->getRelatedEntity("Image");
     }
-    public function getChef(): ?Chef{
-        return self::getDAOClass()::findOneToOne($this,"Chef");
-    }
-*/
 
-//on cherche tous les coimmentaires qui onr le meme idrecipe que notre idRecipe
-public function getComments2() {
-    return CommentDao::findAllBy('idRecipe',$this->idRecipe);
-}
+    public function setImage(Image $i){
+        $this->setRelatedEntity($i);
+    }
+
+    public function getChef(): ?Chef{ 
+        return $this->getRelatedEntity("Chef");
+    }
+
+    public function setChef(Chef $c){
+        $this->setRelatedEntity($c);
+    }
 
     /**
      * Get the value of idImage
@@ -190,6 +192,26 @@ public function getComments2() {
     public function setDateCreation($dateCreation)
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idChef
+     */ 
+    public function getIdChef()
+    {
+        return $this->idChef;
+    }
+
+    /**
+     * Set the value of idChef
+     *
+     * @return  self
+     */ 
+    public function setIdChef($idChef)
+    {
+        $this->idChef = $idChef;
 
         return $this;
     }

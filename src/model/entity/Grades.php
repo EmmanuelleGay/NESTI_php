@@ -1,28 +1,44 @@
 <?php
 
-
 class Grades extends BaseEntity{
-    protected $idUser;
-    protected $idRecipe;
-    protected $rating;
+    private $idUser;
+    private $idRecipe;
+    private $rating;
 
 
+    public function getRecipe(): ?Recipe{ 
+        return $this->getRelatedEntity("Recipe");
+    }
+
+    public function setRecipe(Recipe $r){
+        $this->setRelatedEntity($r);
+    }
+
+    public function getUser(): ?User{ 
+        return $this->getRelatedEntity("User");
+    }
+
+    public function setUser(User $u){
+        $this->setRelatedEntity($u);
+    }
+
+    
     /**
-     * Get the value of idUser
+     * Get the value of rating
      */ 
-    public function getIdUser()
+    public function getRating()
     {
-        return $this->idUser;
+        return $this->rating;
     }
 
     /**
-     * Set the value of idUser
+     * Set the value of rating
      *
      * @return  self
      */ 
-    public function setIdUser($idUser)
+    public function setRating($rating)
     {
-        $this->idUser = $idUser;
+        $this->rating = $rating;
 
         return $this;
     }
@@ -48,21 +64,21 @@ class Grades extends BaseEntity{
     }
 
     /**
-     * Get the value of rating
+     * Get the value of idUser
      */ 
-    public function getRating()
+    public function getIdUser()
     {
-        return $this->rating;
+        return $this->idUser;
     }
 
     /**
-     * Set the value of rating
+     * Set the value of idUser
      *
      * @return  self
      */ 
-    public function setRating($rating)
+    public function setIdUser($idUser)
     {
-        $this->rating = $rating;
+        $this->idUser = $idUser;
 
         return $this;
     }

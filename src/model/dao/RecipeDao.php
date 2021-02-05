@@ -1,11 +1,6 @@
 <?php
-//require_once PATH_MODEL.'entity/BaseEntity.php';
+//require_once PATH_MODEL.'entity/Recipe.php';
 
-
-class RecipeDao extends BaseDao {
-
-    protected static $tableName = 'recipe';
-    protected static $entityClass ="Recipe";
-    protected static $entityPrimaryKey = 'idRecipe';
-
+class RecipeDao extends BaseDao{
+ 
 }

@@ -1,70 +1,37 @@
 <?php
 
-
 class Paragraph extends BaseEntity{
-    protected $idParagraph;
-    protected $content;
-    protected $paragraphPosition;
-    protected $dateCreation;
-    protected $idRecipe;
+    private $idParagraph;
+    private $content;
+    private $paragraphOrder;
+    private $dateCreation;
+    private $idRecipe;
+
+    public function getRecipe(): Recipe{
+        return $this->getRelatedEntity("Recipe",BaseDao::FLAGS['active']);
+    }
+
+    public function setRecipe(Recipe $r){
+        $this->setRelatedEntity($r);
+    }
 
 
     /**
-     * Get the value of idParagraph
+     * Get the value of idRecipe
      */ 
-    public function getIdParagraph()
+    public function getIdRecipe()
     {
-        return $this->idParagraph;
+        return $this->idRecipe;
     }
 
     /**
-     * Set the value of idParagraph
+     * Set the value of idRecipe
      *
      * @return  self
      */ 
-    public function setIdParagraph($idParagraph)
+    public function setIdRecipe($idRecipe)
     {
-        $this->idParagraph = $idParagraph;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of content
-     */ 
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set the value of content
-     *
-     * @return  self
-     */ 
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of paragraphPosition
-     */ 
-    public function getParagraphPosition()
-    {
-        return $this->paragraphPosition;
-    }
-
-    /**
-     * Set the value of paragraphPosition
-     *
-     * @return  self
-     */ 
-    public function setParagraphPosition($paragraphPosition)
-    {
-        $this->paragraphPosition = $paragraphPosition;
+        $this->idRecipe = $idRecipe;
 
         return $this;
     }
@@ -90,21 +57,61 @@ class Paragraph extends BaseEntity{
     }
 
     /**
-     * Get the value of idRecipe
+     * Get the value of paragraphOrder
      */ 
-    public function getIdRecipe()
+    public function getParagraphOrder()
     {
-        return $this->idRecipe;
+        return $this->paragraphOrder;
     }
 
     /**
-     * Set the value of idRecipe
+     * Set the value of paragraphOrder
      *
      * @return  self
      */ 
-    public function setIdRecipe($idRecipe)
+    public function setParagraphOrder($paragraphOrder)
     {
-        $this->idRecipe = $idRecipe;
+        $this->paragraphOrder = $paragraphOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of content
+     */ 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set the value of content
+     *
+     * @return  self
+     */ 
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idParagraph
+     */ 
+    public function getIdParagraph()
+    {
+        return $this->idParagraph;
+    }
+
+    /**
+     * Set the value of idParagraph
+     *
+     * @return  self
+     */ 
+    public function setIdParagraph($idParagraph)
+    {
+        $this->idParagraph = $idParagraph;
 
         return $this;
     }

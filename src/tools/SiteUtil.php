@@ -1,5 +1,5 @@
 <?php 
-
+SiteUtil::require('tools/FormatUtil.php');
 
 /**
  * SiteUtil
@@ -24,7 +24,7 @@ class SiteUtil{
      * @param  mixed $relativePath
      * @return String absolute path
      */
-    public static function toAbsolute(String $relativePath): String{
+    public static function toAbsolute(String $relativePath=""): String{
         return dirname( __FILE__ ) . "/../../$relativePath";
     }
 
@@ -54,12 +54,27 @@ class SiteUtil{
      * @return Array of slugs, ie. ['my', 'pretty', 'url']
      */
     public static function getUrlParameters(): Array{
-        $parameterString =  isset($_SERVER['PATH_INFO']) ?
-            // If not using an apache server (ie. VSCode PHP Server), need to use PATH_INFO and remove leading slash
-            ltrim($_SERVER['PATH_INFO'],'/') :
-            // Otherwise, use a QUERY_STRING passed on by an .htaccess rewrite rule
-            $_SERVER['QUERY_STRING'];
+        if ( isset($_SERVER['REDIRECT_QUERY_STRING']) ) {
+            $queryString = $_SERVER['REDIRECT_QUERY_STRING'];
+        } else {
+            $queryString = $_SERVER['QUERY_STRING'];
+        }
 
-        return explode('/',FormatUtil::sanitize($parameterString));
+        return explode('/',FormatUtil::sanitize($queryString));
+    }
+
+
+    public static function autoloadRegister(){
+        spl_autoload_register(function ($className) {
+            if ( FormatUtil::endsWith($className, "Controller")){
+                self::require("controller/$className.php");
+            } elseif ( FormatUtil::endsWith($className, "Dao")){
+                self::require("model/dao/$className.php");
+            } elseif ( FormatUtil::endsWith($className, "Util")){
+                self::require("util/$className.php");
+            } else {
+                self::require("model/entity/$className.php");
+            }
+        });
     }
 }
