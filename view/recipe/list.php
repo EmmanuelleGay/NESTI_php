@@ -1,4 +1,4 @@
-<h1 class="h1">Mes recettes</h1>
+<h1 class="h1">Recettes</h1>
 
 <?php
 

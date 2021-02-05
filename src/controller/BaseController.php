@@ -20,8 +20,6 @@ class BaseController
     protected static $dao;
 
 
-
-
     public static function callActionMethod($action)
     {
         method_exists(get_called_class(), $action) ?
@@ -45,10 +43,6 @@ class BaseController
             $action = $forceAction;
         }
 
-        get_called_class()::initializeEntity($id);
-
-        self::$dao = self::getEntityClass()::getDaoClass();
-
         get_called_class()::callActionMethod($action);
     }
 
@@ -68,97 +62,23 @@ class BaseController
             if (!is_array($templates)) {
                  $templates =['action'=>$templates,'base'=>'common/base'];
             }
-            if (strpos($templates['action'], '/') === false) {
-
-                $templates['action'] = strtolower(self::getEntityClass()) . "/".$templates['action'];
-            }
-            // Add shared parameters to the existing ones
-            $vars = array_merge($vars, [
-                'baseUrl' => SiteUtil::url(), // absolute url of public folder
-                'entity' =>  self::getEntity(),         // current user
-                'controller' => self::class,         // current user
-                'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
-                'loggedInUser' => UserController::getLoggedInUser()
-            ]);
-
+     
+         get_called_class()::setupTemplateVars($vars,$templates);
+        
             //repars a la racine du porjet
             include_once SiteUtil::toAbsolute('view/'.$templates['base'].'.php');
         }
     }
 
-    /**
-     * initializeEntity
-     * Sets user class parameter to a user from data source if specified in url, otherwise a new user
-     * @return void
-     */
-    protected static function initializeEntity($id)
-    {
+    public static function setupTemplateVars(&$vars,&$templates){
+            // Add shared parameters to the existing ones
+            $vars = array_merge($vars, [
+                'baseUrl' => SiteUtil::url(), // absolute url of public folder
+                'controller' => self::class,         // current user
+                'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
+                'loggedInUser' => UserController::getLoggedInUser()
+            ]);
 
-        if (!empty($id)) { // If a user ID is specified in the URL
-
-            self::setEntity(self::getDao()::findById($id)); // find corresponding user in data source
-        }
-
-        if (!self::getEntity()) { // If no ID specified, or wrong ID specified
-
-            $class =  self::getEntityClass();
-
-            self::setEntity(new $class);
-        }
-    }
-
-    public static function getEntityClass()
-    {
-
-        return get_called_class()::$entityClass;
-    }
-
-    /**
-     * edit
-     * edit an existing recipe, or a newly-created one
-     * @return void
-     */
-    public static function edit()
-    {
-        $templateName = 'edit';
-        $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
-
-        if ($templateVars["isSubmitted"]) { // if we arrived here by way of the submit button in the edit view
-            self::getEntity()->setParametersFromArray($_POST[self::getEntityClass()]);
-            if (self::getEntity()->isValid()) {
-                self::getDao()::saveOrUpdate(self::getEntity());
-                $templateName = null; // null template will redirect to default action
-            } else {
-                $templateVars["errors"] = self::getEntity()->getErrors();
-            }
-        }
-
-        // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid
-        self::render($templateName, $templateVars);
-    }
-
-    /**
-     * delete
-     * shows a delete confirmation form, which if submitted deletes user
-     * @return void
-     */
-    public static function delete()
-    {
-        $templateName = 'delete';
-
-        if (!empty($_POST)) { // if we arrived here by way of the submit button in the delete view
-            self::getDao()::delete(self::getEntity());
-            $templateName = null;
-        }
-
-        self::render($templateName);
-    }
-
-    public static function list()
-    {
-        self::render("list", [
-            'entities' => self::getDao()::findAll()
-        ]);
     }
 
 
@@ -166,27 +86,5 @@ class BaseController
     protected static function error()
     {
         self::render('error/error404');
-    }
-
-    /**
-     * Get the value of entity
-     */
-    public static function getEntity()
-    {
-        return get_called_class()::$entity;
-    }
-
-    /**
-     * Get the value of entity
-     */
-    public static function setEntity($entity)
-    {
-
-        get_called_class()::$entity = $entity;
-    }
-
-    public static function getDao()
-    {
-        return get_called_class()::$dao;
     }
 }

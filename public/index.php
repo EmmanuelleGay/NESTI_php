@@ -24,8 +24,6 @@ $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 //geturlparameter retourne un tableau qui retourne les tableaux (ex user/edit/14)
 //@[$loc] =SiteUtil::getUrlParameters();
 
-//FormatUtil::dump(SiteUtil::getUrlParameters());
-
 
 if (!isset($loc)) {
     $loc = 'recipe';

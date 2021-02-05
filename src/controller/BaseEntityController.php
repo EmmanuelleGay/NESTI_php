@@ -12,22 +12,12 @@
 
 
 
-class BaseEntityController
+class BaseEntityController extends baseController
 {
 
     protected static $entity;
     protected static $entityClass;
     protected static $dao;
-
-
-
-
-    public static function callActionMethod($action)
-    {
-        method_exists(get_called_class(), $action) ?
-            get_called_class()::$action() : // if action in URL exists, call it
-            get_called_class()::error(); // else call default one
-    }
 
     public static function processAction($forceAction = null)
     {
@@ -52,39 +42,21 @@ class BaseEntityController
         get_called_class()::callActionMethod($action);
     }
 
-
-    /**
-     * render
-     * renders a template
-     * @param  mixed $templateName template name , or null to redirect to default action
-     * @return void
-     */
-    protected static function render($templates, $vars = [])
+    public static function setupTemplateVars(&$vars, &$templates)
     {
-        if ($templates == null) {
-            //si le templet eest nul(ex si on delete un article => aon applele le tmplate par dafault (ici la liste))
-            self::error();
-        } else {
-            if (!is_array($templates)) {
-                 $templates =['action'=>$templates,'base'=>'common/base'];
-            }
-            if (strpos($templates['action'], '/') === false) {
+        parent::setupTemplateVars($vars, $templates);
+        if (strpos($templates['action'], '/') === false) {
 
-                $templates['action'] = strtolower(self::getEntityClass()) . "/".$templates['action'];
-            }
-            // Add shared parameters to the existing ones
-            $vars = array_merge($vars, [
-                'baseUrl' => SiteUtil::url(), // absolute url of public folder
-                'entity' =>  self::getEntity(),         // current user
-                'controller' => self::class,         // current user
-                'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
-                'loggedInUser' => UserController::getLoggedInUser()
-            ]);
-
-            //repars a la racine du porjet
-            include_once SiteUtil::toAbsolute('view/'.$templates['base'].'.php');
+            $templates['action'] = strtolower(self::getEntityClass()) . "/".$templates['action'];
         }
+
+        // Add shared parameters to the existing ones
+        $vars = array_merge($vars, [
+            'entity' =>  self::getEntity(),
+            'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
+        ]);
     }
+
 
     /**
      * initializeEntity
@@ -159,13 +131,6 @@ class BaseEntityController
         self::render("list", [
             'entities' => self::getDao()::findAll()
         ]);
-    }
-
-
-    //ca va chercher dans le dossier error et abvec un / si c'est autre part que dan sle dossier de l'entité en cours
-    protected static function error()
-    {
-        self::render('error/error404');
     }
 
     /**

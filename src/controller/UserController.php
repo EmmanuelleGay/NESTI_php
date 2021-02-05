@@ -13,7 +13,7 @@ SiteUtil::require('model/dao/UsersDao.php');
 
 
 
-class UserController extends BaseController
+class UserController extends BaseEntityController
 {
 
     protected static $entityClass = "Users";
@@ -42,9 +42,18 @@ class UserController extends BaseController
 
                 exit();
             }
+            else {
+                echo "MAUVAIS MOT DE PASSE OU NOM D'UTILISATEUR";
+            }
         }
         self::render(['action'=>'login','base'=>'users/baseLogin']);
     }
+
+
+public static function logout() {
+    self::setLoggedInUser(null);
+   header('Location:'.SiteUtil::url().'users/login');
+}
 
 
     /**
@@ -62,7 +71,7 @@ class UserController extends BaseController
         return self::$loggedInUser;
     }
 
-    public static function setLoggedInUser($user,$plaintextPassword){
+    public static function setLoggedInUser($user,$plaintextPassword=null){
         if($user!=null){
             self::$loggedInUser =$user;
             setcookie("user[login]", $user->getLogin(), 2147483647, '/');

@@ -17,21 +17,16 @@
             <a class="nav-link" href="<?= $vars['baseUrl'] ?>statistics">Statistiques</a>
           </li>
           <li class="nav-item">
-<p><?php
+            <p class="nav-link"><?php
+                                echo  $vars['loggedInUser']->getFirstName() . " " .  $vars['loggedInUser']->getLastName();
+                                ?></p>
 
-        echo $vars['loggedInUser']->getFirstName();
+          <li class="nav-item">
+            <a class="nav-link" href="<?= $vars['baseUrl'] ?>users/logout">Déconnexion</a>
+          </li>
 
-        ?></p>
-
-        <a href="$vars['baseUrl'] ?>users/logout"></a>
-          
         </ul>
       </div>
     </div>
   </nav>
-
-    <p></p>
-
-<a href="" title="se déconnecter" class="text-center">
-<img src="../public/photo/deconnexion.png" alt="bouton deconnexion" class="bouton_deconnexion mb-sm-3">
 </div>
