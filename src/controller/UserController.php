@@ -11,11 +11,8 @@ SiteUtil::require('model/entity/Users.php');
 SiteUtil::require('model/entity/BaseEntity.php');
 SiteUtil::require('model/dao/UsersDao.php');
 
-
-
 class UserController extends BaseEntityController
 {
-
     protected static $entityClass = "Users";
     protected static $loggedInUser;
 
@@ -27,13 +24,12 @@ class UserController extends BaseEntityController
             get_called_class()::list(); // else call default one
     }
 
-
     public static function login()
     {
         $template = 'login';
         if (isset($_POST['Users'])) {
 
-            $candidate = UsersDao::findOneBy('login', $_POST['Users']['login']);
+            $candidate = UsersDao::findOneBy('login', $_POST['Users']['login'],BaseDao::FLAGS['active']);
 
             if ($candidate != null && $candidate->isPassword($_POST['Users']['password'])) {
              
@@ -43,16 +39,18 @@ class UserController extends BaseEntityController
                 exit();
             }
             else {
-                echo "MAUVAIS MOT DE PASSE OU NOM D'UTILISATEUR";
+                $templateVars = ['message'=>'errorLogin'];
             }
         }
-        self::render(['action'=>'login','base'=>'users/baseLogin']);
+        self::render(['action'=>'login','base'=>'users/baseLogin'],$templateVars);
     }
 
 
 public static function logout() {
     self::setLoggedInUser(null);
-   header('Location:'.SiteUtil::url().'users/login');
+ //  header('Location:'.SiteUtil::url().'users/login');
+    $templateVars = ['message'=>'disconnect'];
+    self::render(['action'=>'login','base'=>'users/baseLogin'],$templateVars);
 }
 
 
@@ -63,8 +61,8 @@ public static function logout() {
     { 
         if (self::$loggedInUser==null &&  isset($_COOKIE['user']))
         {
-        $candidate = UsersDao::findOneBy('login', $_COOKIE['user']['login']);
-        if($candidate->isPassword($_COOKIE['user']['password'])){
+        $candidate = UsersDao::findOneBy('login', $_COOKIE['user']['login'],'a');
+        if($candidate != null && $candidate->isPassword($_COOKIE['user']['password'])){
             self::$loggedInUser =$candidate;
          };
         }

@@ -1,7 +1,7 @@
 <?php
 
 class ConnectionLog extends BaseEntity{
-    private $idUserLog;
+    private $idConnectionLog;
     private $dateConnection;
     private $idUsers;
 
@@ -54,21 +54,21 @@ class ConnectionLog extends BaseEntity{
     }
 
     /**
-     * Get the value of idUserLog
+     * Get the value of idConnectionLog
      */ 
-    public function getIdUserLog()
+    public function getIdConnectionLog()
     {
-        return $this->idUserLog;
+        return $this->idConnectionLog;
     }
 
     /**
-     * Set the value of idUserLog
+     * Set the value of idConnectionLog
      *
      * @return  self
      */ 
-    public function setIdUserLog($idUserLog)
+    public function setIdConnectionLog($idConnectionLog)
     {
-        $this->idUserLog = $idUserLog;
+        $this->idConnectionLog = $idConnectionLog;
 
         return $this;
     }

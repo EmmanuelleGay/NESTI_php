@@ -1,6 +1,7 @@
 <?php
 
-class Article extends BaseEntity{
+class Article extends BaseEntity
+{
     private $idArticle;
     private $unitQuantity;
     private $flag;
@@ -11,54 +12,79 @@ class Article extends BaseEntity{
     private $idProduct;
 
 
-
-public function getLatestPrice(int $idArticle) {
-    $pdo = DatabaseUtil::connect();
-    /*$sql = "SELECT * FROM  articleprice a\n"
+        //   $pdo = DatabaseUtil::connect();
+        /*$sql = "SELECT * FROM  articleprice a\n"
     . "  INNER JOIN \n"
     . "    (SELECT idArticle, MAX(dateStart) AS maxDate\n"
     . "  FROM articleprice GROUP BY idArticle) \n"
     . "    a3 ON a.idArticle = a3.idArticle AND a.dateStart = a3.maxDate\n"
     . "    WHERE a.idArticle = ?";
     */
-}
 
 
-    public function getArticlePrices(): array{
+    public function getLastPrice(): String
+    {
+ 
+        $maxDate = 0;
+        $arrayArticlePrice = $this->getArticlePrices();
+
+        foreach ($arrayArticlePrice as $value) {
+            $date =   strtotime($value->getDateStart());
+            if ($maxDate <  $date) {
+                $maxDate =  $date;
+                $price = $value->getPrice();
+            }
+        }
+        return $price;
+    }
+
+
+ 
+
+    public function getArticlePrices(): array
+    {
         return $this->getRelatedEntities("ArticlePrice");
     }
 
-    public function getLots(): array{
+    public function getLots(): array
+    {
         return $this->getRelatedEntities("Lot");
     }
 
-    public function getOrderLines(): array{
+    public function getOrderLines(): array
+    {
         return $this->getRelatedEntities("OrderLine");
     }
-    
-    public function getProduct(): ?Product{
+
+    public function getProduct(): ?Product
+    {
         return $this->getRelatedEntity("Product");
     }
-    
-    public function getUnit(): ?Unit{
+
+    public function getUnit(): ?Unit
+    {
         return $this->getRelatedEntity("Unit");
     }
-    
-    public function getImage(): ?Image{
+
+    public function getImage(): ?Image
+    {
         return $this->getRelatedEntity("Image");
     }
 
-    public function setUnit(Unit $u){
+    public function setUnit(Unit $u)
+    {
         $this->setRelatedEntity($u);
     }
 
 
-    public function setProduct(Product $p){
+    public function setProduct(Product $p)
+    {
         $this->setRelatedEntity($p);
     }
 
 
-    public function setImage(Image $i){
+    public function setImage(Image $i)
+    {
         $this->setRelatedEntity($i);
     }
 

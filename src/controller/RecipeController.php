@@ -14,5 +14,5 @@ class RecipeController extends BaseEntityController
             get_called_class()::list(); // else call default one
     }
 
-   
+
 }

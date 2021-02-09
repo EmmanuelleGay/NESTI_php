@@ -1,0 +1,39 @@
+
+
+
+
+
+
+
+/*--------------------------------------LOGIN_PAGE-----------------------------*/
+
+
+.loginBackground {
+    background-image : url("../images/background.png");
+    background-size: cover;
+}
+
+.loginContainer{
+    background-color: white;
+}
+
+.logo{
+    height: 25vh;
+}
+
+.disconnectMessage{
+    background-color: var(--green-color);
+}
+
+.errorLoginMessage {
+    background-color: var(--red-color);
+    color: white;
+}
+
+.colorBtn{
+    background-color: var(--primary-light);
+}
+.colorBtn:hover{
+    color : white;
+}
+

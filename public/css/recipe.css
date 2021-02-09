@@ -1,0 +1,42 @@
+
+.addContainer{
+    height: 2.5em;
+}
+
+.addLink{
+    font-weight: bold;
+}
+
+.addElement{
+height: 100%;
+}
+
+.editBtn{
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.linkHead{
+    color : var(--primary-light);
+}
+
+.font-italic{
+    font-style: italic;
+}
+
+.containerButton{
+    max-width: 4em;
+    margin-left: 3%;
+}
+
+.titlePrep{
+    margin-left: 3em;
+}
+
+.containerIngredient{
+    background-color: white;
+    border: grey;
+    border-radius: 2%;
+    margin-left: 3em;
+    padding: 0.5em;
+}

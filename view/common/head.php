@@ -3,8 +3,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nesti</title>
 
-    <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/style.css">
+  
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/fontawesome/css/all.css">
+    <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/style.css">
+    <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/<?=$vars['stylesheet'] ?>.css">
+   
 
 <?php 
 //permettrait de mettre un stylesheet unique par controller en mettant un nom de stylesheet dans les actions => redefinit le template vars pour l'ajouter

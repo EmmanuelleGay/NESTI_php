@@ -24,19 +24,19 @@
         </thead>
         <tbody>
 
+
+
             <?php foreach ($vars['entities'] as $article) { ?>
                 <tr>
                     <td><?= 
                     
                     $article->getId(); ?></td>
-                    <td>NAME</td>
-                    <td><?= $article->getArticlePrices()->getPrice(); ?></td>
-                    <td>TYPE</td>
+                    <td><?= $article->getProduct()->getName(); ?></td>
+                    <td><?= $article->getLastPrice(); ?></td>
+                    <td>ingrédient</td>
                     <td><?= $article->getDateModification(); ?></td>
 
-                    <td><?php
-                        $recipe->getChef();
-                    } ?></td>
+                    <td><?= $article->getStock();} ?></td>
                     <td>
                         <div class="d-flex flex-column">
                             <a href="<?=

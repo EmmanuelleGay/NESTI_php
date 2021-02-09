@@ -56,7 +56,7 @@ class BaseController
     protected static function render($templates, $vars = [])
     {
         if ($templates == null) {
-            //si le templet eest nul(ex si on delete un article => aon applele le tmplate par dafault (ici la liste))
+            //si le templet est nul(ex si on delete un article => on applele le tmplate par dafault (ici la liste))
             self::error();
         } else {
             if (!is_array($templates)) {
@@ -76,7 +76,8 @@ class BaseController
                 'baseUrl' => SiteUtil::url(), // absolute url of public folder
                 'controller' => self::class,         // current user
                 'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
-                'loggedInUser' => UserController::getLoggedInUser()
+                'loggedInUser' => UserController::getLoggedInUser(),
+                'stylesheet' => filter_input(INPUT_GET, 'loc', FILTER_SANITIZE_STRING)
             ]);
 
     }

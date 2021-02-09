@@ -207,4 +207,84 @@ class Users extends BaseEntity{
         $this->setPasswordHash(password_hash($plaintextPassword, PASSWORD_DEFAULT));
     }
 
+
+    /**
+     * Get the value of address1
+     */ 
+    public function getAddress1()
+    {
+        return $this->address1;
+    }
+
+    /**
+     * Set the value of address1
+     *
+     * @return  self
+     */ 
+    public function setAddress1($address1)
+    {
+        $this->address1 = $address1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of address2
+     */ 
+    public function getAddress2()
+    {
+        return $this->address2;
+    }
+
+    /**
+     * Set the value of address2
+     *
+     * @return  self
+     */ 
+    public function setAddress2($address2)
+    {
+        $this->address2 = $address2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of zipCode
+     */ 
+    public function getZipCode()
+    {
+        return $this->zipCode;
+    }
+
+    /**
+     * Set the value of zipCode
+     *
+     * @return  self
+     */ 
+    public function setZipCode($zipCode)
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idCity
+     */ 
+    public function getIdCity()
+    {
+        return $this->idCity;
+    }
+
+    /**
+     * Set the value of idCity
+     *
+     * @return  self
+     */ 
+    public function setIdCity($idCity)
+    {
+        $this->idCity = $idCity;
+
+        return $this;
+    }
 }
