@@ -215,4 +215,9 @@ class Recipe extends BaseEntity{
 
         return $this;
     }
+
+
+    public function getIngredients(): array{
+        return $this->getIndirectlyRelatedEntities("Ingredient", "IngredientRecipe"); 
+    }
 }

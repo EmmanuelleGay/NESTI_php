@@ -23,7 +23,9 @@ foreach ($arrayArticlePrice as $value) {
         $article = $value;
     }
 }
+$test = RecipeDao::findById(3);
 
+FormatUtil::dump($test->getIngredients());
 
 
 

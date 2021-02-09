@@ -70,13 +70,12 @@
         <div class="col">
             <h2 class="mx-5 mt-5">Liste des ingrédients</h2>
             <div class="containerIngredient">
-                <?php 
-                
-                formatUtil::dump($vars['entities']);
-                foreach ($vars['entities'] as $recipe) { ?>
-                    <div><?= $recipe->getIngredient();
-                        } ?>
+             
+            <?php foreach ($vars['ingredients'] as $ingredient): ?>
+                    <div><?= $ingredient->getName();
+                         ?>
                     </div>
+                    <?php endforeach ?>
             </div>
         </div>
     </div>

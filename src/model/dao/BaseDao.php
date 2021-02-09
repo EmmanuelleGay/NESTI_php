@@ -336,7 +336,7 @@ class BaseDao
         $req->execute($values);
 
         $endEntities = [];
-        while ($entity = self::fetchEntity($req, $flag)) { // set entity properties to fetched column values
+        while ($entity = $end::fetchEntity($req, $flag)) { // set entity properties to fetched column values
             $endEntities[] = $entity;
         }
 

@@ -40,7 +40,7 @@
                         <div class="d-flex flex-column">
                             <a class="editBtn" href="<?=
                                                         //TODO AJOUTER L'ID DANS L'ADRESSE POUR LA MODIF
-                                                        $vars['baseUrl'] ?>recipe/edit">Modifier</a>
+                                                        $vars['baseUrl'] ?>recipe/edit/<?= $recipe->getId()?>">Modifier</a>
                             <a class="editBtn" href="<?= $vars['baseUrl'] ?>recipe/delete">Supprimer</a>
 
                         <?php } ?>

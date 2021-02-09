@@ -12,7 +12,7 @@
 
 
 
-class BaseEntityController extends baseController
+class BaseEntityController extends BaseController
 {
 
     protected static $entity;
@@ -34,12 +34,12 @@ class BaseEntityController extends baseController
         if ($forceAction != null) {
             $action = $forceAction;
         }
+        FormatUtil::dump(static::getEntityClass()::getDaoClass());
 
-        get_called_class()::initializeEntity($id);
+        static::$dao = static::getEntityClass()::getDaoClass();
+        static::initializeEntity($id);
 
-        self::$dao = self::getEntityClass()::getDaoClass();
-
-        get_called_class()::callActionMethod($action);
+        static::callActionMethod($action);
     }
 
     public static function setupTemplateVars(&$vars, &$templates)
@@ -47,12 +47,12 @@ class BaseEntityController extends baseController
         parent::setupTemplateVars($vars, $templates);
         if (strpos($templates['action'], '/') === false) {
 
-            $templates['action'] = strtolower(self::getEntityClass()) . "/".$templates['action'];
+            $templates['action'] = strtolower(static::getEntityClass()) . "/".$templates['action'];
         }
 
         // Add shared parameters to the existing ones
         $vars = array_merge($vars, [
-            'entity' =>  self::getEntity(),
+            'entity' =>  static::getEntity(),
             'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
         ]);
     }
@@ -68,14 +68,15 @@ class BaseEntityController extends baseController
 
         if (!empty($id)) { // If a user ID is specified in the URL
 
-            self::setEntity(self::getDao()::findById($id)); // find corresponding user in data source
+            FormatUtil::dump(static::getDao());
+            static::setEntity(static::getDao()::findById($id)); // find corresponding user in data source
         }
 
-        if (!self::getEntity()) { // If no ID specified, or wrong ID specified
+        if (!static::getEntity()) { // If no ID specified, or wrong ID specified
 
-            $class =  self::getEntityClass();
+            $class =  static::getEntityClass();
 
-            self::setEntity(new $class);
+            static::setEntity(new $class);
         }
     }
 
@@ -93,20 +94,20 @@ class BaseEntityController extends baseController
     public static function edit()
     {
         $templateName = 'edit';
-        $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
+        $templateVars = ["isSubmitted" => !empty($_POST[static::getEntityClass()])];
 
         if ($templateVars["isSubmitted"]) { // if we arrived here by way of the submit button in the edit view
-            self::getEntity()->setParametersFromArray($_POST[self::getEntityClass()]);
-            if (self::getEntity()->isValid()) {
-                self::getDao()::saveOrUpdate(self::getEntity());
+            static::getEntity()->setParametersFromArray($_POST[static::getEntityClass()]);
+            if (static::getEntity()->isValid()) {
+                static::getDao()::saveOrUpdate(static::getEntity());
                 $templateName = null; // null template will redirect to default action
             } else {
-                $templateVars["errors"] = self::getEntity()->getErrors();
+                $templateVars["errors"] = static::getEntity()->getErrors();
             }
         }
 
         // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid
-        self::render($templateName, $templateVars);
+        static::render($templateName, $templateVars);
     }
 
     /**
@@ -119,17 +120,17 @@ class BaseEntityController extends baseController
         $templateName = 'delete';
 
         if (!empty($_POST)) { // if we arrived here by way of the submit button in the delete view
-            self::getDao()::delete(self::getEntity());
+            static::getDao()::delete(static::getEntity());
             $templateName = null;
         }
 
-        self::render($templateName);
+        static::render($templateName);
     }
 
     public static function list()
     {
-        self::render("list", [
-            'entities' => self::getDao()::findAll()
+        static::render("list", [
+            'entities' => static::getDao()::findAll()
         ]);
     }
 
@@ -138,7 +139,7 @@ class BaseEntityController extends baseController
      */
     public static function getEntity()
     {
-        return get_called_class()::$entity;
+        return static::$entity;
     }
 
     /**
@@ -147,11 +148,11 @@ class BaseEntityController extends baseController
     public static function setEntity($entity)
     {
 
-        get_called_class()::$entity = $entity;
+        static::$entity = $entity;
     }
 
     public static function getDao()
     {
-        return get_called_class()::$dao;
+        return static::$dao;
     }
 }

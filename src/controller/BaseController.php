@@ -15,11 +15,6 @@
 class BaseController
 {
 
-    protected static $entity;
-    protected static $entityClass;
-    protected static $dao;
-
-
     public static function callActionMethod($action)
     {
         method_exists(get_called_class(), $action) ?
