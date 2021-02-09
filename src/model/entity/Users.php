@@ -1,6 +1,7 @@
 <?php
 
-class Users extends BaseEntity{
+class Users extends BaseEntity
+{
     private $idUsers;
     private $lastName;
     private $firstName;
@@ -14,20 +15,24 @@ class Users extends BaseEntity{
     private $zipCode;
     private $idCity;
 
-    public function getOrders(): array{
+    public function getOrders(): array
+    {
         return $this->getRelatedEntities("Orders");
     }
 
-    public function getConnectionLogs(): array{
+    public function getConnectionLogs(): array
+    {
         return $this->getRelatedEntities("ConnectionLog");
     }
 
-    public function getComments(): array{
+    public function getComments(): array
+    {
         return $this->getRelatedEntities("Comment", BaseDao::FLAGS['active']);
     }
 
-    public function getRecipes(): array{
-        return $this->getIndirectlyRelatedEntities("Recipe", "Grades", BaseDao::FLAGS['active']); 
+    public function getRecipes(): array
+    {
+        return $this->getIndirectlyRelatedEntities("Recipe", "Grades", BaseDao::FLAGS['active']);
     }
 
     /**
@@ -172,7 +177,7 @@ class Users extends BaseEntity{
 
     /**
      * Get the value of login
-     */ 
+     */
     public function getLogin()
     {
         return $this->login;
@@ -182,7 +187,7 @@ class Users extends BaseEntity{
      * Set the value of login
      *
      * @return  self
-     */ 
+     */
     public function setLogin($login)
     {
         $this->login = $login;
@@ -192,25 +197,28 @@ class Users extends BaseEntity{
 
     public function isPassword(String $plainTextPassword)
     {
-        return password_verify ($plainTextPassword, $this->getPasswordHash());
+        return password_verify($plainTextPassword, $this->getPasswordHash());
     }
 
-    public function getCity(): ?City{
+    public function getCity(): ?City
+    {
         return $this->getRelatedEntity("City");
     }
 
-    public function setCity(City $c){
+    public function setCity(City $c)
+    {
         $this->setRelatedEntity($c);
     }
 
-    public function setPasswordHashFromPlaintext($plaintextPassword){
+    public function setPasswordHashFromPlaintext($plaintextPassword)
+    {
         $this->setPasswordHash(password_hash($plaintextPassword, PASSWORD_DEFAULT));
     }
 
 
     /**
      * Get the value of address1
-     */ 
+     */
     public function getAddress1()
     {
         return $this->address1;
@@ -220,7 +228,7 @@ class Users extends BaseEntity{
      * Set the value of address1
      *
      * @return  self
-     */ 
+     */
     public function setAddress1($address1)
     {
         $this->address1 = $address1;
@@ -230,7 +238,7 @@ class Users extends BaseEntity{
 
     /**
      * Get the value of address2
-     */ 
+     */
     public function getAddress2()
     {
         return $this->address2;
@@ -240,7 +248,7 @@ class Users extends BaseEntity{
      * Set the value of address2
      *
      * @return  self
-     */ 
+     */
     public function setAddress2($address2)
     {
         $this->address2 = $address2;
@@ -250,7 +258,7 @@ class Users extends BaseEntity{
 
     /**
      * Get the value of zipCode
-     */ 
+     */
     public function getZipCode()
     {
         return $this->zipCode;
@@ -260,7 +268,7 @@ class Users extends BaseEntity{
      * Set the value of zipCode
      *
      * @return  self
-     */ 
+     */
     public function setZipCode($zipCode)
     {
         $this->zipCode = $zipCode;
@@ -270,7 +278,7 @@ class Users extends BaseEntity{
 
     /**
      * Get the value of idCity
-     */ 
+     */
     public function getIdCity()
     {
         return $this->idCity;
@@ -280,11 +288,86 @@ class Users extends BaseEntity{
      * Set the value of idCity
      *
      * @return  self
-     */ 
+     */
     public function setIdCity($idCity)
     {
         $this->idCity = $idCity;
 
         return $this;
+    }
+
+    // on récupère le chef => si null => n'est pas chef
+    public function getChef()
+    {
+        return ChefDao::findById($this->getId(), 'a');
+        // OPTION 2    return ChefDao::findAll(["flag"=>'a',"idChef"=>$this->getId()]);
+    }
+    //retourne un boolean
+    public function isChef()
+    {
+        return $this->getChef() != null;
+    }
+
+    // a vérifier si ca fonctionne
+    public function makeChef()
+    {
+        if (!$this->isChef()) {
+            $chef = new Chef();
+            $chef->setId($this->getId());
+            ChefDao::save($chef);
+        }
+    }
+
+    public function isModerator()
+    {
+        return $this->getModerator() != null;
+    }
+
+    public function makeModerator()
+    {
+        if (!$this->isModerator()) {
+            $moderator = new Moderator();
+            $moderator->setId($this->getId());
+            ModeratorDao::save($moderator);
+        }
+    }
+
+    public function getModerator()
+    {
+        return AdministratorDao::findById($this->getId(), 'a');
+    }
+
+    public function isAdministrator()
+    {
+        return $this->getAdministrator() != null;
+    }
+
+    public function makeAdministrator()
+    {
+        if (!$this->isAdministrator()) {
+            $administrator = new Administrator();
+            $administrator->setId($this->getId());
+            AdministratorDao::save($administrator);
+        }
+    }
+
+    public function getAdministrator()
+    {
+        return AdministratorDao::findById($this->getId(), 'a');
+    }
+
+    public function getRoles()
+    {
+        $roles = [];
+        if ($this->isChef()) {
+            $roles[] = "Chef";
+        }
+        if ($this->isModerator()) {
+            $roles[] = "Moderator";
+        }
+        if ($this->isAdministrator()) {
+            $roles[] = "Administrator";
+        }
+        return $roles;
     }
 }

@@ -21,8 +21,8 @@ class BaseEntityController extends BaseController
 
     public static function processAction($forceAction = null)
     {
-        FormatUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
-        FormatUtil::sanitize($_GET);
+        SiteUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
+        SiteUtil::sanitize($_GET);
         //  @[$location, $action, $id] =SiteUtil::getUrlParameters();
 
 
@@ -34,7 +34,6 @@ class BaseEntityController extends BaseController
         if ($forceAction != null) {
             $action = $forceAction;
         }
-        FormatUtil::dump(static::getEntityClass()::getDaoClass());
 
         static::$dao = static::getEntityClass()::getDaoClass();
         static::initializeEntity($id);
@@ -47,13 +46,13 @@ class BaseEntityController extends BaseController
         parent::setupTemplateVars($vars, $templates);
         if (strpos($templates['action'], '/') === false) {
 
-            $templates['action'] = strtolower(static::getEntityClass()) . "/".$templates['action'];
+            $templates['action'] = strtolower(static::getEntityClass()) . "/" . $templates['action'];
         }
 
         // Add shared parameters to the existing ones
         $vars = array_merge($vars, [
             'entity' =>  static::getEntity(),
-            'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'].".php",
+            'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'] . ".php",
         ]);
     }
 
@@ -68,7 +67,6 @@ class BaseEntityController extends BaseController
 
         if (!empty($id)) { // If a user ID is specified in the URL
 
-            FormatUtil::dump(static::getDao());
             static::setEntity(static::getDao()::findById($id)); // find corresponding user in data source
         }
 
@@ -129,8 +127,15 @@ class BaseEntityController extends BaseController
 
     public static function list()
     {
+        $queryOptions = ['flag' => 'a'];
+
+        if (isset($_POST["search"])) {
+            foreach ($_POST["search"] as $key => $value) {
+                $queryOptions["$key LIKE"] = "%$value%";
+            }
+        };
         static::render("list", [
-            'entities' => static::getDao()::findAll()
+            'entities' => static::getDao()::findAll($queryOptions)
         ]);
     }
 

@@ -11,6 +11,46 @@ class Recipe extends BaseEntity{
     private $idChef;
     private $idImage;
 
+
+    public const VALIDATED_PROPERTIES = [
+        "name" => ["notEmpty","letters"],
+        "difficulty" => ["notEmpty", "numbers"],
+        "portions" => ["notEmpty", "numbers"],
+        "prepationTime" => ["notEmpty", "numbers"]
+
+    ];
+
+
+      /**
+     * validateProperty
+     * Loops through all validators for that property (if any), and returns a list of failed validators
+     * @param  String $fieldName
+     * @return Array errors found, by validator name (or empty array if none found)
+     * example return array:
+     * ['notEmpty' => true],   // error found: empty value
+     */
+    public function validateProperty(String $propertyName){
+        $propertyErrors = [];
+        
+        if (isset(self::VALIDATED_PROPERTIES[$propertyName])) {
+            // Loop through each validator for that field
+            foreach(self::VALIDATED_PROPERTIES[$propertyName] as $validatorName){
+                // store error states (negated validator) with the validator name as key
+                $errored = !EntityValidator::$validatorName($this,$propertyName);
+                if ( $errored ) {
+                    $propertyErrors[$validatorName] = true;
+                }
+                
+            }
+        }
+
+        return $propertyErrors;
+    }
+
+
+
+
+
     public function getComments(): array{
         return $this->getRelatedEntities("Comment");
     }
@@ -35,6 +75,7 @@ class Recipe extends BaseEntity{
     public function setChef(Chef $c){
         $this->setRelatedEntity($c);
     }
+
 
     /**
      * Get the value of idImage

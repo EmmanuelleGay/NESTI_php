@@ -4,25 +4,25 @@
         <p class="linkHead"> Recette</p>
     </div>
 
-    <form class="d-flex justify-content-around" method="post" enctype="multipart/form-data" action="<?= $vars['baseUrl'] ?>recipe">
+    <form class="d-flex justify-content-around" method="post" enctype="multipart/form-data" action="<?= $vars['baseUrl'] ?>recipe/edit">
         <div>
             <h1>Création d'une recette</h1>
             <p>Nom de la recette</p>
-            <input type="text" name="Recipe[name]" class="form-control" id="nameRecipe" autofocus>
+            <input type="text" name="Recipe[name]" class="form-control" id="nameRecipe" value="<?=$vars['entity']->getName() ?>" autofocus>
             <p class="font-italic">Auteur de la recette : <?php
                                                             echo  $vars['loggedInUser']->getFirstName() . " " .  $vars['loggedInUser']->getLastName();
                                                             ?></p>
             <div class="row align-items-center mb-3">
                 <div class="col-9">Difficulté (note sur 5)</div>
-                <div class="col-3"><input type="text" name="Recipe[difficulty]" class="form-control" id="difficulty"></div>
+                <div class="col-3"><input type="text" name="Recipe[difficulty]" class="form-control" id="difficulty" value="<?=$vars['entity']->getDifficulty() ?>"></div>
             </div>
             <div class="row align-items-center mb-3">
                 <div class="col-9">Nombres de personnes</div>
-                <div class="col-3"><input type="text" name="Recipe[portions]" class="form-control" id="difficulty"></div>
+                <div class="col-3"><input type="text" name="Recipe[portions]" class="form-control" id="difficulty" value="<?=$vars['entity']->getPortions() ?>"></div>
             </div>
             <div class="row align-items-center">
                 <div class="col-9">Temps de préparation en minutes</div>
-                <div class="col-3"><input type="text" name="Recipe[preparationTime]" class="form-control" id="difficulty"></div>
+                <div class="col-3"><input type="text" name="Recipe[preparationTime]" class="form-control" id="difficulty" value="<?=$vars['entity']->getPreparationTime() ?>"></div>
             </div>
             <div>
                 <button type="reset" class="btn cancelBtn fs-5 px-5 mx-3 mt-3 mb-5">Annuler</button>

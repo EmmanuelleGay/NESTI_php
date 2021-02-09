@@ -24,8 +24,8 @@ class BaseController
 
     public static function processAction($forceAction = null)
     {
-        FormatUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
-        FormatUtil::sanitize($_GET);
+        SiteUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
+        SiteUtil::sanitize($_GET);
         //  @[$location, $action, $id] =SiteUtil::getUrlParameters();
 
 

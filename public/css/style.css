@@ -101,10 +101,18 @@ color: var(--primary-dark);
 
 .btn-nav{
     background-color: var(--primary-color);
-    padding: 0%;
+    padding: 5%;
     color: white;
     font-weight: 600;
-    width: 15%;
+    width: 7vw;
+}
+
+.nav-link:hover * {
+   color: var(--primary-dark);
+}
+
+.nav-link.btn-nav.white{
+    transition-duration: 0s;
 }
 
 

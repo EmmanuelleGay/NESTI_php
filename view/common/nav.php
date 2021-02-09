@@ -1,26 +1,31 @@
 <header class="d-flex justify-content-between">
 
   <nav class="navbar navbar-expand-lg w-75 pt-3 pb-3">
-    <div class="collapse navbar-collapse" id="navbarNav">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav w-100 justify-content-around ">
-        <li class="nav-item btn btn-nav">
-          <a class="nav-link white active" aria-current="page" href="<?= $vars['baseUrl'] ?>recipe">
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" aria-current="page" href="<?= $vars['baseUrl'] ?>recipe">
             <i class="fas fa-clipboard-list white"></i>
             Recettes</a>
         </li>
 
-        <li class="nav-item btn btn-nav">
-          <a class="nav-link white" href="<?= $vars['baseUrl'] ?>article">
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>article">
             <i class="fas fa-utensils white"></i>
             Articles</a>
         </li>
-        <li class="nav-item btn btn-nav">
-          <a class="nav-link white" href="<?= $vars['baseUrl'] ?>users">
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>users">
             <i class="fas fa-users white"></i>
             Utilisateurs</a>
         </li>
-        <li class="nav-item btn btn-nav">
-          <a class="nav-link white" href="<?= $vars['baseUrl'] ?>statistics">
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>statistics">
             <i class="fas fa-chart-bar white"></i>
             Statistiques
           </a>

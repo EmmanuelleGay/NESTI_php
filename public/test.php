@@ -25,8 +25,33 @@ foreach ($arrayArticlePrice as $value) {
 }
 $test = RecipeDao::findById(3);
 
-FormatUtil::dump($test->getIngredients());
+//FormatUtil::dump($test->getIngredients());
 
+$test = ArticleDao::findById(8);
+ //FormatUtil::dump($test->getOrders(["ORDER"=>"dateCreation ASC"]));
+
+//  //cde la plus récente => qui sera tout en haut donc indice 0
+//  //FormatUtil::dump($test->getOrders(["ORDER"=>"dateCreation DESC"])[0]);
+
+//  //pour trouer une commande egale a une date précise
+//  FormatUtil::dump($test->getOrders(["dateCreation"=>"2021-02-01 00:00:00"]));
+
+//   //pour trouver une commande ente deux dates
+//  FormatUtil::dump($test->getOrders(["dateCreation >"=>"2021-02-01 00:00:00","dateCreation <"=>"2021-02-07 00:00:00"]));
+
+//  //récupère toutes les connection a une heure données => en faisant une boucle jusqu'à 24h => on récupère un tab de connection log => regarder la taille (count(array))
+//  FormatUtil::dump(connectionLog::findAll(["HOUR(dateConnection)"=>11]));
+// //FormatUtil::dump(OrdersDao::findAll(["ORDER"=>"dateCreation DESC"]));
+
+//implémentation de la pagination
+$queryOptions = ["LIMIT"=>2,"OFFSET"=>1];
+FormatUtil::dump(OrdersDao::findAll($queryOptions));
+
+
+$apprentice=UsersDao::findById(2);
+$apprentice->makechef();
+
+formatUtil::dump($apprentice);
 
 
 //formatUtil::dump($value);

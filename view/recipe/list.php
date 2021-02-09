@@ -27,14 +27,13 @@
 
             <?php 
             
-            formatUtil::dump($vars['entities']);
             foreach ($vars['entities'] as $recipe) { ?>
                 <tr>
                     <td class="align-middle"><?= $recipe->getId(); ?></td>
                     <td class="align-middle"><?= $recipe->getName(); ?></td>
                     <td class="align-middle"><?= $recipe->getDifficulty(); ?></td>
                     <td class="align-middle"><?= $recipe->getPortions(); ?></td>
-                    <td class="align-middle"><?= $recipe->getPreparationTime(); ?></td>
+                    <td class="align-middle"><?= FormatUtil::formatTime($recipe->getPreparationTime()); ?></td>
                     <td class="align-middle"><?= $recipe->getChef()->getLastName(); ?> </td>
                     <td class="align-middle">
                         <div class="d-flex flex-column">

@@ -14,8 +14,6 @@ class RecipeController extends BaseEntityController
             get_called_class()::list(); // else call default one
     }
 
-
-
      /**
      * edit
      * edit an existing recipe, or a newly-created one
@@ -26,8 +24,12 @@ class RecipeController extends BaseEntityController
         $templateName = 'edit';
         $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
         $templateVars['ingredients']= static::getEntity()->getIngredients();
+
         if ($templateVars["isSubmitted"]) { // if we arrived here by way of the submit button in the edit view
-            self::getEntity()->setParametersFromArray($_POST[self::getEntityClass()]);
+          FormatUtil::dump($_POST[self::getEntityClass()]);
+
+            EntityUtil::setFromArray(self::getEntity(),$_POST[self::getEntityClass()]);
+
             if (self::getEntity()->isValid()) {
                 self::getDao()::saveOrUpdate(self::getEntity());
                 $templateName = null; // null template will redirect to default action
@@ -38,6 +40,18 @@ class RecipeController extends BaseEntityController
 
         // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid
         self::render($templateName, $templateVars);
+    }
+
+
+    public static function setupTemplateVars(&$vars, &$templates)
+    {
+        parent::setupTemplateVars($vars, $templates);
+
+        // Add shared parameters to the existing ones
+        $vars = array_merge($vars, [
+            'controllerSlug' =>  "recipe",
+            'searchField' =>  "name"
+        ]);
     }
 
 
