@@ -76,7 +76,7 @@ class BaseDao
         $conditions = [];
         array_walk ( $options, function($value, $key) use (&$conditions, &$options){
             if (preg_match(
-                "/^(.*)(=|>|<|>=|<=|<>|LIKE|NOT LIKE)$/", // look for an operator at the end of option key
+                "/^(.*)(=|>|<|>=|<=|<>|!=|LIKE|NOT LIKE)$/", // look for an operator at the end of option key
                 $key, $matches)
             ){
                 $propertyKey = trim($matches[1]); 
@@ -129,6 +129,7 @@ class BaseDao
             }
         }
 
+
         if ( isset ($options['ORDER']) ){
             if (preg_match(
                 "/^(.*) (DESC|ASC)$/", // look for an operator at the end of ORDER option
@@ -139,7 +140,7 @@ class BaseDao
                 $sql .= " ORDER BY {$options['ORDER']} DESC";
             }
             unset($options['ORDER']);
-        } else {
+        } elseif (in_array(static::getPkColumnName(), static::getColumnNames())) {
             $sql .= " ORDER BY " . static::getPkColumnName() . " ASC";
         }
 
@@ -350,6 +351,7 @@ class BaseDao
         foreach ( self::getParentClasses() as $currentClass ) { 
             $pdo = DatabaseUtil::getConnection();
             $currentDao = $currentClass::getDaoClass();
+                  
             if($currentDao::findById($entity->getId()) != null){
                 $insertedId = $entity->getId();
                 continue;
@@ -363,16 +365,16 @@ class BaseDao
             // if we're dealing with an inherited table, we must insert parent id explicitly to child table
             if (self::hasParentEntity($currentClass)){
                 $columnNames[] = $currentDao::getPkColumnName();
+                
                 $values[] = $insertedId;
                 $entity->setId($insertedId);
             }
- 
             // Need a list of question marks of same size as the list of column names
             $questionMarks = array_map(function($columnName) { return '?'; }, $columnNames);
 
             $sql = "INSERT INTO " . $currentDao::getTableName() . " (" . implode(',', $columnNames) . ") 
             values(" . implode(',', $questionMarks) . ")";
-            
+
             $q = $pdo->prepare($sql);
             
             $q->execute($values);  

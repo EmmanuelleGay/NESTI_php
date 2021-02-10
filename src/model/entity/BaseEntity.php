@@ -10,45 +10,6 @@ class BaseEntity{
         return get_called_class() . "Dao";
     }
 
-
-    /**
-     * isValid
-     * Looks at error array andreturns false if it contains an error
-     * @return bool true if all validators passed, false if just one validator failed
-     */
-    public function isValid() {
-        return empty($this->getErrors());
-    }
-
-
-    /**
-     * validateProperty
-     * Loops through all validators for that property (if any), and returns a list of failed validators
-     * @param  String $fieldName
-     * @return Array errors found, by validator name (or empty array if none found)
-     * example return array:
-     * ['notEmpty' => true],   // error found: empty value
-     */
-    public function validateProperty(String $propertyName){
-        $propertyErrors = [];
-        
-        if (isset(self::VALIDATED_PROPERTIES[$propertyName])) {
-            // Loop through each validator for that field
-            foreach(self::VALIDATED_PROPERTIES[$propertyName] as $validatorName){
-                // store error states (negated validator) with the validator name as key
-                $errored = !EntityValidator::$validatorName($this,$propertyName);
-                if ( $errored ) {
-                    $propertyErrors[$validatorName] = true;
-                }
-                
-            }
-        }
-
-        return $propertyErrors;
-    }
-
-
-
     /**
      * getRelatedEntities
      * Get an array of entities that are joined to the current instance by a foreign key
@@ -56,24 +17,21 @@ class BaseEntity{
      * @param  mixed $relatedEntityClass Class of the related entity to look for
      * @return array of related entities
      */
-    public function getRelatedEntities(String $relatedEntityClass, $flag=null): array
+    public function getRelatedEntities(String $relatedEntityClass, $options=null): array
     {
         // find dao class of the related entity
         $relatedClassDao = $relatedEntityClass::getDaoClass();
 
         // find column name of the related entity's primary key
         $thisPrimaryKeyName = static::getDaoClass()::getPkColumnName();
-
-        $relatedClassPrimaryKey = $relatedClassDao::getPkColumnName();
   
         return $relatedClassDao::findAllBy(
             // joined entity's foreign key name is the same as starting entity's primary key name 
             $thisPrimaryKeyName,
             $this->getId(),
-            $flag
+            $options
         );
     }
-
 
         
     /**
@@ -83,7 +41,7 @@ class BaseEntity{
      * @param  mixed $relatedEntityClass Class of the related entity to look for
      * @return mixed related entity, or null if none exists
      */
-    public function getRelatedEntity(String $relatedEntityClass, $flag=null): ?BaseEntity
+    public function getRelatedEntity(String $relatedEntityClass, $options=null): ?BaseEntity
     {
         // find dao class of the related entity
         $relatedClassDao = $relatedEntityClass::getDaoClass();
@@ -96,14 +54,14 @@ class BaseEntity{
             $relatedEntity = $relatedClassDao::findById(
                 // joined entity's primary key name is the same as starting entity's corresponding foreign key 
                 EntityUtil::get($this, $relatedClassPrimaryKey) ,
-                $flag
+                $options
             );
         } else { // If foreign key is in related object
             $relatedEntity = static::getDaoClass()::findOneBy(
                 // joined entity's foreign key name is the same as starting entity's primary key
                 static::getDaoClass()::getPkColumnName(),
                 $this->getId(),
-                $flag
+                $options
             );
         }
 
@@ -181,5 +139,27 @@ class BaseEntity{
     public function getIndirectlyRelatedEntities(string $relatedEntityClass, string $joinClass, $options= null): array
     {
         return self::getDaoClass()::findManyToMany($this,  $joinClass , $relatedEntityClass, $options);
+    }
+
+
+    public function getChildEntity(string $childEntityClass){
+        return $childEntityClass::getDaoClass()::findById($this->getId());
+    }
+
+    public function makeChildEntity(string $childEntityClass){
+        if ( $this->getChildEntity($childEntityClass) == null ) {
+            $child = new $childEntityClass;
+            $child->setId($this->getId());
+            $childEntityClass::getDaoClass()::save($child);
+        }
+
+        return $this;
+    }
+
+    public function equals( $other ){
+        return $other != null
+            &&     is_a($this,get_class($other)) // $this must either be class/sublass of $other
+                || is_a($other,get_class($this)) // or vice-versa
+            && $this->getId() == $other->getId();
     }
 }

@@ -70,8 +70,6 @@ class SiteUtil
         return explode('/', self::sanitize($parameterString));
     }
 
-
-
     public static function autoloadRegister()
     {
         spl_autoload_register(function ($className) {

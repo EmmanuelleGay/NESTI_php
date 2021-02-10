@@ -44,14 +44,17 @@ $test = ArticleDao::findById(8);
 // //FormatUtil::dump(OrdersDao::findAll(["ORDER"=>"dateCreation DESC"]));
 
 //implémentation de la pagination
-$queryOptions = ["LIMIT"=>2,"OFFSET"=>1];
-FormatUtil::dump(OrdersDao::findAll($queryOptions));
+// $queryOptions = ["LIMIT"=>2,"OFFSET"=>1];
+// FormatUtil::dump(OrdersDao::findAll($queryOptions));
 
 
-$apprentice=UsersDao::findById(2);
-$apprentice->makechef();
+// $apprentice=UsersDao::findById(2);
+// $apprentice->makechef();
 
-formatUtil::dump($apprentice);
+//formatUtil::dump($apprentice);
+
+$test = RecipeDao::findById(3);
+FormatUtil::dump($test->getIngredientRecipes());
 
 
 //formatUtil::dump($value);

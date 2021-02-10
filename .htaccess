@@ -1,5 +1,6 @@
 RewriteEngine ON
 
-RewriteRule ^([a-z]*)$                       public/index.php?loc=$1 [L]
-RewriteRule ^([a-z]*)/([a-z]*)$              public/index.php?loc=$1&action=$2 [L]
-RewriteRule ^([a-z]*)/([a-z]*)/([0-9]*)$     public/index.php?loc=$1&action=$2&id=$3 [L]
+RewriteRule ^([a-z]*)$                          public/index.php?loc=$1 [L]
+RewriteRule ^([a-z]*)/([a-z]*)$                 public/index.php?loc=$1&action=$2 [L]
+RewriteRule ^([a-z]*)/([a-z]*)/([0-9]*)$        public/index.php?loc=$1&action=$2&id=$3 [L]
+RewriteRule ^([a-z]*)/([a-z]*)/([0-9]*)/(.*)$     public/index.php?loc=$1&action=$2&id=$3&message=$4 [L]
