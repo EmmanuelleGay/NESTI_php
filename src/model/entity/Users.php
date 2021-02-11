@@ -63,6 +63,21 @@ class Users extends BaseEntity
         return $this->flag;
     }
 
+    public function getState() {
+        $state="";
+        if($this->getFlag()=='a'){
+            $state = 'Actif';
+        }
+        else if($this->getFlag()=='w'){
+            $state = 'En attente';
+        }
+        else {
+            $state = 'Bloqué';
+        }
+        return $state;
+    }
+
+
     /**
      * Set the value of flag
      *
@@ -299,7 +314,8 @@ class Users extends BaseEntity
     // on récupère le chef => si null => n'est pas chef
     public function getChef()
     {
-        return ChefDao::findById($this->getId(), 'a');
+        // si on veut que les actifs, on pourrat ajouter 'a" a la fin après getId()
+        return ChefDao::findById($this->getId());
         // OPTION 2    return ChefDao::findAll(["flag"=>'a',"idChef"=>$this->getId()]);
     }
     //retourne un boolean
@@ -334,7 +350,7 @@ class Users extends BaseEntity
 
     public function getModerator()
     {
-        return AdministratorDao::findById($this->getId(), 'a');
+        return ModeratorDao::findById($this->getId());
     }
 
     public function isAdministrator()
@@ -353,7 +369,7 @@ class Users extends BaseEntity
 
     public function getAdministrator()
     {
-        return AdministratorDao::findById($this->getId(), 'a');
+        return AdministratorDao::findById($this->getId());
     }
 
     public function getRoles()
@@ -370,4 +386,17 @@ class Users extends BaseEntity
         }
         return $roles;
     }
+
+   public function getLatestConnection(){
+       $lastDate = UsersDao::findLatestConnection($this->getId());
+       if($lastDate != null){
+        $lastDate = date_create($lastDate);
+        $lastDate = date_format($lastDate,'d/m/Y H:i:s');
+        
+       } else {
+        $lastDate = "-";
+       }
+       return $lastDate;
+   }
+    
 }

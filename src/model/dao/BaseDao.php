@@ -38,7 +38,7 @@ class BaseDao
      * initializeQueryOptions
      *
      * @param  mixed $options either a string (flag to look for), or an array of query options
-     *                 ie: [ 'articlePrice >=' => 12, 'articleName' => 'Marlboro Lights']
+     *                 ie: [ 'articlePrice >=' => 12, 'articleName' => 'Shampooing Dop']
      * @return void initialized array of options
      */
     protected static function initializeQueryOptions(&$options){

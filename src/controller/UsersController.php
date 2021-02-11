@@ -11,7 +11,7 @@ SiteUtil::require('model/entity/Users.php');
 SiteUtil::require('model/entity/BaseEntity.php');
 SiteUtil::require('model/dao/UsersDao.php');
 
-class UserController extends BaseEntityController
+class UsersController extends BaseEntityController
 {
     protected static $entityClass = "Users";
     protected static $loggedInUser;
@@ -26,6 +26,7 @@ class UserController extends BaseEntityController
 
     public static function login()
     {
+        $templateVars = [];
         $template = 'login';
         if (isset($_POST['Users'])) {
 
@@ -44,7 +45,6 @@ class UserController extends BaseEntityController
         }
         self::render(['action'=>'login','base'=>'users/baseLogin'],$templateVars);
     }
-
 
 public static function logout() {
     self::setLoggedInUser(null);
@@ -76,4 +76,29 @@ public static function logout() {
             setcookie("user[password]",$plaintextPassword, 2147483647, '/');
         }
     }
+
+    public static function setupTemplateVars(&$vars, &$templates)
+    {
+        parent::setupTemplateVars($vars, $templates);
+
+        $vars = array_merge($vars, [
+            'controllerSlug' =>  "users",
+            'searchField' =>  "name"
+        ]);
+    }
+
+
+    public static function list()
+    {
+        if (isset($_POST["search"])) {
+            foreach ($_POST["search"] as $key => $value) {
+                $queryOptions["$key LIKE"] = "%$value%";
+            }
+        };
+        static::render("list", [
+            'entities' => static::getDao()::findAll()
+        ]);
+    }
+
+
 }

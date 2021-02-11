@@ -54,7 +54,7 @@ $test = ArticleDao::findById(8);
 //formatUtil::dump($apprentice);
 
 $test = RecipeDao::findById(3);
-FormatUtil::dump($test->getIngredientRecipes());
+//FormatUtil::dump($test->getIngredientRecipes());
 
 
 //formatUtil::dump($value);
@@ -62,3 +62,6 @@ FormatUtil::dump($test->getIngredientRecipes());
 //echo $article->getPrice();
 
 //$latestDate = strtotime()
+
+$test = ProductDao::findById(6);
+$test->makeIngredient();

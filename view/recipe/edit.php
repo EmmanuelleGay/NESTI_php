@@ -79,7 +79,6 @@
             <h2 class="mx-5 mt-5">Liste des ingrédients</h2>
             <div class="containerIngredient">
 
-
                 <?php foreach ($vars['entity']->getIngredientRecipes() as $ingredientRecipe) : ?>
                     <div> <?= FormatUtil::getFormattedQuantity($ingredientRecipe->getUnit()->getName(), $ingredientRecipe->getQuantity(), $ingredientRecipe->getIngredient()->getName());
                             ?>

@@ -1,5 +1,6 @@
 <?php
 
+use phpDocumentor\Reflection\Location;
 use Symfony\Component\Form\Util\FormUtil;
 
 class RecipeController extends BaseEntityController
@@ -9,7 +10,6 @@ class RecipeController extends BaseEntityController
 
     public static function callActionMethod($action)
     {
-
         method_exists(get_called_class(), $action) ?
             get_called_class()::$action() : // if action in URL exists, call it
             get_called_class()::list(); // else call default one
@@ -76,29 +76,33 @@ class RecipeController extends BaseEntityController
                 $product = ProductDao::findOneBy('name', $_POST['ingredient']['name']);
                 if ($product == null) {
                     $product = new Product();
-                    
+
                     $product->setName($_POST['ingredient']['name']);
 
                     ProductDao::saveOrUpdate($product);
                     $product->makeIngredient();
                 }
 
+                //check if unit alreaydy exist
+                $unit = UnitDao::findOneBy('name', $_POST['ingredient']['unit']);
+                if ($unit == null) {
+                    $unit = new Unit();
+                    $unit->setName($_POST['ingredient']['unit']);
+                    UnitDao::saveOrUpdate($unit);
+                }
+
                 $ingredient = $product->getIngredient();
-              
-                $options = ['idIngredient' => 1, 'idRecipe' => static::$entity->getIdRecipe()];
+                $options = ['idIngredient' => $ingredient->getId(), 'idRecipe' => static::$entity->getIdRecipe()];
                 $ir = IngredientRecipeDao::findAll($options);
                 if (empty($ir)) {
                     $ingredientRecipe = new IngredientRecipe();
-                    $ingredientRecipe->setIdIngredient(1);
+                    $ingredientRecipe->setIdIngredient($ingredient->getId());
                     $ingredientRecipe->setQuantity($_POST['ingredient']['quantity']);
-                    //         $ingredientRecipe->setUnit()->setName()( $_POST['ingredient']['unit']);
+                    //     $ingredientRecipe->getUnit()->setName(( $_POST['ingredient']['unit']));
                 } else {
                     $ingredientRecipe = $ir[0];
-                    //déterminer ce qu'il reste a faire
 
-                    //faire un save or update
-
-                   IngredientRecipeDao::saveOrUpdate($ingredientRecipe);
+                    IngredientRecipeDao::save($ingredientRecipe);
                 }
             }
         }
@@ -116,5 +120,12 @@ class RecipeController extends BaseEntityController
             'controllerSlug' =>  "recipe",
             'searchField' =>  "name"
         ]);
+    }
+    public static function confirmDelete()
+    {
+        static::getEntity()->setFlag('b');
+        static::getDao()::saveOrUpdate(static::getEntity());
+
+        header('Location: ' . SiteUtil::url() . 'recipe/list');
     }
 }

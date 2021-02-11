@@ -35,12 +35,12 @@
                     <td class="align-middle"><?= $recipe->getPortions(); ?></td>
                     <td class="align-middle"><?= FormatUtil::formatTime($recipe->getPreparationTime()); ?></td>
                     <td class="align-middle"><?= $recipe->getChef()->getLastName(); ?> </td>
+                    
                     <td class="align-middle">
                         <div class="d-flex flex-column">
                             <a class="editBtn" href="<?=
-                                                        //TODO AJOUTER L'ID DANS L'ADRESSE POUR LA MODIF
                                                         $vars['baseUrl'] ?>recipe/edit/<?= $recipe->getId()?>">Modifier</a>
-                            <a class="editBtn" href="<?= $vars['baseUrl'] ?>recipe/delete">Supprimer</a>
+                            <a class="editBtn" href="<?= $vars['baseUrl'] ?>recipe/delete/<?= $recipe->getId()?>">Supprimer</a>
 
                         <?php } ?>
                         </div>

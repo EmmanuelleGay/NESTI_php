@@ -1,4 +1,4 @@
-
+/*------------------------------list_page-------------------------------*/
 .addContainer{
     height: 2.5em;
 }
@@ -16,6 +16,7 @@ height: 100%;
     text-decoration: underline;
 }
 
+/*----------------------------------edit_page--------------------------------*/
 .linkHead{
     color : var(--primary-light);
 }

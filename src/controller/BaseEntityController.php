@@ -123,6 +123,7 @@ class BaseEntityController extends BaseController
         }
 
         static::render($templateName);
+      
     }
 
     public static function list()

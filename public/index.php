@@ -28,8 +28,9 @@ $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 if (!isset($loc)) {
     $loc = 'recipe';
 }
+FormatUtil::dump($_GET);
 
-if (UserController::getLoggedInUser() != null) {
+if (UsersController::getLoggedInUser() != null) {
     switch ($loc) {
 
         case 'recipe':
@@ -45,8 +46,8 @@ if (UserController::getLoggedInUser() != null) {
             RecipeController::processAction('list');
             break;
         default:
-            UserController::processAction();
+            UsersController::processAction('');
     }
 } else {
-    UserController::processAction('login');
+    UsersController::processAction('login');
 }

@@ -24,7 +24,7 @@ class Article extends BaseEntity
 
     public function getLastPrice(): String
     {
- 
+        $price=0;
         $maxDate = 0;
         $arrayArticlePrice = $this->getArticlePrices();
 
@@ -33,8 +33,14 @@ class Article extends BaseEntity
             if ($maxDate <  $date) {
                 $maxDate =  $date;
                 $price = $value->getPrice();
+              
+            }
+            if (!isset($price) || $price ==null){
+                $price = "-";
             }
         }
+
+      
         return $price;
     }
 

@@ -1,0 +1,22 @@
+
+.addContainer{
+    height: 2.5em;
+    width: 12em;
+}
+
+.addLink{
+    font-weight: bold;
+}
+
+.addElement{
+height: 100%;
+}
+
+.editBtn{
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.yellow{
+    background-color: var(--secondary-color);
+}

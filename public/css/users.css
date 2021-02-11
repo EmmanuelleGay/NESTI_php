@@ -1,7 +1,22 @@
 
+/*-----------------------------------list page-----------------------*/
 
+.addContainer{
+    height: 2.5em;
+}
 
+.addLink{
+    font-weight: bold;
+}
 
+.addElement{
+height: 100%;
+}
+
+.editBtn{
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
 
 
 
