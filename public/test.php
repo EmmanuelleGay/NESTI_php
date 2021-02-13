@@ -65,3 +65,4 @@ $test = RecipeDao::findById(3);
 
 $test = ProductDao::findById(6);
 $test->makeIngredient();
+FormatUtil::dump($test);

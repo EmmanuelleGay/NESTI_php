@@ -2,11 +2,15 @@
 
 class EntityUtil{
     public static function get($entity, $propertyName){
-        return $entity->{'get' . ucFirst($propertyName)}();
+        $method =  'get' . ucFirst($propertyName);
+
+        return method_exists($entity, $method)? $entity->$method():false;
     }
 
     public static function set(&$entity, $propertyName, $propertyValue){
-        return $entity->{'set' . ucFirst($propertyName)}($propertyValue);
+        $method =  'set' . ucFirst($propertyName);
+
+        return method_exists($entity, $method)? $entity->$method($propertyValue):false;
     }
 
     public static function setFromArray($entity, $properties){

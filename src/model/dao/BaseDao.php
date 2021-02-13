@@ -38,7 +38,7 @@ class BaseDao
      * initializeQueryOptions
      *
      * @param  mixed $options either a string (flag to look for), or an array of query options
-     *                 ie: [ 'articlePrice >=' => 12, 'articleName' => 'Shampooing Dop']
+     *                 ie: [ 'articlePrice >=' => 12, 'articleName' => 'Marlboro Lights']
      * @return void initialized array of options
      */
     protected static function initializeQueryOptions(&$options){
@@ -105,16 +105,6 @@ class BaseDao
             }
         } );
 
-        // $translatedOptions is now in the form 
-        // [ [ 'condition' => 'articlePrice <= ?',
-        //     'value' => 12 ],
-        //   [ 'condition' => 'flag = ?',
-        //     'value' => 'a'] ]
-        //   [ 'condition' => 'HOUR(creationDate) >= ?',
-        //     'value' => 8] ]
-        //   [ 'condition' => 'HOUR(creationDate) < ?',
-        //     'value' => 15] ]
-
         foreach ($conditions as $i=>$optionParameters){
             if ( $i == array_key_first($conditions) ){
                 $sql .= " WHERE ";
@@ -160,42 +150,6 @@ class BaseDao
         return $request;
     }
 
-    /**
-     * findOneBy
-     * create and return an entity corresponding to a given field name, and it's searched value
-     * @param  String $key field name
-     * @param  mixed $value to search
-     * @param  array $options query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
-     * @return mixed entity if found, null otherwise
-     */
-    public static function findOneBy(string $key, $value, $options=null)
-    {
-        static::initializeQueryOptions($options);
-
-        $options[$key] = $value;
-
-        return static::findAll($options)[0] ?? null;
-
-        // $req = static::buildRequest($options);
-
-        // $entity = self::fetchEntity($req, $options); // set entity properties using fetched values
-
-        // return $entity ?? null; // fetchObject returns boolean false if no row found, whereas we want null
-    }
-
-    /**
-     * findById
-     * create and return an entity corresponding to a given id
-     * @param  mixed $id primary key
-     * @return mixed if found, null otherwise
-     */
-    public static function findById($id, $options=null){
-        static::initializeQueryOptions($options);
-
-        $options[self::getPkColumnName()] = $id;
-
-        return static::findAll($options)[0] ?? null;
-    }
 
     /**
      * fetchEntity
@@ -222,8 +176,8 @@ class BaseDao
             // get row data as associative array, set initial entity's properties to that of current child's properties
             $rowData = $currentRequest->fetch(PDO::FETCH_ASSOC);
 
-            if ( $rowData === false ){ // if a query option constraint fails (ie blocked flag in a parent)
-                $entity = null; // will return null
+            if ( $rowData === false ){
+                $entity = null;  // if a query option constraint fails (ie blocked flag in a parent)
             } else {
                 EntityUtil::setFromArray($entity, $rowData);
             }
@@ -249,11 +203,64 @@ class BaseDao
         $entities = [];
         // set entity properties using fetched values
         while ( ($entity = self::fetchEntity($req, $options)) !== false ) { 
-            if ($entity != null){ // entity might have a parent with a blocked flag
-                $entities[] = $entity;
+            if ($entity != null){ // entity might have a parent that didn't sastisfy remaining query options
+                if ( isset($options["INDEXBY"]) ){ // if options specify a getter to index by
+                    $key = EntityUtil::get($entity,$options["INDEXBY"]);
+                    $entities[$key] = $entity;
+                } else {
+                    $entities[] = $entity;
+                }
             }
         };
         return $entities;
+    }
+
+
+    /**
+     * findOne
+     * create and return an entity corresponding to the given query options
+     * @param  String $key field name
+     * @param  mixed $value to search
+     * @param  array $options query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
+     * @return mixed entity if found, null otherwise
+     */
+    public static function findOne($options=null)
+    {
+        static::initializeQueryOptions($options);
+
+        return static::findAll($options)[0] ?? null;
+    }
+
+
+    /**
+     * findOneBy
+     * create and return an entity corresponding to a given field name, and it's searched value
+     * @param  String $key field name
+     * @param  mixed $value to search
+     * @param  array $options query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
+     * @return mixed entity if found, null otherwise
+     */
+    public static function findOneBy(string $key, $value, $options=null)
+    {
+        static::initializeQueryOptions($options);
+
+        $options[$key] = $value;
+
+        return static::findOne($options);
+    }
+
+    /**
+     * findById
+     * create and return an entity corresponding to a given id
+     * @param  mixed $id primary key
+     * @return mixed if found, null otherwise
+     */
+    public static function findById($id, $options=null){
+        static::initializeQueryOptions($options);
+
+        $options[self::getPkColumnName()] = $id;
+
+        return static::findOne($options);
     }
 
 
@@ -293,13 +300,13 @@ class BaseDao
      * @param  mixed $entity
      * @return void
      */
-    public static function saveOrUpdate(?BaseEntity &$entity){
+    public static function saveOrUpdate(?BaseEntity &$entity, $skipNull=true){
         $pdo = DatabaseUtil::getConnection();
         if(!empty( EntityUtil::get($entity, self::getPkColumnName()) )){
-            self::update($entity);  // if entity has a primary key set, it already exists in data source
+            self::update($entity, $skipNull);  // if entity has a primary key set, it already exists in data source
         }
         else {
-            self::save($entity); // If no primary key set, insert new row
+            self::save($entity, $skipNull); // If no primary key set, insert new row
         }
     }
     
@@ -309,13 +316,19 @@ class BaseDao
      * @param  BaseEntity $entity to update in table
      * @return void
      */
-    public static function update(?BaseEntity &$entity) {
+    public static function update(?BaseEntity &$entity, $skipNull=true) {
         // Loop through inherited tables (from parent to child), updating the relevant entity properties
         foreach ( self::getParentClasses() as $currentClass ) { 
             $pdo = DatabaseUtil::getConnection();
             $currentDao = $currentClass::getDaoClass();
 
             $columnNames = $currentDao::getColumnNames(false);
+            
+            if ( $skipNull){
+                $columnNames = array_values(array_filter($columnNames, function ($name) use ($entity) {
+                    return EntityUtil::get($entity,$name) !=null;
+                } ));
+            }
 
             // update conditions are in the form "COLUMN_NAME = ?, COLUMN_NAME2 = ?, ..."
             $conditions = array_map(function($columnName) { return "$columnName = ?"; }, $columnNames);
@@ -345,19 +358,26 @@ class BaseDao
      * @param  BaseEntity $entity to base new row on
      * @return int inserted entity's PK
      */
-    public static function save(?BaseEntity &$entity) {
+    public static function save(?BaseEntity &$entity,$skipNull=true) {
         $insertedId = null;
         // Loop through inherited tables (from parent to child), inserting the relevant entity properties
         foreach ( self::getParentClasses() as $currentClass ) { 
             $pdo = DatabaseUtil::getConnection();
             $currentDao = $currentClass::getDaoClass();
                   
-            if($currentDao::findById($entity->getId()) != null){
+            if(!$entity->hasCompositeKey() && $currentDao::findById($entity->getId()) != null){
                 $insertedId = $entity->getId();
                 continue;
             }
 
-            $columnNames = $currentDao::getColumnNames(false); // get column names for current table
+            // get column names for current table
+            $columnNames = $currentDao::getColumnNames(false); 
+
+            if ( $skipNull){
+                $columnNames = array_values(array_filter($columnNames, function ($name) use ($entity) {
+                    return EntityUtil::get($entity,$name) !=null;
+                } ));
+            }
 
             // populate values with the entity properties that correspond to the column names
             $values = array_map(function($columnName) use ($entity) { return EntityUtil::get($entity,$columnName); }, $columnNames);
@@ -375,6 +395,7 @@ class BaseDao
             $sql = "INSERT INTO " . $currentDao::getTableName() . " (" . implode(',', $columnNames) . ") 
             values(" . implode(',', $questionMarks) . ")";
 
+
             $q = $pdo->prepare($sql);
             
             $q->execute($values);  
@@ -382,6 +403,9 @@ class BaseDao
 
             $insertedId = $pdo->lastInsertId();
         }
+
+        $entity->setId($insertedId);
+        
         return $entity->getId(); // Last inserted ID is entity's id
     }
 
@@ -424,8 +448,11 @@ class BaseDao
         if (!$includePk){
             // Get index of primary key in table schema (usually but not always first)
             $primaryKeyIndex = array_search(self::getPkColumnName(), $names);
-            unset($names[$primaryKeyIndex]); // unset it
-            $names = array_values($names); // re-establish indexes starting from 0
+            // always include all keys if entity has composite key
+            if ( $primaryKeyIndex !== false ){
+                unset($names[$primaryKeyIndex]); // unset it
+                $names = array_values($names); // re-establish indexes starting from 0
+            }
         }
 
         return $names;
@@ -459,13 +486,19 @@ class BaseDao
         // build request, starting from the existing join sql and values 
         $req = $endDao::buildRequest($options, $sql, $values);
 
-        $endEntities = [];
-        while ( ($entity = $endDao::fetchEntity($req, $options)) !== false ) { // set entity properties to fetched column values
-            if ($entity != null){ // entity might have a parent with a blocked flag
-                $endEntities[] = $entity;
+        $entities = [];
+        // set entity properties using fetched values
+        while ( ($entity = self::fetchEntity($req, $options)) !== false ) { 
+            if ($entity != null){ // entity might have a parent that didn't sastisfy remaining query options
+                if ( isset($options["INDEXBY"]) ){ // if options specify a getter to index by
+                    $key = EntityUtil::get($entity,$options["INDEXBY"]);
+                    $entities[$key] = $entity;
+                } else {
+                    $entities[] = $entity;
+                }
             }
-        }
+        };
 
-        return $endEntities;
+        return $entities;
     }
 }

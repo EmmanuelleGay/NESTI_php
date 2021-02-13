@@ -1,15 +1,4 @@
 <?php
-/*
-require_once PATH_MODEL . 'dao/BaseDao.php';
-require_once PATH_CTRL . 'BaseController.php';
-require_once PATH_MODEL . 'entity/BaseEntity.php';
-require_once PATH_MODEL . 'dao/UsersDao.php';
-*/
-
-SiteUtil::require('controller/BaseController.php');
-SiteUtil::require('model/entity/Users.php');
-SiteUtil::require('model/entity/BaseEntity.php');
-SiteUtil::require('model/dao/UsersDao.php');
 
 class UsersController extends BaseEntityController
 {
@@ -30,50 +19,50 @@ class UsersController extends BaseEntityController
         $template = 'login';
         if (isset($_POST['Users'])) {
 
-            $candidate = UsersDao::findOneBy('login', $_POST['Users']['login'],BaseDao::FLAGS['active']);
+            $candidate = UsersDao::findOneBy('login', $_POST['Users']['login'], BaseDao::FLAGS['active']);
 
             if ($candidate != null && $candidate->isPassword($_POST['Users']['password'])) {
-             
-                self::setLoggedInUser($candidate,$_POST['Users']['password']);
-                header('Location: '.SiteUtil::url().'recipe/list');
+
+                self::setLoggedInUser($candidate, $_POST['Users']['password']);
+                header('Location: ' . SiteUtil::url() . 'recipe/list');
 
                 exit();
-            }
-            else {
-                $templateVars = ['message'=>'errorLogin'];
+            } else {
+                $templateVars = ['message' => 'errorLogin'];
             }
         }
-        self::render(['action'=>'login','base'=>'users/baseLogin'],$templateVars);
+        self::render(['action' => 'login', 'base' => 'users/baseLogin'], $templateVars);
     }
 
-public static function logout() {
-    self::setLoggedInUser(null);
- //  header('Location:'.SiteUtil::url().'users/login');
-    $templateVars = ['message'=>'disconnect'];
-    self::render(['action'=>'login','base'=>'users/baseLogin'],$templateVars);
-}
+    public static function logout()
+    {
+        self::setLoggedInUser(null);
+        //  header('Location:'.SiteUtil::url().'users/login');
+        $templateVars = ['message' => 'disconnect'];
+        self::render(['action' => 'login', 'base' => 'users/baseLogin'], $templateVars);
+    }
 
 
     /**
      * Get the value of user
      */
     public static function getLoggedInUser()
-    { 
-        if (self::$loggedInUser==null &&  isset($_COOKIE['user']))
-        {
-        $candidate = UsersDao::findOneBy('login', $_COOKIE['user']['login'],'a');
-        if($candidate != null && $candidate->isPassword($_COOKIE['user']['password'])){
-            self::$loggedInUser =$candidate;
-         };
+    {
+        if (self::$loggedInUser == null &&  isset($_COOKIE['user'])) {
+            $candidate = UsersDao::findOneBy('login', $_COOKIE['user']['login'], 'a');
+            if ($candidate != null && $candidate->isPassword($_COOKIE['user']['password'])) {
+                self::$loggedInUser = $candidate;
+            };
         }
         return self::$loggedInUser;
     }
 
-    public static function setLoggedInUser($user,$plaintextPassword=null){
-        if($user!=null){
-            self::$loggedInUser =$user;
+    public static function setLoggedInUser($user, $plaintextPassword = null)
+    {
+        if ($user != null) {
+            self::$loggedInUser = $user;
             setcookie("user[login]", $user->getLogin(), 2147483647, '/');
-            setcookie("user[password]",$plaintextPassword, 2147483647, '/');
+            setcookie("user[password]", $plaintextPassword, 2147483647, '/');
         }
     }
 
@@ -100,5 +89,78 @@ public static function logout() {
         ]);
     }
 
+    public static function confirmDelete()
+    {
+        static::getEntity()->setFlag('b');
+        static::getDao()::saveOrUpdate(static::getEntity());
 
+        header('Location: ' . SiteUtil::url() . 'users/list');
+    }
+
+    public static function order()
+    {
+        $templateName = 'order';
+        static::render($templateName);
+    }
+
+    public static function edit()
+    {
+        $templateName = 'edit';
+        $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
+
+        if (isset($_POST['Users'])) {
+            $isvalid = true;
+
+
+            //check if city is valid and exist, create it if not
+            if (!FormValidator::letters($_POST["Users"]["city"])) {
+                $isvalid = false;
+            }
+            if ($isvalid == true) {
+                $city = CityDao::findOneBy('name', $_POST["Users"]["city"]);
+                if ($city == null) {
+                    $city = new City();
+                    $city->setName($_POST['Users']['city']);
+                    CityDao::save($city);
+                }
+            }
+
+            if ($isvalid) {
+
+                $isvalid = true;
+
+                if (
+                    !FormValidator::letters($_POST["Users"]["lastName"]) ||
+                    !FormValidator::letters($_POST["Users"]["firstName"]) ||
+                    !FormValidator::letters($_POST["Users"]["login"]) ||
+                    !FormValidator::email($_POST["Users"]["email"]) ||
+                    !FormValidator::letters($_POST["Users"]["address1"]) ||
+                    !FormValidator::letters($_POST["Users"]["address2"]) ||
+                    !FormValidator::numbers($_POST["Users"]["zipCode"])
+
+                ) {
+                    $isvalid = false;
+                }
+                if ($isvalid) {
+
+                    $entity = static::getEntity();
+                    $entity->setLastName($_POST["Users"]["lastName"]);
+                    $entity->setFirstName($_POST["Users"]["firstName"]);
+                    $entity->setLogin($_POST["Users"]["login"]);
+                    $entity->setEmail($_POST["Users"]["email"]);
+                    $entity->setAddress1($_POST["Users"]["address1"]);
+                    $entity->setAddress2($_POST["Users"]["address2"]);
+                    $entity->setZipCode($_POST["Users"]["zipCode"]);
+                    $entity->setIdCity($city->getId());
+
+                    self::getDao()::saveOrUpdate($entity);
+
+                    header('Location:' . SiteUtil::url() . 'users/edit/' . $entity->getId() . "/success");
+                    exit();
+                }
+            }
+        }
+        // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid
+        self::render($templateName, $templateVars);
+    }
 }

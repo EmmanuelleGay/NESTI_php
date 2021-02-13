@@ -1,4 +1,7 @@
 <head>
+<script>
+var baseUrl="<?=$vars['baseUrl'] ?>";
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nesti</title>
@@ -9,6 +12,9 @@
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/fontawesome/css/all.css">
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/style.css">
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/<?=$vars['stylesheet'] ?>.css">
+
+    <script src="<?=$vars['baseUrl'] ?>public/js/jquery-3.5.1.min.js"></script>
+    <script src="<?=$vars['baseUrl'] ?>public/js/<?=$vars['js'] ?>.js"></script>
    
 
 <?php 

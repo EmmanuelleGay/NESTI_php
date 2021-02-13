@@ -2,4 +2,5 @@
 
 class IngredientRecipeDao extends BaseDao{
  
+
 }

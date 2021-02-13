@@ -62,7 +62,8 @@ class BaseController
             'controller' => self::class,         // current user
             'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'] . ".php",
             'loggedInUser' => UsersController::getLoggedInUser(),
-            'stylesheet' => static::getAssetName()
+            'stylesheet' => static::getAssetName(),
+            'js' => static::getAssetName()
         ]);
     }
     public static function getAssetName()

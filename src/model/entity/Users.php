@@ -25,6 +25,7 @@ class Users extends BaseEntity
         return $this->getRelatedEntities("ConnectionLog");
     }
 
+
     public function getComments(): array
     {
         return $this->getRelatedEntities("Comment", BaseDao::FLAGS['active']);
@@ -34,6 +35,17 @@ class Users extends BaseEntity
     {
         return $this->getIndirectlyRelatedEntities("Recipe", "Grades", BaseDao::FLAGS['active']);
     }
+
+    public function getCity(): ?City
+    {
+        return $this->getRelatedEntity("City");
+    }
+
+    public function setCity(City $c)
+    {
+        $this->setRelatedEntity($c);
+    }
+
 
     /**
      * Get the value of dateCreation
@@ -63,15 +75,14 @@ class Users extends BaseEntity
         return $this->flag;
     }
 
-    public function getState() {
-        $state="";
-        if($this->getFlag()=='a'){
+    public function getState()
+    {
+        $state = "";
+        if ($this->getFlag() == 'a') {
             $state = 'Actif';
-        }
-        else if($this->getFlag()=='w'){
+        } else if ($this->getFlag() == 'w') {
             $state = 'En attente';
-        }
-        else {
+        } else {
             $state = 'Bloqué';
         }
         return $state;
@@ -215,15 +226,7 @@ class Users extends BaseEntity
         return password_verify($plainTextPassword, $this->getPasswordHash());
     }
 
-    public function getCity(): ?City
-    {
-        return $this->getRelatedEntity("City");
-    }
 
-    public function setCity(City $c)
-    {
-        $this->setRelatedEntity($c);
-    }
 
     public function setPasswordHashFromPlaintext($plaintextPassword)
     {
@@ -387,16 +390,15 @@ class Users extends BaseEntity
         return $roles;
     }
 
-   public function getLatestConnection(){
-       $lastDate = UsersDao::findLatestConnection($this->getId());
-       if($lastDate != null){
-        $lastDate = date_create($lastDate);
-        $lastDate = date_format($lastDate,'d/m/Y H:i:s');
-        
-       } else {
-        $lastDate = "-";
-       }
-       return $lastDate;
-   }
-    
+    public function getLatestConnection()
+    {
+        $lastDate = UsersDao::findLatestConnection($this->getId());
+        if ($lastDate != null) {
+            $lastDate = date_create($lastDate);
+            $lastDate = date_format($lastDate, 'd/m/Y H:i:s');
+        } else {
+            $lastDate = "-";
+        }
+        return $lastDate;
+    }
 }

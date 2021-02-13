@@ -3,8 +3,8 @@
         <a href="<?= $vars['baseUrl'] ?>recipe" class="linkHead">Recettes > </a>
         <p class="linkHead"> Recette</p>
     </div>
-    <?php
 
+    <?php
     if (@$_GET['message'] == 'success') : ?>
         <div>Bravo</div>
     <?php endif ?>
@@ -43,6 +43,7 @@
 
         </div>
         <div>
+
             <img src="" alt="">
             <div>Télécharger une nouvelle image</div>
             <input type="file" name="Recipe[linkImage]" class="form-control" id="nameRecipe">
@@ -57,22 +58,22 @@
     <div class="row">
         <div class="col-8 mr-5">
             <h2 class="titlePrep mt-5">Préparations</h2>
-          
 
-                <?php foreach ($vars['entity']->getParagraphs() as $paragraphe) : ?>
-                    <div class="mb-3 d-flex">
-                        <div class="containerButton">
-                            <button class="btn upButton"><img src="<?= $vars['baseUrl'] ?>public/images/up-svg.png" alt="monter" width="100%"></button>
-                            <button class="btn downButton"><img src="<?= $vars['baseUrl'] ?>public/images/down-svg.png" alt="descendre" width="100%"></button>
-                            <button class="btn binButton"><img src="<?= $vars['baseUrl'] ?>public/images/delete-svg.png" alt="supprimer" width="100%"></button>
-                        </div>
-                        <textarea name="Recipe[content]" class="form-control" rows="6">
+
+            <?php foreach ($vars['entity']->getParagraphs() as $paragraphe) : ?>
+                <div class="mb-3 d-flex">
+                    <div class="containerButton">
+                        <button class="btn upButton"><img src="<?= $vars['baseUrl'] ?>public/images/up-svg.png" alt="monter" width="100%"></button>
+                        <button class="btn downButton"><img src="<?= $vars['baseUrl'] ?>public/images/down-svg.png" alt="descendre" width="100%"></button>
+                        <button class="btn binButton"><img src="<?= $vars['baseUrl'] ?>public/images/delete-svg.png" alt="supprimer" width="100%"></button>
+                    </div>
+                    <textarea name="Recipe[content]" class="form-control" rows="6">
                 <?= $paragraphe->getContent();
                 ?>
                 </textarea>
-                    </div>
-                <?php endforeach ?>
-            
+                </div>
+            <?php endforeach ?>
+
 
         </div>
         <div class="col">
@@ -100,5 +101,4 @@
 
         </div>
     </div>
-</div>
 </div>

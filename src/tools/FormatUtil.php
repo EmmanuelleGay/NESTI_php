@@ -82,7 +82,7 @@ class FormatUtil
         return $result;
     }
 
-    public static function getFormattedQuantity($unitName, $quantity,$nameIngredient)
+    public static function getFormattedQuantity($unitName, $quantity, $nameIngredient)
     {
         $result = "";
         $pluralUnit = [
@@ -92,14 +92,26 @@ class FormatUtil
         ];
 
         if ($unitName == "piece") {
-            if($quantity>0){
-                $nameIngredient = $nameIngredient."s";
+            if ($quantity > 0) {
+                $nameIngredient = $nameIngredient . "s";
             }
-            $result = $quantity . " " .$nameIngredient;
+            $result = $quantity . " " . $nameIngredient;
         } else {
-            $result =  $quantity . " " . $unitName. " de " .$nameIngredient;
+            $result =  $quantity . " " . $unitName . " de " . $nameIngredient;
         }
 
+        return $result;
+    }
+
+    public static function formatDate($date)
+    {
+        $result = "";
+        if ($date != null) {
+            setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
+            $result = strftime('%d %B %Y %Hh%M', strtotime($date));
+        } else {
+            $result = "-";
+        }
         return $result;
     }
 }

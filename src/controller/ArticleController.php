@@ -32,4 +32,9 @@ class ArticleController extends BaseEntityController
 
         header('Location: ' . SiteUtil::url() . 'article/list');
     }
+
+    public static function importation(){
+        $templateName = 'importation';
+        static::render($templateName);
+    }
 }

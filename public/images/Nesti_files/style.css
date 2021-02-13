@@ -1,0 +1,132 @@
+:root {
+--primary-color :#00838F;
+--primary-light : #4FB3BF;
+--primary-dark : #005662;
+--secondary-color : #FBC02D;
+--secondory-light : #FFF263;
+--secondary-dark : #C49000;
+--green-color : rgb(176,211,28);
+--red-color : rgb(251,57,56)
+}
+
+.white{
+    color: white;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    color:#414141;
+}
+
+@font-face{
+    font-family: 'Nunito';
+    src: url(../font/nunito.regular.ttf);
+}
+
+*{
+    font-family: 'Nunito', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #414141;
+}
+
+h1,h2{
+    color: var(--primary-dark);
+    font-weight: bold !important;
+}
+
+.table td, .table th {
+    text-align: center;
+}
+
+.table th {
+    background-color: var(--primary-color);
+    color: white;
+    height: 5em;
+    
+}
+
+.validButton{
+    background-color: var(--green-color);
+    color: var(--primary-dark);
+    font-weight: bold;
+}
+
+.validButton:hover{
+    color: white;
+}
+
+.cancelBtn{
+    background-color: var(--primary-light);
+    color: white;
+    font-weight: bold;
+}
+
+.cancelBtn:hover{
+color: var(--primary-dark);
+}
+
+.okButton{
+    background-color: var(--green-color);
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.okButton:hover{
+    color: var(--primary-dark);
+}
+
+.binButton {
+    background-color: var(--red-color);
+    width: 3em;
+    margin: 0.3em;
+}
+
+.downButton, .upButton{
+    background-color: var(--secondary-color);
+    width: 3em;
+    margin: 0.3em;
+}
+
+.grey{
+    background-color: #ECECEC;
+}
+
+/* -------------------------------------header-----------------------------------*/
+.navbar{
+    background-color: #005662;
+}
+
+.btn-nav{
+    background-color: var(--primary-color);
+    padding: 5%;
+    color: white;
+    font-weight: 600;
+    width: 7vw;
+}
+
+.nav-link:hover * {
+   color: var(--primary-dark);
+}
+
+.nav-link.btn-nav.white{
+    transition-duration: 0s;
+}
+
+
+/*-----------------------------------search_bar-------------------------------*/
+.searchBarContainer{
+    height: 2em;
+}
+
+.search-bar{
+    border: none;
+    max-height: 100%;
+}
+
+.wen{
+    height:100%
+}

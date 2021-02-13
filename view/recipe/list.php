@@ -40,7 +40,9 @@
                         <div class="d-flex flex-column">
                             <a class="editBtn" href="<?=
                                                         $vars['baseUrl'] ?>recipe/edit/<?= $recipe->getId()?>">Modifier</a>
-                            <a class="editBtn" href="<?= $vars['baseUrl'] ?>recipe/delete/<?= $recipe->getId()?>">Supprimer</a>
+                           <a href="#deleteModal" class="editBtn" data-bs-toggle="modal" data-id="<?= $recipe->getId() ?>" data-bs-target="#deleteModal">
+                                Supprimer
+                            </a>
 
                         <?php } ?>
                         </div>
@@ -51,5 +53,23 @@
         </tbody>
     </table>
 
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Suppression d'un utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Attention, cette action est définitive et irréversible.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 
+                    <a id="confirmDelete" href="#">Confirmer</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

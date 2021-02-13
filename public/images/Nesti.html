@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://localhost/www/PHP/NESTI/users/edit/1 -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+var baseUrl="/www/PHP/NESTI/";
+</script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nesti</title>
+
+  
+    <link rel="stylesheet" href="./Nesti_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Nesti_files/fontawesome.min.css">
+    <link rel="stylesheet" href="./Nesti_files/all.css">
+    <link rel="stylesheet" href="./Nesti_files/style.css">
+    <link rel="stylesheet" href="./Nesti_files/users.css">
+
+    <script src="./Nesti_files/jquery-3.5.1.min.js.téléchargement"></script>
+    <script src="./Nesti_files/users.js.téléchargement"></script>
+   
+
+ <link rel="stylesheet" href="./Nesti_files/users.css_">
+    <script src="./Nesti_files/popper.min.js.téléchargement" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="./Nesti_files/bootstrap.min.js.téléchargement" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+   
+</head>
+<body>
+
+<header class="d-flex justify-content-between">
+
+  <nav class="navbar navbar-expand-lg w-75 pt-3 pb-3">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav w-100 justify-content-around ">
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" aria-current="page" href="http://localhost/www/PHP/NESTI/recipe">
+            <i class="fas fa-clipboard-list white"></i>
+            Recettes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" href="http://localhost/www/PHP/NESTI/article">
+            <i class="fas fa-utensils white"></i>
+            Articles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" href="http://localhost/www/PHP/NESTI/users">
+            <i class="fas fa-users white"></i>
+            Utilisateurs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn-nav white text-center" href="http://localhost/www/PHP/NESTI/statistics">
+            <i class="fas fa-chart-bar white"></i>
+            Statistiques
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div>
+    <div class="nav-link mt-3">
+      <i class="far fa-user"></i>
+      Bon Jean    </div>
+  </div>
+  <div>
+
+    <a class="nav-link mt-3" href="http://localhost/www/PHP/NESTI/users/logout">
+      <i class="fas fa-sign-out-alt"></i>
+      Déconnexion</a>
+  </div>
+
+</header><div class="container-fluid">
+    <div class="d-flex mt-4">
+        <a href="http://localhost/www/PHP/NESTI/users" class="linkHead">Utilisateur &gt; </a>
+        <p class="linkHead"> Utilisateur</p>
+    </div>
+
+        <div class="container d-flex">
+        <form class="d-flex justify-content-around mx-5 border" method="post" enctype="multipart/form-data" action="http://localhost/www/PHP/NESTI/users/edit/1">
+            <div>
+                
+                <h1>Edition d'un utilisateur</h1>
+
+                <div class="align-items-center mt-5 mb-3">
+                    <label for="lastName">Nom</label>
+                    <div><input type="text" name="users[lastName]" class="form-control" id="lastName" value="Jean"></div>
+                </div>
+                <div class="align-items-center mb-3">
+                    <label for="firstName">Prénom</label>
+                    <div><input type="text" name="users[firstName]" class="form-control" id="firstName" value="Bon"></div>
+                </div>
+                <div class="align-items-center mb-3">
+                    <label for="login">Nom d'utilisateur</label>
+                    <div><input type="text" name="users[login]" class="form-control" id="login" value="jean"></div>
+                </div>
+                <div class="align-items-center mb-3">
+                    <label for="email">Email</label>
+                    <div><input type="email" name="users[email]" class="form-control" id="email" value="jeanbon@gmail.com"></div>
+                </div>
+
+                <div class="align-items-center mb-3">
+                    Role
+                    <div class="d-flex">
+                        <div>
+                            <input class="form-check-input mx-2" name="users[chef]" type="checkbox" value="chef" id="flexCheckDefault" checked="">
+                            <label class="form-check-label" for="chef">Chef</label>
+                        </div>
+
+                        <div>
+                            <input class="form-check-input mx-2" name="users[moderator]" type="checkbox" value="moderator" id="flexCheckDefault">
+                            <label class="form-check-label" for="moderator">Modérateur</label>
+                        </div>
+
+                        <div>
+                            <input class="form-check-input mx-2" name="users[administrator]" type="checkbox" value="administrator" id="flexCheckDefault" checked="">
+                            <label class="form-check-label" for="administrator">Administrateur</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="align-items-center mb-3">
+                    <label for="address1">Adresse</label>
+                    <div><input type="text" name="users[address1]" class="form-control" id="address1" value="BOULEVARD DES MARGUERITES"></div>
+                </div>
+                <div class="align-items-center mb-3">
+                    <label for="address2">Complément d'adresse</label>
+                    <div><input type="text" name="users[address2]" class="form-control" id="address2" value=""></div>
+                </div>
+                <div class="align-items-center mb-3">
+                    <label for="zipCode">Code postal</label>
+                    <div><input type="text" name="users[zipCode]" class="form-control" id="zipCode" value="34000"></div>
+                </div>
+
+                <div class="align-items-center mb-3">
+                    <label for="city">Ville</label>
+                    <div><input type="text" name="users[city]" class="form-control" id="city" value="MONTPELLIER"></div>
+                </div>
+
+                <div>
+                    <button type="reset" class="btn cancelBtn fs-5 px-5 mx-3 mt-3 mb-5">Annuler</button>
+                    <button type="submit" class="btn validButton fs-5 px-5 mt-3 mb-5">Valider</button>
+                </div>
+
+                <input type="hidden" name="users[flag]" value="a">
+            </div>
+
+        </form>
+
+
+        <div class="mx-5 border">
+
+            <h2>Informations</h2>
+
+        </div>
+    </div>
+
+
+</div></body></html>

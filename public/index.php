@@ -28,7 +28,6 @@ $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 if (!isset($loc)) {
     $loc = 'recipe';
 }
-FormatUtil::dump($_GET);
 
 if (UsersController::getLoggedInUser() != null) {
     switch ($loc) {

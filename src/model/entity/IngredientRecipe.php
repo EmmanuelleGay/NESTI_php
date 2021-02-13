@@ -107,7 +107,7 @@ class IngredientRecipe extends BaseEntity{
      */ 
     public function setIdIngredient($idIngredient)
     {
-        $this->idIngredientRecipe = $idIngredient;
+        $this->idIngredient = $idIngredient;
 
         return $this;
     }

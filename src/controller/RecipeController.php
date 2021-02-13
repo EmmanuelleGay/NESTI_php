@@ -1,8 +1,5 @@
 <?php
 
-use phpDocumentor\Reflection\Location;
-use Symfony\Component\Form\Util\FormUtil;
-
 class RecipeController extends BaseEntityController
 {
 
@@ -25,7 +22,6 @@ class RecipeController extends BaseEntityController
         $templateName = 'edit';
         $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
         $templateVars['ingredients'] = static::getEntity()->getIngredients();
-        //    $templateVars['unit'] = static::getEntity()->getUnit();
 
         if (isset($_POST['Recipe'])) { // if we arrived here by way of the submit button in the edit view
 
@@ -47,7 +43,7 @@ class RecipeController extends BaseEntityController
 
                 $entity = static::getEntity();
 
-                $entity->setIdChef(UserController::getLoggedInUser()->getId());
+                $entity->setIdChef(UsersController::getLoggedInUser()->getId());
 
                 self::getDao()::saveOrUpdate($entity);
                 //        $templateVars['message']="success";
@@ -76,10 +72,9 @@ class RecipeController extends BaseEntityController
                 $product = ProductDao::findOneBy('name', $_POST['ingredient']['name']);
                 if ($product == null) {
                     $product = new Product();
-
                     $product->setName($_POST['ingredient']['name']);
 
-                    ProductDao::saveOrUpdate($product);
+                    ProductDao::save($product);
                     $product->makeIngredient();
                 }
 
@@ -91,18 +86,26 @@ class RecipeController extends BaseEntityController
                     UnitDao::saveOrUpdate($unit);
                 }
 
+                //    //check if ingredientRecipe exists
                 $ingredient = $product->getIngredient();
+
+
+
                 $options = ['idIngredient' => $ingredient->getId(), 'idRecipe' => static::$entity->getIdRecipe()];
                 $ir = IngredientRecipeDao::findAll($options);
+
+                //      //add ingredient to the recipe
                 if (empty($ir)) {
                     $ingredientRecipe = new IngredientRecipe();
+                    $ingredientRecipe->setIdRecipe(static::$entity->getIdRecipe());
+
                     $ingredientRecipe->setIdIngredient($ingredient->getId());
                     $ingredientRecipe->setQuantity($_POST['ingredient']['quantity']);
-                    //     $ingredientRecipe->getUnit()->setName(( $_POST['ingredient']['unit']));
-                } else {
-                    $ingredientRecipe = $ir[0];
+                    $ingredientRecipe->setIdUnit($unit->getId());
 
                     IngredientRecipeDao::save($ingredientRecipe);
+                } else {
+                    $ingredientRecipe = $ir[0];
                 }
             }
         }

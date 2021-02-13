@@ -22,7 +22,6 @@ class BaseEntity{
         // find dao class of the related entity
         $relatedClassDao = $relatedEntityClass::getDaoClass();
 
-        // find column name of the related entity's primary key
         $thisPrimaryKeyName = static::getDaoClass()::getPkColumnName();
   
         return $relatedClassDao::findAllBy(
@@ -162,5 +161,10 @@ class BaseEntity{
             &&     is_a($this,get_class($other)) // $this must either be class/sublass of $other
                 || is_a($other,get_class($this)) // or vice-versa
             && $this->getId() == $other->getId();
+    }
+
+
+    public function hasCompositeKey(){
+        return $this->getId() === false;
     }
 }
