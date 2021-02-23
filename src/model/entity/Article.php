@@ -10,10 +10,11 @@ class Article extends BaseEntity
     private $idImage;
     private $idUnit;
     private $idProduct;
+    private $nameToDisplay;
 
 
-        //   $pdo = DatabaseUtil::connect();
-        /*$sql = "SELECT * FROM  articleprice a\n"
+    //   $pdo = DatabaseUtil::connect();
+    /*$sql = "SELECT * FROM  articleprice a\n"
     . "  INNER JOIN \n"
     . "    (SELECT idArticle, MAX(dateStart) AS maxDate\n"
     . "  FROM articleprice GROUP BY idArticle) \n"
@@ -24,7 +25,7 @@ class Article extends BaseEntity
 
     public function getLastPrice(): String
     {
-        $price="";
+        $price = "";
         $maxDate = 0;
         $arrayArticlePrice = $this->getArticlePrices();
 
@@ -35,11 +36,35 @@ class Article extends BaseEntity
                 $price = $value->getPrice();
             }
         }
-        if ($price ==""){
+        if ($price == "") {
             $price = "-";
         }
         return $price;
     }
+
+
+    public function getPriceAt($value): String
+    {
+        $price = 0;
+        $maxDate = 0;
+        $date = 0;
+        $arrayArticlePrice = $this->getArticlePrices();
+
+        foreach ($arrayArticlePrice as $ap) {
+            $date =   $value;
+            if ($maxDate <  $date) {
+                $maxDate =  $date;
+                $price = $ap->getPrice();
+            }
+        }
+        if ($price == "") {
+            $price = 0;
+        }
+        return $price;
+    }
+
+
+
 
     public function getArticlePrices(): array
     {
@@ -88,8 +113,9 @@ class Article extends BaseEntity
         $this->setRelatedEntity($i);
     }
 
-    public function getOrders($options='a'): array{
-        return $this->getIndirectlyRelatedEntities("Orders", "OrderLine", $options); 
+    public function getOrders($options = 'a'): array
+    {
+        return $this->getIndirectlyRelatedEntities("Orders", "OrderLine", $options);
     }
 
     /**
@@ -234,10 +260,40 @@ class Article extends BaseEntity
     }
 
     /**
+     * Get the value of nameToDisplay
+     */
+    public function getNameToDisplay()
+    {
+        return $this->nameToDisplay;
+    }
+
+    /**
+     * Set the value of nameToDisplay
+     *
+     * @return  self
+     */
+    public function setNameToDisplay($nameToDisplay)
+    {
+        $this->nameToDisplay = $nameToDisplay;
+
+        return $this;
+    }
+
+    /**
      * Get the value of dateModification
      */
     public function getDateModification()
     {
+        if ($this->dateModification != null && isset($this->dateModification)) {
+            $this->dateModification = date_create($this->dateModification);
+            FormatUtil::dump($this->dateModification);
+            echo 'test';
+            $this->dateModification = date_format($this->dateModification, 'd/m/Y H:i:s');
+            FormatUtil::dump($this->dateModification);
+        } else {
+            $this->dateModification = "-";
+        }
+  
         return $this->dateModification;
     }
 
@@ -253,9 +309,10 @@ class Article extends BaseEntity
         return $this;
     }
 
-    public function getStockByArticle(){
+    public function getStockByArticle()
+    {
         $stock = ArticleDao::findStockById($this->getId());
-        if ($stock == null){
+        if ($stock == null) {
             $stock = "-";
         }
         return $stock;

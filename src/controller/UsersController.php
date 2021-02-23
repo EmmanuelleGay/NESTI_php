@@ -113,9 +113,9 @@ class UsersController extends BaseEntityController
 
 
             //check if city is valid and exist, create it if not
-            if (!FormValidator::letters($_POST["Users"]["city"])) {
-                $isvalid = false;
-            }
+            // if (!FormValidator::letters($_POST["Users"]["city"])) {
+            //     $isvalid = false;
+            // }
             if ($isvalid == true) {
                 $city = CityDao::findOneBy('name', $_POST["Users"]["city"]);
                 if ($city == null) {
@@ -127,23 +127,29 @@ class UsersController extends BaseEntityController
 
             if ($isvalid) {
 
-                $isvalid = true;
-
                 if (
+
                     !FormValidator::letters($_POST["Users"]["lastName"]) ||
                     !FormValidator::letters($_POST["Users"]["firstName"]) ||
-                    !FormValidator::letters($_POST["Users"]["login"]) ||
                     !FormValidator::email($_POST["Users"]["email"]) ||
-                    !FormValidator::letters($_POST["Users"]["address1"]) ||
-                    !FormValidator::letters($_POST["Users"]["address2"]) ||
                     !FormValidator::numbers($_POST["Users"]["zipCode"])
 
                 ) {
                     $isvalid = false;
+                    $templateVars = ['message' => 'errorForm'];
+                    echo 'FALSE';
                 }
+
+                //insert other field
                 if ($isvalid) {
 
                     $entity = static::getEntity();
+
+                    //hash password before insert for a new user
+                    if ($entity->getId() == "") {
+                        $entity->setPasswordHashFromPlaintext($_POST["Users"]["password"]);
+                    }
+
                     $entity->setLastName($_POST["Users"]["lastName"]);
                     $entity->setFirstName($_POST["Users"]["firstName"]);
                     $entity->setLogin($_POST["Users"]["login"]);
@@ -151,11 +157,31 @@ class UsersController extends BaseEntityController
                     $entity->setAddress1($_POST["Users"]["address1"]);
                     $entity->setAddress2($_POST["Users"]["address2"]);
                     $entity->setZipCode($_POST["Users"]["zipCode"]);
+                    $entity->setFlag($_POST["Users"]["flag"]);
+
+
                     $entity->setIdCity($city->getId());
+
 
                     self::getDao()::saveOrUpdate($entity);
 
+
+
+                    if(isset($_POST["Users"]["chef"])){
+                        $entity->makeChef();
+                     }
+    
+                     if(isset($_POST["Users"]["administrator"])){
+                        $entity->makeAdministrator();
+                     }
+    
+                     if(isset($_POST["Users"]["moderator"])){
+                        $entity->makeModerator();
+                     }
+
+    
                     header('Location:' . SiteUtil::url() . 'users/edit/' . $entity->getId() . "/success");
+                 
                     exit();
                 }
             }

@@ -2,4 +2,7 @@
 
 class ArticlePriceDao extends BaseDao{
 
+
+
+
 }

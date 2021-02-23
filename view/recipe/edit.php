@@ -10,6 +10,7 @@
     <?php endif ?>
 
     <form class="d-flex justify-content-around" method="post" enctype="multipart/form-data" action="<?= $vars['baseUrl'] ?>recipe/edit/<?= $vars['entity']->getId() ?>">
+<?php FormatUtil::dump($vars['baseUrl']."recipe/edit/".$vars['entity']->getId()); ?>
         <div>
             <?php
             if ($vars['entity']->getId() == null) {

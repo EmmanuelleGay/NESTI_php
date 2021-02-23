@@ -31,13 +31,19 @@ class Users extends BaseEntity
         return $this->getRelatedEntities("Comment", BaseDao::FLAGS['active']);
     }
 
+    // public function getRecipes(): array
+    // {
+    //     return $this->getIndirectlyRelatedEntities("Recipe", "Grades", BaseDao::FLAGS['active']);
+    // }
+
     public function getRecipes(): array
     {
-        return $this->getIndirectlyRelatedEntities("Recipe", "Grades", BaseDao::FLAGS['active']);
+        return $this->getRelatedEntities("Comment", BaseDao::FLAGS['active']);
     }
 
     public function getCity(): ?City
     {
+
         return $this->getRelatedEntity("City");
     }
 
@@ -382,10 +388,10 @@ class Users extends BaseEntity
             $roles[] = "Chef";
         }
         if ($this->isModerator()) {
-            $roles[] = "Moderator";
+            $roles[] = "Moderateur";
         }
         if ($this->isAdministrator()) {
-            $roles[] = "Administrator";
+            $roles[] = "Administrateur";
         }
         return $roles;
     }
@@ -400,5 +406,96 @@ class Users extends BaseEntity
             $lastDate = "-";
         }
         return $lastDate;
+    }
+
+    public function getRecipesNumber()
+    {
+        $result =  UsersDao::findRecipesNumber($this->getId());
+        if ($result == null) {
+            $result = 0;
+        }
+        return $result;
+    }
+
+    public function getOrdersNumber()
+    {
+        $result =  UsersDao::findOrdersNumber($this->getId());
+        if ($result == null) {
+            $result = 0;
+        }
+        return $result;
+    }
+
+    public function getImportationNumber()
+    {
+        $result =  UsersDao::findImportationsNumber($this->getId());
+        if ($result == null) {
+            $result = 0;
+        }
+        return $result;
+    }
+
+    public function getLastImportation() {
+        $result= UsersDao::findLastImportation($this->getId());
+        if ($result == null) {
+            $result = "-";
+        }
+        return $result;
+    }
+
+    public function getBlockedCommentNumber()
+    {
+        $result =  UsersDao::findBlockedCommentNumber($this->getId());
+        if ($result == null) {
+            $result = 0;
+        }
+        return $result;
+    }
+
+    public function getApprouvedCommentNumber()
+    {
+        $result =  UsersDao::findApprouvedCommentNumber($this->getId());
+        if ($result == null) {
+            $result = 0;
+        }
+        return $result;
+    }
+
+    public function getLastRecipe()
+    {
+        $result =  UsersDao::findLastRecipe($this->getId());
+        if ($result == null) {
+            $result = "-";
+        }
+        return $result;
+    }
+
+    public function getlastOrder()
+    {
+        $result =  UsersDao::findLastOrder($this->getId());
+        if ($result == null) {
+            $result = "-";
+        }
+        return $result;
+    }
+
+    public function getSumOrder()
+    {
+        $result = 0.0;
+        $price = 0;
+        $orders = $this->getOrders();
+
+        foreach ($orders as $o) {
+            $orderLines = $o->getOrderLines();
+            foreach ($orderLines as $ol) {
+                $orderDate = $o->getDateCreation();
+                $quantity = $ol->getQuantity();
+                $article = $ol->getArticle();
+
+                $price = $article->getPriceAt($orderDate);
+            }
+            $result +=  $quantity * $price;
+        }
+        return $result." €";
     }
 }

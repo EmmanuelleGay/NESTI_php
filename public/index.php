@@ -8,14 +8,6 @@ include(__DIR__ . '/../config/constant.php');
 include(__DIR__ . '/../src/tools/SiteUtil.php');
 SiteUtil::autoloadRegister();
 
-
-//SiteUtil::require('model/entity/BaseEntity.php');
-//SiteUtil::require('model/dao/BaseDao.php');
-//SiteUtil::require('controller/BaseController.php');
-//SiteUtil::require('controller/RecipeController.php');
-//SiteUtil::require('controller/UserController.php');
-//SiteUtil::require('controller/ArticleController.php');
-//SiteUtil::require('controller/StatisticsController.php');
 SiteUtil::require('tools/SiteUtil.php');
 
 $loc = filter_input(INPUT_GET, 'loc', FILTER_SANITIZE_STRING);

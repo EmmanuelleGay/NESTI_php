@@ -31,6 +31,14 @@ $test = ArticleDao::findById(8);
  //FormatUtil::dump($test->getOrders(["ORDER"=>"dateCreation ASC"]));
 
 //  //cde la plus récente => qui sera tout en haut donc indice 0
+
+
+$test = UsersDao::findById(1);
+//FormatUtil::dump($test->getRecipes((["ORDER"=>"dateCreation DESC"])));
+
+
+
+
 //  //FormatUtil::dump($test->getOrders(["ORDER"=>"dateCreation DESC"])[0]);
 
 //  //pour trouer une commande egale a une date précise
@@ -44,25 +52,53 @@ $test = ArticleDao::findById(8);
 // //FormatUtil::dump(OrdersDao::findAll(["ORDER"=>"dateCreation DESC"]));
 
 //implémentation de la pagination
-// $queryOptions = ["LIMIT"=>2,"OFFSET"=>1];
-// FormatUtil::dump(OrdersDao::findAll($queryOptions));
+// // $queryOptions = ["LIMIT"=>2,"OFFSET"=>1];
+// // FormatUtil::dump(OrdersDao::findAll($queryOptions));
 
 
-// $apprentice=UsersDao::findById(2);
-// $apprentice->makechef();
+// // $apprentice=UsersDao::findById(2);
+// // $apprentice->makechef();
 
-//formatUtil::dump($apprentice);
+// //formatUtil::dump($apprentice);
 
-$test = RecipeDao::findById(3);
-//FormatUtil::dump($test->getIngredientRecipes());
+// $test = RecipeDao::findById(3);
+// //FormatUtil::dump($test->getIngredientRecipes());
 
 
-//formatUtil::dump($value);
+// //formatUtil::dump($value);
 
-//echo $article->getPrice();
+// //echo $article->getPrice();
 
-//$latestDate = strtotime()
+// //$latestDate = strtotime()
 
-$test = ProductDao::findById(6);
-$test->makeIngredient();
-FormatUtil::dump($test);
+// $test = ProductDao::findById(6);
+// $test->makeIngredient();
+// //FormatUtil::dump($test);
+
+// $test = UsersDao::findAllBy('lastName','Poirot');
+// //FormatUtil::dump($test);
+
+// $article = ArticleDao::findById(7);
+// $orderDate = OrdersDao::findById(2);
+
+// $price = ArticleDao::getPriceAt($article,$orderDate);
+// FormatUtil::dump($price);
+
+
+  $article = ArticleDao::findById(7);
+  $order = OrdersDao::findById(2);
+  $orderDate=$order->getDateCreation();
+
+  $price = $article->getPriceAt($orderDate);
+  FormatUtil::dump($orderDate);
+  FormatUtil::dump($price);
+
+
+//  $user=UsersDao::findById(1);
+//  FormatUtil::dump($user->getSumOrder());
+
+//  $order = OrdersDao::findById(2);
+//  $date =  $order->getDateCreation();
+//  $user = $order->getIdUsers();
+//  FormatUtil::dump($user);
+// FormatUtil::dump(strtotime($date));

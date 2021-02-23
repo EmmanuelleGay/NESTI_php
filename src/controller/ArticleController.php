@@ -33,8 +33,63 @@ class ArticleController extends BaseEntityController
         header('Location: ' . SiteUtil::url() . 'article/list');
     }
 
-    public static function importation(){
+
+
+    public static function importation()
+    {
         $templateName = 'importation';
+        //   $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
+
+        FormatUtil::dump($_POST);
+        echo 'bordel';
+
+        if (isset($_POST["Article"])) {
+
+            echo 'coucou';
+            FormatUtil::dump($_POST["Article"]);
+            //    FormatUtil::dump(($_FILES["Article"]['file']));
+
+            FormatUtil::dump($_POST["Article"]);
+            FormatUtil::dump($_FILES);
+
+            $fileName = $_FILES['Article']["fileCsv"]["tmp_name"];
+
+            if ($_FILES["Article"]["fileCsv"]["size"] > 0) {
+
+                $file = fopen($fileName, "r");
+                while (($column = fgetcsv($file, 10000, ",")) != FALSE) {
+                    ArticleDao::importArticleWithCsv($column[0], $column[1], $column[2], $column[3], $column[4]);
+                }
+            }
+
+            //     header('Location:' . SiteUtil::url() . 'article/importation/');
+
+        }
+
         static::render($templateName);
+    }
+
+
+    public static function edit()
+    {
+        $templateName = 'edit';
+        $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
+        if (isset($_POST['Article'])) {
+            $isvalid = true;
+            if (!FormValidator::letters($_POST["Article"]["nameForUser"])) {
+                $isvalid = false;
+            }
+            if($isvalid){
+                echo 'valid';
+                $entity = static::getEntity();
+                $entity->setNameToDisplay($_POST["Article"]["nameForUser"]);
+                $entity->setDateModification(date("Y-m-d H:i:s"));
+
+                self::getDao()::saveOrUpdate($entity);
+                header('Location:' . SiteUtil::url() . 'article/edit/' . $entity->getId() . "/success");
+                exit();
+            }
+        }
+        self::render($templateName, $templateVars);
     }
 }

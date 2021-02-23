@@ -13,6 +13,10 @@
     color: white;
 }
 
+.bold{
+    font-weight: bold !important;
+}
+
 a{
     text-decoration: none;
     color: black;
@@ -129,4 +133,14 @@ color: var(--primary-dark);
 
 .wen{
     height:100%
+}
+
+
+.successMessage{
+    background-color: var(--green-color);
+}
+
+.errorMessage {
+    background-color: var(--red-color);
+    color: white;
 }
