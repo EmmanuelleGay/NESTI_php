@@ -37,17 +37,27 @@ class ArticleDao extends BaseDao
 
     public static function importArticleWithCsv($unitQuantity, $flag, $idImage, $idUnit, $idProduct)
     {
-        $pdo = DatabaseUtil::getConnection();
+        $a = new Article();
+        $a->setUnitQuantity($unitQuantity);
+        $a->setFlag($flag);
+        $a->setIdImage($idImage);
+        $a->setIdUnit($idUnit);
+        $a->setIdProduct($idProduct);
 
-        $req = $pdo->prepare("INSERT INTO article (unitQuantiy,flag,idImage,idUnit,idProduct) VALUES (?,?,?,?,?)");
+        ArticleDao::saveOrUpdate($a);
 
-        $req->execute(array(
-            $unitQuantity,
-            $flag,
-            $idImage,
-            $idUnit,     
-            $idProduct
-        ));
+        var_dump("");
+        // $pdo = DatabaseUtil::getConnection();
+
+        // $req = $pdo->prepare("INSERT INTO article (unitQuantiy,flag,idImage,idUnit,idProduct) VALUES (?,?,?,?,?)");
+
+        // $req->execute(array(
+        //     $unitQuantity,
+        //     $flag,
+        //     $idImage,
+        //     $idUnit,     
+        //     $idProduct
+        // ));
 
         
     }

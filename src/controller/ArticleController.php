@@ -43,21 +43,21 @@ class ArticleController extends BaseEntityController
         FormatUtil::dump($_POST);
         echo 'bordel';
 
-        if (isset($_POST["Article"])) {
+        if (isset($_FILES["fileCsv"])) {
 
             echo 'coucou';
-            FormatUtil::dump($_POST["Article"]);
+        //    FormatUtil::dump($_POST["Article"]);
             //    FormatUtil::dump(($_FILES["Article"]['file']));
 
-            FormatUtil::dump($_POST["Article"]);
-            FormatUtil::dump($_FILES);
+            FormatUtil::dump($_FILES["fileCsv"]);
+      //      FormatUtil::dump($_FILES);
 
-            $fileName = $_FILES['Article']["fileCsv"]["tmp_name"];
+            $fileName = $_FILES["fileCsv"]["tmp_name"];
 
-            if ($_FILES["Article"]["fileCsv"]["size"] > 0) {
+            if ($_FILES["fileCsv"]["size"] > 0) {
 
                 $file = fopen($fileName, "r");
-                while (($column = fgetcsv($file, 10000, ",")) != FALSE) {
+                while (($column = fgetcsv($file, 10000, ";")) != FALSE) {
                     ArticleDao::importArticleWithCsv($column[0], $column[1], $column[2], $column[3], $column[4]);
                 }
             }
@@ -83,7 +83,7 @@ class ArticleController extends BaseEntityController
                 $entity = static::getEntity();
                 $entity->setNameToDisplay($_POST["Article"]["nameForUser"]);
                 $entity->setDateModification(date("Y-m-d H:i:s"));
-                echo($entity->getDateModification());
+          //      echo($entity->getDateModification());
 
                 self::getDao()::saveOrUpdate($entity);
                 header('Location:' . SiteUtil::url() . 'article/edit/' . $entity->getId() . "/success");

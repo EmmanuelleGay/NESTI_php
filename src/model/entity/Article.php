@@ -63,12 +63,16 @@ class Article extends BaseEntity
         return $price;
     }
 
+    public function getPriceAt2($date){
+        $this->getArticlePrices(["dateStart <"=>$date,"ORDER"=>"dateStart DESC"]);
+    }
 
 
 
-    public function getArticlePrices(): array
+
+    public function getArticlePrices($options=[]): array
     {
-        return $this->getRelatedEntities("ArticlePrice");
+        return $this->getRelatedEntities("ArticlePrice",$options);
     }
 
     public function getLots(): array
@@ -284,15 +288,15 @@ class Article extends BaseEntity
      */
     public function getDateModification()
     {
-        if ($this->dateModification != null && isset($this->dateModification)) {
-            $this->dateModification = date_create($this->dateModification);
-            // FormatUtil::dump($this->dateModification);
-            // echo 'test';
-            $this->dateModification = date_format($this->dateModification, 'd/m/Y H:i:s');
-            // FormatUtil::dump($this->dateModification);
-        } else {
-            $this->dateModification = "-";
-        }
+        // if ($this->dateModification != null && isset($this->dateModification)) {
+        //     $this->dateModification = date_create($this->dateModification);
+        //     // FormatUtil::dump($this->dateModification);
+        //     // echo 'test';
+        //     $this->dateModification = date_format($this->dateModification, 'd/m/Y H:i:s');
+        //     // FormatUtil::dump($this->dateModification);
+        // } else {
+        //     $this->dateModification = "-";
+        // }
   
         return $this->dateModification;
     }

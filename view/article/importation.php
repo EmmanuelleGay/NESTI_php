@@ -12,7 +12,7 @@
 
             <div class="align-items-center mt-5 mb-3">
                 <label for="fileCsv">Télécharger un fichier CSV</label>
-                <input type="file" name="Article[fileCsv]" class="form-control" id="fileCsv" accept=".csv" required>
+                <input type="file" name="fileCsv" class="form-control" id="fileCsv" accept=".csv" required>
             </div>
             <button type="submit" class="btn validButton fs-5 px-5 mt-3 mb-5">Importer</button>
 
