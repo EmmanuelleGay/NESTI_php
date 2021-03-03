@@ -286,10 +286,10 @@ class Article extends BaseEntity
     {
         if ($this->dateModification != null && isset($this->dateModification)) {
             $this->dateModification = date_create($this->dateModification);
-            FormatUtil::dump($this->dateModification);
-            echo 'test';
+            // FormatUtil::dump($this->dateModification);
+            // echo 'test';
             $this->dateModification = date_format($this->dateModification, 'd/m/Y H:i:s');
-            FormatUtil::dump($this->dateModification);
+            // FormatUtil::dump($this->dateModification);
         } else {
             $this->dateModification = "-";
         }

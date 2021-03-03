@@ -65,7 +65,6 @@ class ArticleController extends BaseEntityController
             //     header('Location:' . SiteUtil::url() . 'article/importation/');
 
         }
-
         static::render($templateName);
     }
 
@@ -84,6 +83,7 @@ class ArticleController extends BaseEntityController
                 $entity = static::getEntity();
                 $entity->setNameToDisplay($_POST["Article"]["nameForUser"]);
                 $entity->setDateModification(date("Y-m-d H:i:s"));
+                echo($entity->getDateModification());
 
                 self::getDao()::saveOrUpdate($entity);
                 header('Location:' . SiteUtil::url() . 'article/edit/' . $entity->getId() . "/success");
