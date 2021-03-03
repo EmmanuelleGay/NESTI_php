@@ -1,6 +1,12 @@
 <?php
+
+use phpDocumentor\Reflection\DocBlock\Tags\Formatter;
+
 class BaseEntity{
-    
+    // Original ID of entity when fetched from data source.
+    // Used if we need to update it after changing its id property
+    protected $originalIds=[];
+
     /**
      * getDaoClass
      * get the DAO class that corresponds to the current instance
@@ -17,19 +23,16 @@ class BaseEntity{
      * @param  mixed $relatedEntityClass Class of the related entity to look for
      * @return array of related entities
      */
-    public function getRelatedEntities(String $relatedEntityClass, $options=null): array
+    public function getRelatedEntities(String $relatedEntityClass, $options=[]): array
     {
         // find dao class of the related entity
         $relatedClassDao = $relatedEntityClass::getDaoClass();
 
         $thisPrimaryKeyName = static::getDaoClass()::getPkColumnName();
   
-        return $relatedClassDao::findAllBy(
-            // joined entity's foreign key name is the same as starting entity's primary key name 
-            $thisPrimaryKeyName,
-            $this->getId(),
-            $options
-        );
+        $options[ $thisPrimaryKeyName ] = $this->getId();
+
+        return $relatedClassDao::findAll($options);
     }
 
         
@@ -40,31 +43,21 @@ class BaseEntity{
      * @param  mixed $relatedEntityClass Class of the related entity to look for
      * @return mixed related entity, or null if none exists
      */
-    public function getRelatedEntity(String $relatedEntityClass, $options=null): ?BaseEntity
+    public function getRelatedEntity(String $relatedEntityClass, $options=[]): ?BaseEntity
     {
-        // find dao class of the related entity
-        $relatedClassDao = $relatedEntityClass::getDaoClass();
-
         // find column name of the related entity's primary key
-        $relatedClassPrimaryKey = $relatedClassDao::getPkColumnName();
+        $relatedClassPrimaryKey = $relatedEntityClass::getDaoClass()::getPkColumnName();
+
+        $relatedDao = $relatedEntityClass::getDaoClass();
 
         // If foreign key is in current instance
         if (  property_exists($this, $relatedClassPrimaryKey) ){
-            $relatedEntity = $relatedClassDao::findById(
-                // joined entity's primary key name is the same as starting entity's corresponding foreign key 
-                EntityUtil::get($this, $relatedClassPrimaryKey) ,
-                $options
-            );
+            $options[ $relatedDao::getPkColumnName() ] = EntityUtil::get($this, $relatedClassPrimaryKey);
         } else { // If foreign key is in related object
-            $relatedEntity = static::getDaoClass()::findOneBy(
-                // joined entity's foreign key name is the same as starting entity's primary key
-                static::getDaoClass()::getPkColumnName(),
-                $this->getId(),
-                $options
-            );
+            $options[ static::getDaoClass()::getPkColumnName() ] = $this->getId();
         }
 
-        return $relatedEntity;
+        return $relatedDao::findOne($options);
     }
 
 
@@ -92,14 +85,12 @@ class BaseEntity{
                 $relatedClassPrimaryKey,
                 $relatedEntity->getId()
             );
-            static::getDaoClass()::saveOrUpdate($this);
         } else { // If foreign key is in related object
             EntityUtil::set(
                 $relatedEntity,
                 static::getDaoClass()::getPkColumnName(),
                 $this->getId()
             );
-            $relatedClassDao::saveOrUpdate($relatedEntity);
         }
     }
 
@@ -108,7 +99,7 @@ class BaseEntity{
     /**
      * getId
      * get the primary key value for the current instance
-     * @return void
+     * @return mixed
      */
     public function getId(){
         if ( !$this->hasCompositeKey() ){
@@ -117,7 +108,7 @@ class BaseEntity{
         } else {
             $result = [];
             foreach( static::getDaoClass()::getPkColumnName() as $pkColumn ){
-                $result[] = EntityUtil::get($this, $pkColumn);
+                $result[$pkColumn] = EntityUtil::get($this, $pkColumn);
             }
         }
         return $result;
@@ -125,12 +116,18 @@ class BaseEntity{
 
     /**
      * getId
-     * get the primary key value for the current instance
+     * set the primary key value for the current instance
      * @return void
      */
     public function setId($id){
-        $idColumnName = static::getDaoClass()::getPkColumnName();
-        EntityUtil::set($this,  $idColumnName, $id);
+        if ( $this->hasCompositeKey() ){
+            foreach ( $id as $pkColumnName=>$pkValue){
+                EntityUtil::set($this,  $pkColumnName, $pkValue);
+            }
+        } else {
+            $idColumnName = static::getDaoClass()::getPkColumnName();
+            EntityUtil::set($this,  $idColumnName, $id);
+        }
     }
     
 
@@ -157,7 +154,6 @@ class BaseEntity{
         if ( $this->getChildEntity($childEntityClass) == null ) {
             $child = new $childEntityClass;
             $child->setId($this->getId());
-            FormatUtil::dump($child);
             $childEntityClass::getDaoClass()::save($child);
         }
 
@@ -216,7 +212,7 @@ class BaseEntity{
 
     public function existsInDataSource(){
         if ( !$this->hasCompositeKey()){
-            $exists = $this->hasPrimaryKey();
+            $exists = !empty($this->getOriginalId());
         } else {
             $options = [];
             foreach ( static::getDaoClass()::getPkColumnName() as $pkName ){
@@ -227,5 +223,41 @@ class BaseEntity{
         }
 
         return $exists;
+    }
+
+
+    public function getOriginalId($columnName = null)
+    {
+        if ( $columnName == null ){
+            if ( $this->hasCompositeKey() ){
+                $result = $this->originalIds;
+            } else {
+                $columnName = get_class($this)::getDaoClass()::getPkColumnName();
+
+                $result = $this->originalIds[$columnName] ?? null;
+            }
+        } else {
+            $result = $this->originalIds[$columnName];
+        }
+        return $result;
+    }
+
+    /**
+     * Set the value of originalId
+     *
+     * @return  self
+     */ 
+    public function setOriginalId($value, $columnName = null )
+    {
+        if ( $columnName == null ){
+            if ( $this->hasCompositeKey() ){
+                $this->originalIds = $value;
+            } else {
+                $columnName = get_class($this)::getDaoClass()::getPkColumnName();
+                $this->originalIds[$columnName] = $value;
+            }
+        } else {
+            $this->originalIds[$columnName] = $value;
+        }
     }
 }

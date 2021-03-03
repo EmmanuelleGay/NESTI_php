@@ -6,7 +6,7 @@ var baseUrl="<?=$vars['baseUrl'] ?>";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nesti</title>
 
-  
+    <script>baseUrl = "<?=$vars['baseUrl']?>"; </script>
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="<?=$vars['baseUrl'] ?>public/fontawesome/css/all.css">

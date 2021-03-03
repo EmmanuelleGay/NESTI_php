@@ -64,7 +64,9 @@ class Article extends BaseEntity
     }
 
     public function getPriceAt2($date){
-        $this->getArticlePrices(["dateStart <"=>$date,"ORDER"=>"dateStart DESC"]);
+        //?? => si ce qui est a gaucghe n'existe pas on retourne null
+        //indice 0 pour récup que la premi_re ligne puisuqe trié par date
+        $this->getArticlePrices(["dateStart <"=>$date,"ORDER"=>"dateStart DESC"])[0] ?? null;
     }
 
 

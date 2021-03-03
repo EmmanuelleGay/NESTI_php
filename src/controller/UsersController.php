@@ -167,26 +167,37 @@ class UsersController extends BaseEntityController
 
 
 
-                    if(isset($_POST["Users"]["chef"])){
+                    if (isset($_POST["Users"]["chef"])) {
                         $entity->makeChef();
-                     }
-    
-                     if(isset($_POST["Users"]["administrator"])){
-                        $entity->makeAdministrator();
-                     }
-    
-                     if(isset($_POST["Users"]["moderator"])){
-                        $entity->makeModerator();
-                     }
+                    }
 
-    
+                    if (isset($_POST["Users"]["administrator"])) {
+                        $entity->makeAdministrator();
+                    }
+
+                    if (isset($_POST["Users"]["moderator"])) {
+                        $entity->makeModerator();
+                    }
+
+
                     header('Location:' . SiteUtil::url() . 'users/edit/' . $entity->getId() . "/success");
-                 
+
                     exit();
                 }
             }
         }
         // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid
         self::render($templateName, $templateVars);
+    }
+
+    public static function testAjax()
+    {
+        $a = ArticleDao::findById(7);
+        //on va transformer le tableau php en tableau ajax
+        //on passe en tableau php
+        $arrayA = EntityUtil::toArray($a);
+
+        //on passe en tableau json
+        echo json_encode($arrayA);
     }
 }
