@@ -97,11 +97,6 @@ class UsersController extends BaseEntityController
         header('Location: ' . SiteUtil::url() . 'users/list');
     }
 
-    public static function order()
-    {
-        $templateName = 'order';
-        static::render($templateName);
-    }
 
     public static function edit()
     {

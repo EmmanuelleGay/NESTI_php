@@ -11,11 +11,17 @@ class Orders extends BaseEntity{
         return $this->getRelatedEntities("OrderLine");
     }
     
-    public function getUser(): ?Users{
+
+    // public function getUsers(): array{
+    //     return $this->getRelatedEntities("Users");
+    // }
+
+    
+    public function getUsers(): ?Users{
         return $this->getRelatedEntity("Users");
     }
 
-    public function setUser(Users $user){
+    public function setUsers(Users $user){
         $this->setRelatedEntity($user);
     }
 

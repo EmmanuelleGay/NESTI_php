@@ -8,7 +8,7 @@
     <div class="d-flex align-self-end">
         <div class="mb-3 btn border rounded addContainer yellow justify-content-around d-flex align-items-center mx-3">
             <i class="fas fa-eye fa-2x"></i>
-            <a class="addLink aria-label fs-4 " aria-describedby="addElement" href="<?= $vars['baseUrl'] ?>users/order">Commandes</a>
+            <a class="addLink aria-label fs-4 " aria-describedby="addElement" href="<?= $vars['baseUrl'] ?>article/order">Commandes</a>
         </div>
 
         <div class="mb-3 btn border rounded addContainer justify-content-around d-flex align-items-center mx-3">

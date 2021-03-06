@@ -27,7 +27,8 @@
 
             <?php 
             
-            foreach ($vars['entities'] as $recipe) { ?>
+            foreach ($vars['entities'] as $recipe) { 
+              ?>
                 <tr>
                     <td class="align-middle"><?= $recipe->getId(); ?></td>
                     <td class="align-middle"><?= $recipe->getName(); ?></td>

@@ -20,3 +20,8 @@ height: 100%;
 .yellow{
     background-color: var(--secondary-color);
 }
+
+.DetailsArticle{
+    min-width: 30vw;
+    background-color: aqua;
+}

@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\Form\Util\FormUtil;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -102,3 +103,10 @@ $test = UsersDao::findById(1);
 //  $user = $order->getIdUsers();
 //  FormatUtil::dump($user);
 // FormatUtil::dump(strtotime($date));
+
+$t = new Importation();
+$t->setIdAdministrator(4);
+$t->setIdArticle(7);
+$t->setIdSupplierOrder(156);
+ImportationDao::saveOrUpdate($t);
+FormatUtil::dump($t);
