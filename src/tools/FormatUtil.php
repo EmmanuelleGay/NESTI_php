@@ -107,8 +107,8 @@ class FormatUtil
     {
         $result = "";
         if ($date != null) {
-            setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
-            $result = strftime('%d %B %Y %Hh%M', strtotime($date));
+            setlocale(LC_TIME, "fr_FR.utf8", "French");
+            $result = utf8_encode(strftime('%d %B %Y %Hh%M', strtotime($date)));
         } else {
             $result = "-";
         }

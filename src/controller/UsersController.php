@@ -154,13 +154,11 @@ class UsersController extends BaseEntityController
                     $entity->setZipCode($_POST["Users"]["zipCode"]);
                     $entity->setFlag($_POST["Users"]["flag"]);
 
-
-                    $entity->setIdCity($city->getId());
-
+                    if (isset($city)) {
+                        $entity->setIdCity($city->getId());
+                    }
 
                     self::getDao()::saveOrUpdate($entity);
-
-
 
                     if (isset($_POST["Users"]["chef"])) {
                         $entity->makeChef();
@@ -185,14 +183,4 @@ class UsersController extends BaseEntityController
         self::render($templateName, $templateVars);
     }
 
-    public static function testAjax()
-    {
-        $a = ArticleDao::findById(7);
-        //on va transformer le tableau php en tableau ajax
-        //on passe en tableau php
-        $arrayA = EntityUtil::toArray($a);
-
-        //on passe en tableau json
-        echo json_encode($arrayA);
-    }
 }

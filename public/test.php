@@ -105,7 +105,7 @@ $test = UsersDao::findById(1);
 // FormatUtil::dump(strtotime($date));
 
 $t = new Importation();
-$t->setIdAdministrator(4);
+$t->setIdAdministrator(2);
 $t->setIdArticle(7);
 $t->setIdSupplierOrder(156);
 ImportationDao::saveOrUpdate($t);

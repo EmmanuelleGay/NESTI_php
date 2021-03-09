@@ -42,3 +42,4 @@ if (UsersController::getLoggedInUser() != null) {
 } else {
     UsersController::processAction('login');
 }
+

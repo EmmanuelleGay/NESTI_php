@@ -5,7 +5,7 @@
     </div>
 
     <?php
-    if (@$_GET['message'] == 'success') : ?>
+    if (($_GET['message']??"") == 'success') : ?>
         <div>Bravo</div>
     <?php endif ?>
 

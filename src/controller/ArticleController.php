@@ -66,7 +66,7 @@ class ArticleController extends BaseEntityController
                     $i->setIdAdministrator(UsersController::getLoggedInUser()->getId());
                     $i->setIdSupplierOrder($column[5]);
                     //TO DO ---- PAS OPERATIONNEL
-                 //   ImportationDao::saveOrUpdate($i);
+                    //   ImportationDao::saveOrUpdate($i);
 
                 }
 
@@ -104,24 +104,43 @@ class ArticleController extends BaseEntityController
         self::render($templateName, $templateVars);
     }
 
-    public static function encodeArticleToDisplayWithAjax($article)
-    {
-        //on va transformer le tableau php en tableau ajax
-        //on passe en tableau php
-        $arrayA = EntityUtil::toArray($article);
+    // public static function encodeArticleToDisplayWithAjax($article)
+    // {
+    //     //on va transformer le tableau php en tableau ajax
+    //     //on passe en tableau php
+    //     $arrayA = EntityUtil::toArray($article);
 
-        //on passe en tableau json
-        echo json_encode($arrayA);
-    }
+    //     //on passe en tableau json
+    //     echo json_encode($arrayA);
+    // }
 
     public static function order()
     {
         $templateName = 'order';
-    //    static::render($templateName);
+        //    static::render($templateName);
 
         static::render($templateName, [
             'entities' => OrdersDao::findAll()
         ]);
     }
 
+    public static function orderDetailsAjax()
+    {
+        $idOrder = $_POST['orderId'];
+
+        $order =  OrdersDao::findById($idOrder);
+        $orderLines = $order->getOrderLines();
+        $result = [];
+        foreach ($orderLines as $key => $orderLine) {
+            $currentLine = [];
+
+            $currentLine["unitQuantity"]=  $orderLine->getArticle()->getUnitQuantity();
+            $currentLine["unitName"] = $orderLine->getArticle()->getUnit()->getName();
+            $currentLine["articleName"]= $orderLine->getArticle()->getProduct()->getName();
+            $currentLine['quantity'] = $orderLine->getQuantity();
+            $result[] = $currentLine;
+        }
+        // $arrayOrderLines =  EntityUtil::toArray($orderLines);
+        echo json_encode($result);
+    }
 }

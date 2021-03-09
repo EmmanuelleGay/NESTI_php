@@ -4,8 +4,8 @@ class Ingredient extends Product{
     
     private $idIngredient;
 
-    public function getIngredientRecipes(): array{
-        return $this->getRelatedEntities("IngredientRecipe");
+    public function getIngredientRecipes($options=[]): array{
+        return $this->getRelatedEntities("IngredientRecipe",$options);
     }
 
 

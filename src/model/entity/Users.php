@@ -435,8 +435,9 @@ class Users extends BaseEntity
         return $result;
     }
 
-    public function getLastImportation() {
-        $result= UsersDao::findLastImportation($this->getId());
+    public function getLastImportation()
+    {
+        $result = UsersDao::findLastImportation($this->getId());
         if ($result == null) {
             $result = "-";
         }
@@ -489,13 +490,16 @@ class Users extends BaseEntity
             $orderLines = $o->getOrderLines();
             foreach ($orderLines as $ol) {
                 $orderDate = $o->getDateCreation();
-                $quantity = $ol->getQuantity();
-                $article = $ol->getArticle();
 
+                $quantity = $ol->getQuantity();
+
+                $article = $ol->getArticle();
                 $price = $article->getPriceAt($orderDate);
             }
-            $result +=  $quantity * $price;
+            if (isset($quantity)) {
+                $result +=  $quantity * $price;
+            }
         }
-        return $result." €";
+        return $result . " €";
     }
 }

@@ -36,7 +36,7 @@
                     <td class="align-middle"><?= $article->getProduct()->getName(); ?></td>
                     <td class="align-middle"><?= $article->getLastPrice(); ?></td>
                     <td class="align-middle">ingrédient</td>
-                    <td class="align-middle"><?= $article->getDateModification(); ?></td>
+                    <td class="align-middle"><?= FormatUtil::formatDate($article->getDateModification()); ?></td>
 
                     <td class="align-middle"><?= $article->getStockByArticle() ?></td>
 

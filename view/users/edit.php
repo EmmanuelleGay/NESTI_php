@@ -4,7 +4,7 @@
         <p class="linkHead"> Utilisateur</p>
     </div>
     <?php
-    if (@$_GET['message'] == 'success') : ?>
+    if (($_GET['message'] ??"") == 'success') : ?>
         <div class="successMessage text-center w-25 mx-auto my-3 py-3">Vos modifications ont bien été enregistrées</div>
     <?php endif ?>
 

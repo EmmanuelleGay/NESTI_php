@@ -1,34 +1,16 @@
-<!-- <script>
-    $(() => {
-        //on peut mettre n'importe quel element js a la place de clik
-        $("#monlien").click(() => {
-            //verifier mais il; doit falloir mettre usersController car la méthode est dedans
-            $.post(baseUrl + "users/testAjax", {
-                    "ma clé": "mavaleur"
-            },
-                (response) => {
-                    // let result = JSON.parse(response);
-                    console.log(response);
-                    //on construit les leelments
-                    let article = JSON.parse(response); 
-                    //executer finction ex construireArticle
-                }
-            );
-        });
+<script>
 
-    })
-</script> -->
+</script>
 <!-- 
-<a href="#" id="monlien">test</a>  -->
+<a href="#" id="monlien">test</a> 
 
-<!-- //le $(()=>{ va faire que dans tous les cas ca s'exceutreta quand la page aura fini de charger-->
+ //le $(()=>{ va faire que dans tous les cas ca s'executera quand la page aura fini de charger-->
 
 <div class="container-fluid">
     <div class="d-flex mt-4">
         <a href="<?= $vars['baseUrl'] ?>article" class="linkHead">Articles > </a>
         <p class="linkHead"> Commandes</p>
     </div>
-
 
     <h1 class="h1 mt-4">Commandes</h1>
 
@@ -51,20 +33,26 @@
                 foreach ($vars['entities'] as $order) {
                 ?>
                     <tr>
-                        <td class="align-middle"><?= $order->getId(); ?></td>
-                        <td class="align-middle"><?= $order->getUsers()->getFirstName(). " ". $order->getUsers()->getLastName(); ?></td>
-                        <td class="align-middle"><?="somme a faire" ; ?></td>
-                        <td class="align-middle"><?= $order->getDateCreation(); ?></td>
+                        <td class="align-middle"><a href="#" data-id="<?= $order->getId(); ?>" class="orderLink"><?= $order->getId(); ?></a></td>
+                        <td class="align-middle"><?= $order->getUsers()->getFirstName() . " " . $order->getUsers()->getLastName(); ?></td>
+                        <td class="align-middle"><?= "somme a faire"; ?></td>
+                        <td class="align-middle"><?= FormatUtil::formatDate($order->getDateCreation()); ?></td>
                         <td class="align-middle"><?= $order->getFlag(); ?></td>
 
                     <?php } ?>
 
                     </tr>
+
             </tbody>
         </table>
 
-        <div class="mx-5 DetailsArticle">Détails</div>
-
+        <div class="mx-5 DetailsArticle">
+            <div class= "d-flex justify-content-between mb-2">
+                <h2 id="titleOrderLine"></h2>
+                <div id="numberOrderContainer"></div>
+            </div>
+                <div id="orderLinesContainer"></div>
+        </div>
     </div>
 
 

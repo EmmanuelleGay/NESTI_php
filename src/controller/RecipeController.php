@@ -21,7 +21,7 @@ class RecipeController extends BaseEntityController
     {
         $templateName = 'edit';
         $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
-        $templateVars['ingredients'] = static::getEntity()->getIngredients();
+     //   $templateVars['ingredients'] = static::getEntity()->getIngredients();
 
         if (isset($_POST['Recipe'])) { // if we arrived here by way of the submit button in the edit view
 

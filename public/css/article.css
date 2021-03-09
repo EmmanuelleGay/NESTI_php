@@ -23,5 +23,17 @@ height: 100%;
 
 .DetailsArticle{
     min-width: 30vw;
-    background-color: aqua;
+}
+
+
+.numberOrderContainer{
+    background-color: var(--secondory-light);
+    color: var(--primary-dark);
+    margin: auto;
+}
+
+.orderLineContainer{
+    box-shadow: 3px 3px 6px grey;
+    min-height: 20vw;
+
 }

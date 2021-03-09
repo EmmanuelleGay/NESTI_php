@@ -22,7 +22,6 @@ class SiteUtil
     }
 
 
-
     /**
      * toAbsolute
      * Turns a relative file path parameter into an absolute path (from project root);
@@ -107,7 +106,7 @@ class SiteUtil
      * 
      * @param  mixed $haystack
      * @param  mixed $needle
-     * @return void
+     * @return mixed
      */
     public static function endsWith($haystack, $needle)
     {
@@ -124,7 +123,7 @@ class SiteUtil
 
      * @param  mixed $dirty reference array or variable to sanitize
      * @param  int $filter filter to use with filter_var
-     * @return void 
+     * @return mixed 
      */
     public static function sanitize(&$dirty, int $filter = FILTER_SANITIZE_STRING)
     {
