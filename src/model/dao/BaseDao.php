@@ -87,7 +87,7 @@ class BaseDao
      *
      * @param  array $options query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
      * @param  string $sql starting SQL string, if none specified we assume we're selecting all from current table
-     * @param  mixed $values values to inject in prepared query (in case the starting sql string uses some)
+     * @param  array $values values to inject in prepared query (in case the starting sql string uses some)
      * @return PDOStatement built and executed statement
      */
     protected static function buildRequest(array &$options, ?string $sql = null, array $values = []): PDOStatement
@@ -133,7 +133,8 @@ class BaseDao
                 $booleanOperator = "AND";
             }
 
-            if (FormatUtil::endsWith($operator, "IN")){
+
+            if ( FormatUtil::endsWith($operator, "IN")){
                 $condition = "$propertyKey $operator $value";
                 $value = static::IGNORE_VALUE;
             } else {
@@ -227,8 +228,8 @@ class BaseDao
      * transforms a request result row into an entity. 
      * if entity is based on an inherited table, loops through all parent tables to populate entity properties
      * @param  mixed $req
-     * @param  array $options query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
-     * @return void
+     * @param  array $queryOptions query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
+     * @return object entity if request has valid row, null otherwise
      */
     protected static function fetchEntity(&$req, array $queryOptions)
     {
@@ -237,7 +238,7 @@ class BaseDao
         $currentClass = get_parent_class(static::getEntityClass());
 
         // loop through all parent entities
-        while ($entity != null && $currentClass != 'BaseEntity') {
+        while ($entity != null&& $currentClass != false && $currentClass != 'BaseEntity') {
             $currentDao = $currentClass::getDaoClass();
             $currentQueryOptions = $queryOptions;
 
@@ -281,8 +282,6 @@ class BaseDao
     /**
      * findOne
      * create and return an entity corresponding to the given query options
-     * @param  String $key field name
-     * @param  mixed $value to search
      * @param  array $options query options, ie: 'a' or [ 'articlePrice <=' => 12, 'flag' => 'a']
      * @return mixed entity if found, null otherwise
      */
@@ -436,7 +435,7 @@ class BaseDao
                 $pkColumns = [$currentDao::getPkColumnName()];
                 array_push($values, $originalId );
             } else {
-                // l'entité a t'elle été tirée de la BD puis modifiée?
+                // was entity fetched from DB originally?
                 if ( $originalId == null ){
                     $pkColumns = $currentDao::getPkColumnName();
                     array_push($values, ...array_values($entity->getId()));
@@ -550,7 +549,7 @@ class BaseDao
      * get an array of column names, in the same order as they appear in the database schema
      * 
      * @param  bool $includePk include primary key in result?
-     * @return void
+     * @return array
      */
     public static function getColumnNames(bool $includePk = true): array
     {
@@ -617,11 +616,18 @@ class BaseDao
      */
     public static function findManyToMany($startEntity, string $joinEntityClass, string $endEntityClass, $options = null): array
     {
-        static::initializeQueryOptions($options);
-
+        
         $startDao = get_class($startEntity)::getDaoClass();
         $joinDao = $joinEntityClass::getDaoClass();
         $endDao = $endEntityClass::getDaoClass();
+        
+        static::initializeQueryOptions($options);
+
+        if ( !isset($options["ORDER"]) ){
+            $options["ORDER"] = $endDao::getPkColumnName();
+        }
+
+        $options["ORDER"] = "e." . $options["ORDER"];
 
         if ( isset($options["SELECT"]) ) {
             $options["SELECT"] = "e." . $options["SELECT"];
