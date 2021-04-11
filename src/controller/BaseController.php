@@ -7,8 +7,8 @@ class BaseController
     public static function callActionMethod($action)
     {
         method_exists(get_called_class(), $action) ?
-            get_called_class()::$action() : // if action in URL exists, call it
-            get_called_class()::error(); // else call default one
+        get_called_class()::$action() : // if action in URL exists, call it
+        get_called_class()::error(); // else call default one
     }
 
     public static function processAction($forceAction = null)

@@ -83,4 +83,11 @@ class OrderLine extends BaseEntity{
 
         return $this;
     }
+
+    public function getSubTotal(){
+        $dateCreation = $this->getOrder()->getDateCreation();
+        $articlePrice = $this->getArticle()->getArticlePriceAt($dateCreation)->getPrice();
+
+        return $articlePrice * $this->getQuantity();
+    }
 }

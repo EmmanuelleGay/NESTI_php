@@ -42,6 +42,10 @@ class Article extends BaseEntity
         return $price;
     }
 
+    public function getArticlePriceAt($date){
+        return $this->getArticlePrices(["dateStart <" => $date, "ORDER" => "dateStart DESC"])[0] ?? null;
+    }
+
 
     public function getPriceAt($value): String
     {
@@ -77,14 +81,14 @@ class Article extends BaseEntity
         return $this->getRelatedEntities("ArticlePrice",$options);
     }
 
-    public function getLots(): array
+    public function getLots($options=[]): array
     {
-        return $this->getRelatedEntities("Lot");
+        return $this->getRelatedEntities("Lot",$options);
     }
 
-    public function getOrderLines(): array
+    public function getOrderLines($options=[]): array
     {
-        return $this->getRelatedEntities("OrderLine");
+        return $this->getRelatedEntities("OrderLine",$options);
     }
 
     public function getProduct(): ?Product
@@ -323,4 +327,50 @@ class Article extends BaseEntity
         }
         return $stock;
     }
+
+    public function getStock(){
+        return (float) $this->getLots(["SELECT"=>"SUM(quantity)"])[0][0] ?? 0;
+    }
+
+    public function getQuantitySold(){
+        $quantity = 0;
+
+        foreach ($this->getOrderLines() as $orderLine){
+            $quantity += $orderLine->getQuantity();
+        }
+
+        return $quantity;
+    }
+
+    public function getTotalSales(){
+        $total = 0;
+
+        foreach ($this->getOrderLines() as $orderLine){
+            $total += $orderLine->getSubTotal();
+        }
+
+        return $total;
+    }
+
+    public function getQuantityPurchased(){
+        $quantity = 0;
+
+        foreach ($this->getLots() as $lot){
+            $quantity += $lot->getQuantity();
+        }
+
+        return $quantity;
+    }
+
+    public function getTotalPurchases(){
+        $total = 0;
+
+        foreach ($this->getLots() as $lot){
+            $total += $lot->getSubTotal();
+        }
+
+        return $total;
+    }
+
+    
 }

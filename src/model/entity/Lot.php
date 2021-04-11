@@ -1,29 +1,38 @@
 <?php
 
-class Lot extends BaseEntity{
+class Lot extends BaseEntity
+{
     private $idSupplierOrder;
     private $unitCost;
-    private $dateCreation;
+    private $dateReception;
     private $quantity;
     private $idArticle;
 
-    public function getArticle(): ?Article{
+    public function getArticle(): ?Article
+    {
         return $this->getRelatedEntity("Article");
     }
 
-    public function setArticle(Article $a){
+    public function setArticle(Article $a)
+    {
         $this->setRelatedEntity($a);
     }
 
 
-    public function getImportations(): array{
+    public function getImportations(): array
+    {
         return $this->getRelatedEntities("Importation");
     }
 
-    public function getAdmins(): array{
-        return $this->getIndirectlyRelatedEntities("Users", "Importation", BaseDao::FLAGS['active']); 
+    public function getAdmins(): array
+    {
+        return $this->getIndirectlyRelatedEntities("Users", "Importation", BaseDao::FLAGS['active']);
     }
 
+    public function getSubTotal()
+    {
+        return $this->getUnitCost() * $this->getQuantity();
+    }
 
     /**
      * Get the value of idArticle
@@ -68,9 +77,9 @@ class Lot extends BaseEntity{
     /**
      * Get the value of dateCreation
      */
-    public function getDateCreation()
+    public function getDateReception()
     {
-        return $this->dateCreation;
+        return $this->dateReception;
     }
 
     /**
@@ -78,9 +87,9 @@ class Lot extends BaseEntity{
      *
      * @return  self
      */
-    public function setDateCreation($dateCreation)
+    public function setDateReception($dateReception)
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateReception = $dateReception;
 
         return $this;
     }

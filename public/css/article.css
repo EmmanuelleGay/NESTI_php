@@ -37,3 +37,7 @@ height: 100%;
     min-height: 20vw;
 
 }
+
+.importSuccessMessage{
+    width: 40%;
+}

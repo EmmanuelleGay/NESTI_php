@@ -4,9 +4,15 @@
         <p class="linkHead"> Article</p>
     </div>
 
-    <h1>Importation</h1>
-    <div class="container d-flex justify-content-between">
 
+
+
+<?php if (@$vars['message']== 'Importsuccess'){
+     echo "<div class='importSuccessMessage successMessage text-center fw-bold my-5 py-3'>Importation réussie</div>";
+}?>
+
+<h1>Importation</h1>
+    <div class="container d-flex justify-content-between">
 
         <form method="post" action="<?= $vars['baseUrl'] ?>article/importation" enctype="multipart/form-data">
 

@@ -32,26 +32,26 @@
                 <?php
                 foreach ($vars['entities'] as $order) {
                 ?>
-                    <tr>
-                        <td class="align-middle"><a href="#" data-id="<?= $order->getId(); ?>" class="orderLink"><?= $order->getId(); ?></a></td>
+                    <tr class="orderLink" data-id="<?= $order->getId(); ?>">
+                        <td class="align-middle"><?= $order->getId(); ?></td>
                         <td class="align-middle"><?= $order->getUsers()->getFirstName() . " " . $order->getUsers()->getLastName(); ?></td>
                         <td class="align-middle"><?= "somme a faire"; ?></td>
                         <td class="align-middle"><?= FormatUtil::formatDate($order->getDateCreation()); ?></td>
                         <td class="align-middle"><?= $order->getFlag(); ?></td>
-
-                    <?php } ?>
-
                     </tr>
+                <?php } ?>
+
+
 
             </tbody>
         </table>
 
         <div class="mx-5 DetailsArticle">
-            <div class= "d-flex justify-content-between mb-2">
+            <div class="d-flex justify-content-between mb-2">
                 <h2 id="titleOrderLine"></h2>
                 <div id="numberOrderContainer"></div>
             </div>
-                <div id="orderLinesContainer"></div>
+            <div id="orderLinesContainer"></div>
         </div>
     </div>
 

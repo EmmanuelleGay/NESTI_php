@@ -21,6 +21,10 @@ class Recipe extends BaseEntity{
         return $this->getRelatedEntities("IngredientRecipe");
     }
 
+    public function getGrades($options=[]): array{
+        return $this->getRelatedEntities("Grades",$options);
+    }
+
     public function getImage(): ?Image{
         return $this->getRelatedEntity("Image");
     }
@@ -220,5 +224,17 @@ class Recipe extends BaseEntity{
 
     public function getIngredients(): array{
         return $this->getIndirectlyRelatedEntities("Ingredient", "IngredientRecipe"); 
+    }
+
+    public function getAverageGrade(){
+        $grade =null;
+
+        $i = 0;
+        $total = 0;
+        foreach($this->getGrades() as $grade){
+            $i++;
+            $total += $grade->getRating();
+        }
+        return $i == 0? null:$total/$i;
     }
 }

@@ -16,7 +16,7 @@ $(() => { // to delete an article
 
     // on peut mettre n'importe quel element js a la place de clik
     $(".orderLink").click((e) => {
-        var orderLink = $(e.target);
+        var orderLink = $(e.target.closest("tr"));
         titleOrderLine.empty();
         titleOrderLine.append("Détails");
         titleOrderLine.addClass(titleOrderLine);

@@ -1,27 +1,31 @@
 <?php
 
-class Orders extends BaseEntity{
+class Orders extends BaseEntity
+{
     private $idOrders;
     private $flag;
     private $dateCreation;
     private $idUsers;
 
-    
-    public function getOrderLines(): array{
+
+    public function getOrderLines(): array
+    {
         return $this->getRelatedEntities("OrderLine");
     }
-    
+
 
     // public function getUsers(): array{
     //     return $this->getRelatedEntities("Users");
     // }
 
-    
-    public function getUsers(): ?Users{
+
+    public function getUsers(): ?Users
+    {
         return $this->getRelatedEntity("Users");
     }
 
-    public function setUsers(Users $user){
+    public function setUsers(Users $user)
+    {
         $this->setRelatedEntity($user);
     }
 
@@ -105,6 +109,15 @@ class Orders extends BaseEntity{
         return $this;
     }
 
+    public function getTotal()
+    {
+        $total = 0;
 
-    
+        foreach ($this->getOrderLines() as $ol) {
+            $total += $ol->getSubTotal();
+        }
+
+        return $total;
+    }
+
 }

@@ -48,33 +48,67 @@ class ArticleController extends BaseEntityController
 
                 $file = fopen($fileName, "r");
                 while (($column = fgetcsv($file, 10000, ";")) != FALSE) {
-                    //           ArticleDao::importArticleWithCsv($column[0], $column[1], $column[2], $column[3], $column[4]);
+                    //ArticleDao::importArticleWithCsv($column[0], $column[1], $column[2], $column[3], $column[4]);
 
-                    $a = new Article();
-                    $a->setUnitQuantity($column[0]);
-                    $a->setFlag($column[1]);
-                    $a->setIdImage($column[2]);
-                    $a->setIdUnit($column[3]);
-                    $a->setIdProduct($column[4]);
+                    //check if unit exist and created it if not
+                    $unit = UnitDao::findOneBy('name',$column['10']);
+                    if($unit == null){
+                        $unit = new Unit();
+                        $unit->setName($column['10']);
+                        UnitDao::save($unit);
+                    }
+                    $idUnit = $unit->getId();
 
-                    ArticleDao::saveOrUpdate($a);
+                    //check if product exist and created it if not and if its a product and not a utensil
+                    $product = ProductDao::findOneBy('name', $column['7']);
+                    if($product == null && $column['7'] != null){
+                        $product = new Product();
+                        $product->setName($column['7']);
+                        ProductDao::save($product);
+                    }
+                    $idProduct = $product->getId();
 
-                    $idArticle = $a->getId();
+                    //check if article exist and created it if not
+                    $article = ArticleDao::findById($column['6']);
+                    if ($article == null){
+                        $article = new Article();
+                        $article->setId($column['6']);
+                        $article->setUnitQuantity($column['8']);
+                        $article->setFlag($column['9']);
+                        $article->setIdUnit($idUnit);
+                        $article->setIdProduct($idProduct);
+                        $article->setNameToDisplay($column['7']);
+                        ArticleDao::saveOrUpdate($article);
 
+                        $articlePrice= new ArticlePrice();
+                        $articlePrice->setDateStart($column['3']);
+                        $articlePrice->setPrice($column['2']);
+                        $articlePrice->setIdArticle($article->getId());
+                        ArticlePriceDao::saveOrUpdate($articlePrice);
+                    }
+                    $idArticle = $article->getId();
+
+                    //update others tables
+
+                    $lot = new Lot();
+                    $lot->setIdArticle($idArticle);
+                    $lot->setIdSupplierOrder($column['0']);
+                    $lot->setUnitCost($column['1']);
+                    $lot->setDateReception($column['5']);
+                    $lot->setQuantity($column['4']);
+                    LotDao::saveOrUpdate($lot);
+                    $idSupplier = $lot->getIdSupplierOrder();
+                    
                     $i = new Importation();
                     $i->setIdArticle($idArticle);
                     $i->setIdAdministrator(UsersController::getLoggedInUser()->getId());
-                    $i->setIdSupplierOrder($column[5]);
-                    //TO DO ---- PAS OPERATIONNEL
-                    //   ImportationDao::saveOrUpdate($i);
+                    $i->setIdSupplierOrder($idSupplier);
+                    ImportationDao::saveOrUpdate($i);
+              }
 
-                }
-
-                //   FormatUtil::dump($entity);
             }
-
-            header('Location:' . SiteUtil::url() . 'article/importation');
-            exit();
+            $templateVars = ['message' => 'Importsuccess'];
+            self::render($templateName,$templateVars);
         }
         static::render($templateName);
     }
