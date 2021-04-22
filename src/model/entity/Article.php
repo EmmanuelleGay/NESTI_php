@@ -74,8 +74,6 @@ class Article extends BaseEntity
     }
 
 
-
-
     public function getArticlePrices($options=[]): array
     {
         return $this->getRelatedEntities("ArticlePrice",$options);

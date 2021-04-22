@@ -6,9 +6,9 @@
 
 
     <?php
-    if (($_GET['message']??"") == 'success') : ?>
-        <div>Bravo</div>
-    <?php endif ?>
+    if (($_GET['message'] ?? "") == 'success') : 
+          echo "<div class='importSuccessMessage successMessage text-center fw-bold my-5 py-3 w-50'>Edition réussie</div>";
+     endif ?>
 
     <form class="d-flex justify-content-around" method="post" enctype="multipart/form-data" action="<?= $vars['baseUrl'] ?>article/edit/<?= $vars['entity']->getId() ?>">
 
@@ -39,15 +39,23 @@
                 <button type="reset" class="btn cancelBtn fs-5 px-5 mx-3 mt-3 mb-5">Annuler</button>
                 <button type="submit" class="btn validButton fs-5 px-5 mt-3 mb-5">Valider</button>
             </div>
-
         </div>
         <div>
 
-            <img src="" alt="">
+            <div>
+                <?php
+                if ($vars['entity']->getImage() != null) { ?>
+                    <img class="mb-3 photo" src="<?= $vars['baseUrl'] ?>/public/images/articles/<?= $vars['entity']->getImage()->getName() . '.' . $vars['entity']->getImage()->getFileExtension() ?>" alt="image de l'article">
+                <?php } else { ?>
+                    <img class="mb-3 photo" src="<?= $vars['baseUrl'] ?>/public/images/noImage.jpg" alt="image de l'article">
+                <?php }
+                ?>
+
+            </div>
             <div>Télécharger une nouvelle image</div>
-            <input type="file" name="Recipe[linkImage]" class="form-control" id="nameRecipe">
+            <input type="file" name="linkImage" class="form-control" id="nameArticle">
         </div>
-        <input type="hidden" name="Recipe[flag]" value="a">
+        <input type="hidden" name="Article[flag]" value="a">
 
     </form>
 

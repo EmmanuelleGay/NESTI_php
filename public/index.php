@@ -33,11 +33,14 @@ if (UsersController::getLoggedInUser() != null) {
         case 'statistics':
             StatisticsController::processAction();
             break;
+            case 'users':
+                UsersController::processAction();
+                break;
         case '':
             RecipeController::processAction('list');
             break;
         default:
-            UsersController::processAction('');
+            BaseController::processAction('error');
     }
 } else {
     UsersController::processAction('login');

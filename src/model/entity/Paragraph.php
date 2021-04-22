@@ -13,6 +13,7 @@ class Paragraph extends BaseEntity{
 
     public function setRecipe(Recipe $r){
         $this->setRelatedEntity($r);
+        return $this;
     }
 
 

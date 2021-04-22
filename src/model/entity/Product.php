@@ -58,4 +58,12 @@ class Product extends BaseEntity{
     public function makeIngredient(){
         return $this->makeChildEntity("Ingredient");
     }
+
+    public function isIngredient(){
+        return $this->getIngredient()!=null;
+    }
+
+    public function getType(){
+        return $this->isIngredient() ? 'ingrédient' : 'ustensil';
+    }
 }

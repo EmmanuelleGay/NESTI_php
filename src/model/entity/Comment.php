@@ -201,4 +201,15 @@ class Comment extends BaseEntity{
 
         return $this;
     }
+
+    public function getState(){
+        $state = "Approuvé";
+        if($this->getFlag()=='w'){
+            $state = "En attente";
+        }
+        else if ($this->getFlag()=='b'){
+            $state = "Bloqué";
+        }
+        return $state ;
+    }
 }

@@ -14,8 +14,8 @@ class Recipe extends BaseEntity{
     public function getComments(): array{
         return $this->getRelatedEntities("Comment");
     }
-    public function getParagraphs(): array{
-        return $this->getRelatedEntities("Paragraph");
+    public function getParagraphs($options=[]): array{
+        return $this->getRelatedEntities("Paragraph",$options);
     }
     public function getIngredientRecipes(): array{
         return $this->getRelatedEntities("IngredientRecipe");

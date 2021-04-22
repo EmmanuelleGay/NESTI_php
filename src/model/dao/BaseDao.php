@@ -18,7 +18,7 @@ class BaseDao
      */
     public static function getTableName(): String
     {
-        return strtolower(static::getEntityClass());
+        return 'nes_ad_' . strtolower(static::getEntityClass());
     }
 
     /**

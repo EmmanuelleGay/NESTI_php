@@ -99,6 +99,10 @@ color: var(--primary-dark);
     background-color: #ECECEC;
 }
 
+.photo{
+    max-height: 300px;
+}
+
 /* -------------------------------------header-----------------------------------*/
 .navbar{
     background-color: #005662;
@@ -135,7 +139,6 @@ color: var(--primary-dark);
     height:100%
 }
 
-
 .successMessage{
     background-color: var(--green-color);
 }
@@ -144,3 +147,4 @@ color: var(--primary-dark);
     background-color: var(--red-color);
     color: white;
 }
+

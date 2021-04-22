@@ -35,9 +35,9 @@
                     <tr class="orderLink" data-id="<?= $order->getId(); ?>">
                         <td class="align-middle"><?= $order->getId(); ?></td>
                         <td class="align-middle"><?= $order->getUsers()->getFirstName() . " " . $order->getUsers()->getLastName(); ?></td>
-                        <td class="align-middle"><?= "somme a faire"; ?></td>
+                        <td class="align-middle"><?= $order->getTotal() ." €"?></td>
                         <td class="align-middle"><?= FormatUtil::formatDate($order->getDateCreation()); ?></td>
-                        <td class="align-middle"><?= $order->getFlag(); ?></td>
+                        <td class="align-middle"><?= $order->getState(); ?></td>
                     </tr>
                 <?php } ?>
 

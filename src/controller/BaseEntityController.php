@@ -53,6 +53,12 @@ class BaseEntityController extends BaseController
         $vars = array_merge($vars, [
             'entity' =>  static::getEntity(),
             'templatePath' => SiteUtil::toAbsolute() . PATH_TEMPLATE . $templates['action'] . ".php",
+            //on peut mettre toutes les variables nécessaires dans JS
+            'jsVars' => [
+                'entity' => [
+                    'id' =>  static::getEntity()->getId()
+                ]
+            ]
         ]);
     }
 

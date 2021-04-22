@@ -45,3 +45,10 @@ height: 100%;
 .containerAddIngredient{
     margin-left: 3em;
 }
+
+.createButton{
+    background-color: white;
+    width: 90%;
+    justify-self: end;
+}
+

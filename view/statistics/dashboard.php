@@ -1,3 +1,18 @@
+<?php if(
+    (UsersController::getLoggedInUser()->isModerator() == true && UsersController::getLoggedInUser()->isAdministrator()==false)
+    ||
+    (UsersController::getLoggedInUser()->isChef() == true && UsersController::getLoggedInUser()->isAdministrator()==false)
+
+){
+    ?>
+    <h1 class="m-5">Accès interdit</h1>
+     <div class="mx-5 fst-italic">Vous n'avez pas les droits pour accéder à cette page</div>
+ <?php }
+ else {
+ ?>
+ 
+
+
 <div class="container-fluid">
     <div class="d-flex border justify-content-around">
         <div id="chartOrder"></div>
@@ -113,3 +128,5 @@
     </div>
 
 </div>
+
+<?php }

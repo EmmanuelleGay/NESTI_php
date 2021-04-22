@@ -4,10 +4,11 @@
         <p class="linkHead"> Utilisateur</p>
     </div>
     <?php
-    if (($_GET['message'] ??"") == 'success') : ?>
+    if (($_GET['message'] ?? "") == 'success') : ?>
         <div class="successMessage text-center w-25 mx-auto my-3 py-3">Vos modifications ont bien été enregistrées</div>
     <?php endif ?>
 
+    <!------------------------------------ Edition of user------------------------- -->
     <div class="container d-flex justify-content-between">
 
         <form class="d-flex justify-content-around mx-5" method="post" action="<?= $vars['baseUrl'] ?>users/edit/<?= $vars['entity']->getId() ?>">
@@ -153,3 +154,102 @@
 
         <?php } ?>
     </div>
+
+    <!------------------------------------ users' orders------------------------- -->
+    <div class="my-5 orders p-5">
+        <h1 class="h1 mt-4">Ses commandes</h1>
+        <div class="fst-italic">Consultation des commandes</div>
+
+        <?php
+        include(__DIR__ . '/../common/searchbar.php');
+        ?>
+        <div class="d-flex justify-content-around">
+            <table class="table table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th class="align-middle" scope="col">ID</th>
+                        <th class="align-middle" scope="col">Utilisateur</th>
+                        <th class="align-middle" scope="col">Montant</th>
+                        <th class="align-middle" scope="col">Nombre d'article</th>
+                        <th class="align-middle" scope="col">Date</th>
+                        <th class="align-middle" scope="col">Etat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($vars['userOrders'] as $order) {
+
+                    ?>
+                        <tr class="orderLink" data-id="<?= $order->getId(); ?>">
+                            <td class="align-middle"><?= $order->getId(); ?></td>
+                            <td class="align-middle"><?= $order->getUsers()->getFirstName() . " " . $order->getUsers()->getLastName(); ?></td>
+                            <td class="align-middle"><?= $order->getTotal() . " €" ?></td>
+                            <td class="align-middle"><?= $order->getQuantity(); ?></td>
+                            <td class="align-middle"><?= FormatUtil::formatDate($order->getDateCreation()); ?></td>
+                            <td class="align-middle"><?= $order->getState(); ?></td>
+                        </tr>
+                    <?php } ?>
+
+
+
+                </tbody>
+            </table>
+
+            <div class="mx-5 DetailsArticle">
+                <div class="d-flex justify-content-between mb-2">
+                    <h2 id="titleOrderLine"></h2>
+                    <div id="numberOrderContainer"></div>
+                </div>
+                <div id="orderLinesContainer"></div>
+            </div>
+        </div>
+
+
+    </div>
+    <!------------------------------------users' comment------------------------- -->
+    <div class="my-5 p-5">
+        <h1 class="h1 mt-4">Ses commentaires</h1>
+        <div class="fst-italic">Modération des commentaires</div>
+
+
+
+        <table class="table table-hover table-sm commentTable">
+            <thead>
+                <tr>
+                    <th class="align-middle" scope="col">ID</th>
+                    <th class="align-middle" scope="col">Titre</th>
+                    <th class="align-middle" scope="col">Recette</th>
+                    <th class="align-middle" scope="col">Contenu</th>
+                    <th class="align-middle" scope="col">Date</th>
+                    <th class="align-middle" scope="col">Etat</th>
+                    <th class="align-middle" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($vars['userComments'] as $comments) {
+
+                ?>
+                    <tr>
+                        <td class="align-middle"><?= $comments->getIdRecipe(); ?></td>
+                        <td class="align-middle"><?= $comments->getCommentTitle() ?></td>
+                        <td class="align-middle"><?= $comments->getRecipe()->getName() ?></td>
+                        <td class="align-middle"><?= $comments->getCommentContent() ?></td>
+                        <td class="align-middle"><?= $comments->getDateCreation() ?></td>
+                        <td class="align-middle statusCell"><?= $comments->getState() ?></td>
+
+                        <td class="align-middle">
+                            <a class="editBtn" data-idrecipe="<?= $comments->getIdRecipe() ?>" data-iduser="<?= $comments->getIdUsers() ?>" data-blocks="false" href="javascript:void(0)">Approuver</a>
+                            <br>
+                             <a class="editBtn" data-idrecipe="<?= $comments->getIdRecipe() ?>" data-iduser="<?= $comments->getIdUsers() ?>" data-blocks="true" href="javascript:void(0)" >Bloquer</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>

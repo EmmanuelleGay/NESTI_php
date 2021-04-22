@@ -1,3 +1,13 @@
+<?php if(UsersController::getLoggedInUser()->isModerator() == true && UsersController::getLoggedInUser()->isAdministrator()==false ){
+?>
+   <h1 class="m-5">Accès interdit</h1>
+    <div class="mx-5 fst-italic">Vous n'avez pas les droits pour accéder à cette page</div>
+<?php }
+else {
+
+?>
+
+
 <div class="container d-flex flex-column">
 
     <h1 class="h1 mt-4">Recettes</h1>
@@ -58,10 +68,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Suppression d'un utilisateur</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Suppression d'une recette</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"> => 
                     Attention, cette action est définitive et irréversible.
                 </div>
                 <div class="modal-footer">
@@ -74,3 +84,5 @@
         </div>
     </div>
 </div>
+
+<?php }

@@ -61,3 +61,11 @@ height: 100%;
     color: white;
     background-color: rgb(79, 178, 190);
 }
+
+.orders{
+    background-color:rgb(243, 239, 239) ;
+}
+
+.DetailsArticle{
+    min-width: 25vw;
+}

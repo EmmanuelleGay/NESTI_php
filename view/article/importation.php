@@ -7,11 +7,14 @@
 
 
 
-<?php if (@$vars['message']== 'Importsuccess'){
-     echo "<div class='importSuccessMessage successMessage text-center fw-bold my-5 py-3'>Importation réussie</div>";
-}?>
+    <?php if (!empty($vars['lineImportations'])) {
+        echo "<div class='importSuccessMessage successMessage text-center fw-bold my-5 py-3'>Importation réussie</div>";
+    } else if (($vars['message'] ?? "") == 'ImportFailed') {
+        echo "<div class='importSuccessMessage warningMessage text-center fw-bold my-5 py-3'>L'importation a échoué</div>";
+    }
+    ?>
 
-<h1>Importation</h1>
+    <h1>Importation</h1>
     <div class="container d-flex justify-content-between">
 
         <form method="post" action="<?= $vars['baseUrl'] ?>article/importation" enctype="multipart/form-data">
@@ -24,10 +27,29 @@
 
         </form>
 
-        <div class="mx-5 informationImportation">
-            <h2>Liste des articles importés</h2>
+        <?php
+        if (!empty($vars['lineImportations'])) {
+        ?>
+            <div class="mx-5 informationImportation">
+                <h2>Liste des articles importés</h2>
+                <div class="row d-flex">
+                    <?php
+                    foreach ($vars['lineImportations'] as $line) {
+                    ?>
+                    <div class = "col-md-4 justify-content-between"><?= $line["article"]?></div>
+                    <div class ="col-md-4 justify-content-between"><?= $line["stock"]?></div>
+                    <a class="col-md-4 editBtn" href="<?=$vars['baseUrl']?>article/edit/<?=$line["idArticle"]?>">Editer</a>
+                    
+                    
+                    
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+        <?php
+        }
 
-        </div>
-
+        ?>
 
     </div>

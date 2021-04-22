@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\TextUI\XmlConfiguration\Php;
 use Symfony\Component\Form\Util\FormUtil;
 
 ini_set('display_errors', 1);
@@ -9,6 +10,8 @@ error_reporting(E_ALL);
 
 include(__DIR__ . '/../config/constant.php');
 include(__DIR__ . '/../src/tools/SiteUtil.php');
+
+
 
 
 $article = articleDao::findById(1);

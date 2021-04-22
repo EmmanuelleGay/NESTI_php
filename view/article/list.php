@@ -1,3 +1,17 @@
+<?php if(
+    (UsersController::getLoggedInUser()->isModerator() == true && UsersController::getLoggedInUser()->isAdministrator()==false)
+    ||
+    (UsersController::getLoggedInUser()->isChef() == true && UsersController::getLoggedInUser()->isAdministrator()==false)
+
+){
+?>
+   <h1 class="m-5">Accès interdit</h1>
+    <div class="mx-5 fst-italic">Vous n'avez pas les droits pour accéder à cette page</div>
+<?php }
+else {
+?>
+
+
 <div class="container d-flex flex-column">
 
     <h1 class="h1 mt-4">Articles</h1>
@@ -34,8 +48,10 @@
                 <tr>
                     <td class="align-middle"><?=$article->getId(); ?></td>
                     <td class="align-middle"><?= $article->getProduct()->getName(); ?></td>
-                    <td class="align-middle"><?= $article->getLastPrice(); ?></td>
-                    <td class="align-middle">ingrédient</td>
+                    <td class="align-middle"><?= $article->getLastPrice() . ' €'; ?></td>
+              
+
+                    <td class="align-middle"><?= $article->getProduct()->getType()?></td>
                     <td class="align-middle"><?= FormatUtil::formatDate($article->getDateModification()); ?></td>
 
                     <td class="align-middle"><?= $article->getStockByArticle() ?></td>
@@ -61,7 +77,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Suppression d'un utilisateur</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Suppression d'un article</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -78,3 +94,5 @@
     </div>
 
 </div>
+
+<?php }

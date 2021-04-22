@@ -28,7 +28,7 @@ class Users extends BaseEntity
 
     public function getComments(): array
     {
-        return $this->getRelatedEntities("Comment", BaseDao::FLAGS['active']);
+        return $this->getRelatedEntities("Comment");
     }
 
     // public function getRecipes(): array

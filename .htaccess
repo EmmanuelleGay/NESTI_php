@@ -1,6 +1,8 @@
 RewriteEngine ON
 
-RewriteRule ^([a-zA-Z]*)$                           public/index.php?loc=$1 [L]
+RewriteRule ^([a-zA-Z]*)$                               public/index.php?loc=$1 [L]
 RewriteRule ^([a-zA-Z]*)/([a-zA-Z]*)$                   public/index.php?loc=$1&action=$2 [L]
 RewriteRule ^([a-zA-Z]*)/([a-zA-Z]*)/([0-9]*)$          public/index.php?loc=$1&action=$2&id=$3 [L]
 RewriteRule ^([a-zA-Z]*)/([a-zA-Z]*)/([0-9]*)/(.*)$     public/index.php?loc=$1&action=$2&id=$3&message=$4 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^.*$                                        public/index.php?loc=error [L]

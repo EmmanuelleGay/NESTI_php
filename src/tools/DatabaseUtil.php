@@ -24,7 +24,7 @@ class DatabaseUtil
 
         if (self::$conn == null) {
             $address = $_SERVER['SERVER_NAME']; // get host address, without the port
-
+          
             if (isset(self::$connectionParameters[$address])) { 
                 $parameters = self::$connectionParameters[$address];
             } else {

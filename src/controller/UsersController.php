@@ -20,10 +20,14 @@ class UsersController extends BaseEntityController
         if (isset($_POST['Users'])) {
 
             $candidate = UsersDao::findOneBy('login', $_POST['Users']['login'], BaseDao::FLAGS['active']);
-
+  
             if ($candidate != null && $candidate->isPassword($_POST['Users']['password'])) {
 
                 self::setLoggedInUser($candidate, $_POST['Users']['password']);
+                $log = new ConnectionLog();
+                $log->setIdUsers($candidate->getId());
+                ConnectionLogDao::save($log);
+
                 header('Location: ' . SiteUtil::url() . 'recipe/list');
 
                 exit();
@@ -37,7 +41,6 @@ class UsersController extends BaseEntityController
     public static function logout()
     {
         self::setLoggedInUser(null);
-        //  header('Location:'.SiteUtil::url().'users/login');
         $templateVars = ['message' => 'disconnect'];
         self::render(['action' => 'login', 'base' => 'users/baseLogin'], $templateVars);
     }
@@ -102,6 +105,11 @@ class UsersController extends BaseEntityController
     {
         $templateName = 'edit';
         $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
+
+        static::render($templateName, [
+            'userOrders' =>  self::getEntity()->getOrders(),
+            'userComments' => self::getEntity()->getComments()
+        ]);
 
         if (isset($_POST['Users'])) {
             $isvalid = true;
@@ -183,4 +191,33 @@ class UsersController extends BaseEntityController
         self::render($templateName, $templateVars);
     }
 
+    public static function approveComment()
+    {
+      //  $idcomment =  SiteUtil::getUrlParameters()[2];
+     //   $entity = static::getEntity();
+        // static::getEntity()->setFlag('a');
+        // static::getDao()::saveOrUpdate(static::getEntity());
+
+   //     header('Location: ' . SiteUtil::url() . 'users/edit'.$entity->getId());
+    }
+
+    public static function blockComment()
+    {
+        $entity = static::getEntity();
+        $idRecipe =  SiteUtil::getUrlParameters()[2] ?? "";
+        FormatUtil::dump("test".   $idRecipe );
+        header('Location: ' . SiteUtil::url() . 'users/edit/' .$entity->getId());
+    }
+
+    public static function moderateComment(){
+
+        $comment = CommentDao::findOne(["idRecipe"=>$_POST["idrecipe"],"idUsers"=>$_POST["iduser"] ]);
+        $flag = "error";
+        if ($comment!=null){
+            $flag = $_POST["blocks"]=="true"?"b":"a";
+            $comment->setFlag($flag);
+            CommentDao::saveOrUpdate($comment);
+        }
+        echo json_encode($flag);
+    }
 }

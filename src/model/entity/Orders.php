@@ -57,6 +57,7 @@ class Orders extends BaseEntity
         return $this->flag;
     }
 
+
     /**
      * Set the value of flag
      *
@@ -119,5 +120,26 @@ class Orders extends BaseEntity
 
         return $total;
     }
+
+
+    public function getState(){
+        $state = "Payé";
+        if($this->getFlag()=='w'){
+            $state = "En attente";
+        }
+        else if ($this->getFlag()=='b'){
+            $state = "Annulé";
+        }
+        return $state ;
+    }
+
+    public function getQuantity(){
+        $quantity=0;
+        foreach($this->getOrderLines() as $ol){
+            $quantity += $ol->getQuantity();
+        }
+        return $quantity;
+    }
+
 
 }

@@ -7,9 +7,10 @@ class ArticleDao extends BaseDao
     public static function findStockById($idArticle)
     {
         $pdo = DatabaseUtil::getConnection();
+        $tablename = LotDao::getTableName();
 
         $idArticle = [$idArticle];
-        $sql = $pdo->prepare("SELECT SUM(quantity) FROM lot WHERE idArticle=?");
+        $sql = $pdo->prepare("SELECT SUM(quantity) FROM ".$tablename." WHERE idArticle=?");
         $sql->execute($idArticle);
 
         $idArticle = $sql->fetch();
@@ -37,7 +38,7 @@ class ArticleDao extends BaseDao
 
     public static function importArticleWithCsv($unitQuantity, $flag, $idImage, $idUnit, $idProduct)
     {
-      
+
 
 
         // $pdo = DatabaseUtil::getConnection();
@@ -52,6 +53,6 @@ class ArticleDao extends BaseDao
         //     $idProduct
         // ));
 
-        
+
     }
 }

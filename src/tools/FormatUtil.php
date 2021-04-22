@@ -107,11 +107,15 @@ class FormatUtil
     {
         $result = "";
         if ($date != null) {
-            setlocale(LC_TIME, "fr_FR.utf8", "French");
-            $result = utf8_encode(strftime('%d %B %Y %Hh%M', strtotime($date)));
+            setlocale(LC_TIME, "fr_FR.UTF-8", "French");
+            $result = strftime('%d %B %Y %Hh%M', strtotime($date));
         } else {
             $result = "-";
         }
         return $result;
+    }
+
+    public static function translateDate($date){
+      
     }
 }

@@ -1,15 +1,13 @@
-
-
-$(() => { // to delete an article
+$(() => {
+    // to delete an article
     $("#deleteModal").on("show.bs.modal", (e) => {
         var button = $(e.relatedTarget);
         var id = button.data("id");
         $("#confirmDelete").attr("href", baseUrl + "/article/confirmDelete/" + id);
     });
 
-    
-    // to show order details when clicking on order
 
+    // to show order details when clicking on order
     let numberOrderContainer = $("#numberOrderContainer"); // a la place du query selector pour recup la div
     let orderLineContainer = $("#orderLinesContainer");
     let titleOrderLine = $("#titleOrderLine")
