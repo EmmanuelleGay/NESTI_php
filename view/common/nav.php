@@ -9,23 +9,23 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav w-100 justify-content-around ">
         <li class="nav-item">
-          <a class="nav-link btn-nav white text-center" aria-current="page" href="<?= $vars['baseUrl'] ?>recipe">
+          <a class="<?=($vars['controllerSlug']=='recipe')?'active':'';?> nav-link btn-nav white text-center" aria-current="page" href="<?= $vars['baseUrl'] ?>recipe">
             <i class="fas fa-clipboard-list white"></i>
             Recettes</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>article">
+          <a class="<?=($vars['controllerSlug']=='article')?'active':'';?> nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>article">
             <i class="fas fa-utensils white"></i>
             Articles</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>users">
+          <a class="<?=($vars['controllerSlug']=='users')?'active':'';?> nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>users">
             <i class="fas fa-users white"></i>
             Utilisateurs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>statistics">
+          <a class="<?=($vars['controllerSlug']=='statistics')?'active':'';?> nav-link btn-nav white text-center" href="<?= $vars['baseUrl'] ?>statistics">
             <i class="fas fa-chart-bar white"></i>
             Statistiques
           </a>
@@ -37,7 +37,7 @@
     <div class="nav-link mt-3">
       <i class="far fa-user"></i>
       <?php
-      echo  $vars['loggedInUser']->getFirstName() . " " .  $vars['loggedInUser']->getLastName();
+      echo $vars['loggedInUser']->getFirstName() . " " .  $vars['loggedInUser']->getLastName();
       ?>
     </div>
   </div>

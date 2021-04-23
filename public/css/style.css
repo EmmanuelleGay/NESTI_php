@@ -113,7 +113,9 @@ color: var(--primary-dark);
     padding: 5%;
     color: white;
     font-weight: 600;
-    width: 7vw;
+    width: 8vw;
+    white-space: nowrap;
+   
 }
 
 .nav-link:hover * {
@@ -122,6 +124,10 @@ color: var(--primary-dark);
 
 .nav-link.btn-nav.white{
     transition-duration: 0s;
+}
+
+.navbar .active{
+    background-color: var(--secondary-dark);
 }
 
 

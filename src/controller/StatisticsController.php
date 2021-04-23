@@ -12,6 +12,18 @@ class StatisticsController extends BaseController
             get_called_class()::dashboard(); // else call default one
     }
 
+
+
+    public static function setupTemplateVars(&$vars, &$templates)
+    {
+        parent::setupTemplateVars($vars, $templates);
+
+        // Add shared parameters to the existing ones
+        $vars = array_merge($vars, [
+            'controllerSlug' =>  "statistics"
+        ]);
+    }
+
     public static function dashboard()
     {
         ConnectionLogDao::findAll(["HOUR(dateConnection)"]);
