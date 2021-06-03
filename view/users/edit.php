@@ -3,10 +3,25 @@
         <a href="<?= $vars['baseUrl'] ?>users" class="linkHead">Utilisateur > </a>
         <p class="linkHead"> Utilisateur</p>
     </div>
+
     <?php
     if (($_GET['message'] ?? "") == 'success') : ?>
-        <div class="successMessage text-center w-25 mx-auto my-3 py-3">Vos modifications ont bien été enregistrées</div>
-    <?php endif ?>
+        <div class="successMessage text-center w-25 mx-auto my-3 py-3">Vos informations ont bien été enregistrées</div>
+    <?php endif ;
+
+if (@$vars['message'] == 'errorFormLogin') {
+    echo "<div class='errorMessage text-center w-25 mx-auto my-3 py-3'>Un compte utilisateur existe déjà avec ce login</div>";
+}
+
+if (@$vars['message'] == 'errorFormEmail') {
+    echo "<div class='errorMessage text-center w-25 mx-auto my-3 py-3'>Un compte utilisateur existe déjà avec cet email</div>";
+}
+
+if (@$vars['message'] == 'strongPassword') {
+    echo "<div class='errorMessage text-center w-25 mx-auto my-3 py-3'>Le mot de passe saisi n'est pas assez fort</div>";
+}
+
+?>
 
     <!------------------------------------ Edition of user------------------------- -->
     <div class="container d-flex justify-content-between">
@@ -23,8 +38,9 @@
                 <h1><?= $title ?></h1>
 
                 <div class="align-items-center mt-5 mb-3">
+                    
                     <label for="lastName">Nom</label>
-                    <div><input type="text" name="Users[lastName]" class="form-control" id="lastName" value="<?= $vars['entity']->getLastName() ?>" required></div>
+                    <div><input type="text" name="Users[lastName]" class="form-control" id="lastName" value="<?= $vars['entity']->getLastName() ?>" required maxlength="50" minlength="2"></div>
                 </div>
                 <div class="align-items-center mb-3">
                     <label for="firstName">Prénom</label>
@@ -95,6 +111,7 @@
                         <small id="passwordHelpInline" class="text-muted">
                             Entre 8 et 20 caractères, dont au moins une lettre, un chiffre et un caractère spécial.
                         </small>
+                        <div id="passwordStrenght"></div>
                     </div>
 
                 <?php } ?>
@@ -152,7 +169,7 @@
                 <a href="#" class=" btn buttonPassword border my-2 px-5 w-100">Réinitialisation du mot de passe</a>
             </div>
 
-        <?php } ?>
+
     </div>
 
     <!------------------------------------ users' orders------------------------- -->
@@ -161,7 +178,7 @@
         <div class="fst-italic">Consultation des commandes</div>
 
         <?php
-        include(__DIR__ . '/../common/searchbar.php');
+            include(__DIR__ . '/../common/searchbar.php');
         ?>
         <div class="d-flex justify-content-around">
             <table class="table table-hover table-sm">
@@ -177,18 +194,20 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($vars['userOrders'] as $order) {
-
+          //          if (!empty($vars['userOrders'])) {
+                        foreach ($vars['entity']->getOrders() as $order) {
                     ?>
-                        <tr class="orderLink" data-id="<?= $order->getId(); ?>">
-                            <td class="align-middle"><?= $order->getId(); ?></td>
-                            <td class="align-middle"><?= $order->getUsers()->getFirstName() . " " . $order->getUsers()->getLastName(); ?></td>
-                            <td class="align-middle"><?= $order->getTotal() . " €" ?></td>
-                            <td class="align-middle"><?= $order->getQuantity(); ?></td>
-                            <td class="align-middle"><?= FormatUtil::formatDate($order->getDateCreation()); ?></td>
-                            <td class="align-middle"><?= $order->getState(); ?></td>
-                        </tr>
-                    <?php } ?>
+                            <tr class="orderLink" data-id="<?= $order->getId(); ?>">
+                                <td class="align-middle"><?= $order->getId(); ?></td>
+                                <td class="align-middle"><?= $order->getUsers()->getFirstName() . " " . $order->getUsers()->getLastName(); ?></td>
+                                <td class="align-middle"><?= $order->getTotal() . " €" ?></td>
+                                <td class="align-middle"><?= $order->getQuantity(); ?></td>
+                                <td class="align-middle"><?= FormatUtil::formatDate($order->getDateCreation()); ?></td>
+                                <td class="align-middle"><?= $order->getState(); ?></td>
+                            </tr>
+                    <?php }
+        //            }
+                    ?>
 
 
 
@@ -227,29 +246,30 @@
             </thead>
             <tbody>
                 <?php
-                foreach ($vars['userComments'] as $comments) {
+                    foreach ($vars['entity']->getComments() as $comments) {
 
                 ?>
-                    <tr>
-                        <td class="align-middle"><?= $comments->getIdRecipe(); ?></td>
-                        <td class="align-middle"><?= $comments->getCommentTitle() ?></td>
-                        <td class="align-middle"><?= $comments->getRecipe()->getName() ?></td>
-                        <td class="align-middle"><?= $comments->getCommentContent() ?></td>
-                        <td class="align-middle"><?= $comments->getDateCreation() ?></td>
-                        <td class="align-middle statusCell"><?= $comments->getState() ?></td>
+                        <tr>
+                            <td class="align-middle"><?= $comments->getIdRecipe(); ?></td>
+                            <td class="align-middle"><?= $comments->getCommentTitle() ?></td>
+                            <td class="align-middle"><?= $comments->getRecipe()->getName() ?></td>
+                            <td class="align-middle"><?= $comments->getCommentContent() ?></td>
+                            <td class="align-middle"><?= $comments->getDateCreation() ?></td>
+                            <td class="align-middle statusCell"><?= $comments->getState() ?></td>
 
-                        <td class="align-middle">
-                            <a class="editBtn" data-idrecipe="<?= $comments->getIdRecipe() ?>" data-iduser="<?= $comments->getIdUsers() ?>" data-blocks="false" href="javascript:void(0)">Approuver</a>
-                            <br>
-                             <a class="editBtn" data-idrecipe="<?= $comments->getIdRecipe() ?>" data-iduser="<?= $comments->getIdUsers() ?>" data-blocks="true" href="javascript:void(0)" >Bloquer</a>
-                        </td>
-                    </tr>
-                <?php } ?>
+                            <td class="align-middle">
+                                <a class="editBtn" data-idrecipe="<?= $comments->getIdRecipe() ?>" data-iduser="<?= $comments->getIdUsers() ?>" data-blocks="false" href="javascript:void(0)">Approuver</a>
+                                <br>
+                                <a class="editBtn" data-idrecipe="<?= $comments->getIdRecipe() ?>" data-iduser="<?= $comments->getIdUsers() ?>" data-blocks="true" href="javascript:void(0)">Bloquer</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
 
             </tbody>
         </table>
 
     </div>
-
+<?php 
+            } ?>
 
 </div>

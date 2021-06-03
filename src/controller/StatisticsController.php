@@ -72,7 +72,6 @@ class StatisticsController extends BaseController
             $day = intval($date->format('d'));
             $orders = OrdersDao::findAll(["dateCreation >" => $startDate->format('Y-m-d H:i:s'), "DAY(dateCreation)" => $day, "flag" => "a"]);
             $lots = LotDao::findAll(["dateReception >" => $startDate->format('Y-m-d H:i:s'), "DAY(dateReception)" => $day]);
-            //        $purchaseTotal = 0;
 
             $soldTotal = 0;
             foreach ($orders as $order) {
@@ -87,7 +86,6 @@ class StatisticsController extends BaseController
 
             $purchasedTotalByDay[] = $purchasedTotal;
         }
-
 
 
         $articleSales = [];
@@ -131,12 +129,17 @@ class StatisticsController extends BaseController
         // to have the top of recipe by grade
         $recipesByGrade =  RecipeDao::findAll();
 
-        usort($recipesByGrade, function ($r1, $r2) {
-            // average grade could be null if recipe has no grade, so use null coalescing operator with 0 if null
-            return ($r2->getAverageGrade() ?? 0) <=> ($r1->getAverageGrade() ?? 0);
-        });
 
-        $recipesByGrade = array_slice($recipesByGrade, 0, 10);
+        $modelRecipe = new recipe();
+        $recipesByGrade = $modelRecipe->getTopOfRecipeByGrade();
+
+// la procédure stockée évite de faire le code ci dessous puisqu'on obtient déjà les résultats précis que l'on souhaite
+        // usort($recipesByGrade, function ($r1, $r2) {
+        //     // average grade could be null if recipe has no grade, so use null coalescing operator with 0 if null
+        //     return ($r2->getAverageGrade() ?? 0) <=> ($r1->getAverageGrade() ?? 0);
+        // });
+
+     //    $recipesByGrade = array_slice($recipesByGrade, 0, 10);
 
         $articlesOutOfStock =  array_filter(ArticleDao::findAll(), function($a){ return $a->getStock() == 0; });
       

@@ -113,7 +113,7 @@ color: var(--primary-dark);
     padding: 5%;
     color: white;
     font-weight: 600;
-    width: 8vw;
+    min-width: 8vw; 
     white-space: nowrap;
    
 }

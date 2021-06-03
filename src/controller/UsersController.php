@@ -41,6 +41,8 @@ class UsersController extends BaseEntityController
     public static function logout()
     {
         self::setLoggedInUser(null);
+        setcookie("user[login]", null, 2147483647, '/');
+        setcookie("user[password]", null, 2147483647, '/');
         $templateVars = ['message' => 'disconnect'];
         self::render(['action' => 'login', 'base' => 'users/baseLogin'], $templateVars);
     }
@@ -49,9 +51,9 @@ class UsersController extends BaseEntityController
     /**
      * Get the value of user
      */
-    public static function getLoggedInUser()
+    public static function getLoggedInUser($refresh = false)
     {
-        if (self::$loggedInUser == null &&  isset($_COOKIE['user'])) {
+        if ($refresh ||  self::$loggedInUser == null && isset($_COOKIE['user']['login']) && isset($_COOKIE['user']['password']) ) {
             $candidate = UsersDao::findOneBy('login', $_COOKIE['user']['login'], 'a');
             if ($candidate != null && $candidate->isPassword($_COOKIE['user']['password'])) {
                 self::$loggedInUser = $candidate;
@@ -106,25 +108,38 @@ class UsersController extends BaseEntityController
         $templateName = 'edit';
         $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
 
-        static::render($templateName, [
-            'userOrders' =>  self::getEntity()->getOrders(),
-            'userComments' => self::getEntity()->getComments()
-        ]);
+       
 
         if (isset($_POST['Users'])) {
             $isvalid = true;
 
+            $entity = static::getEntity();
 
             //check if city is valid and exist, create it if not
-            // if (!FormValidator::letters($_POST["Users"]["city"])) {
-            //     $isvalid = false;
-            // }
+      
             if ($isvalid == true) {
                 $city = CityDao::findOneBy('name', $_POST["Users"]["city"]);
                 if ($city == null) {
                     $city = new City();
                     $city->setName($_POST['Users']['city']);
                     CityDao::save($city);
+                }
+            }
+
+            
+            if($isvalid && $entity->getId()== ""){
+                $user = UsersDao::findOneBy('login', $_POST["Users"]['login']);
+                if ($user){
+                    $isvalid = false;
+                    $templateVars = ['message' => 'errorFormLogin'];
+                }
+            }
+
+            if($isvalid && $entity->getId()== ""){
+                $user = UsersDao::findOneBy('email', $_POST["Users"]['email']);
+                if ($user){
+                    $isvalid = false;
+                    $templateVars = ['message' => 'errorFormEmail'];
                 }
             }
 
@@ -135,18 +150,23 @@ class UsersController extends BaseEntityController
                     !FormValidator::letters($_POST["Users"]["lastName"]) ||
                     !FormValidator::letters($_POST["Users"]["firstName"]) ||
                     !FormValidator::email($_POST["Users"]["email"]) ||
-                    !FormValidator::numbers($_POST["Users"]["zipCode"])
+                    !FormValidator::numbers($_POST["Users"]["zipCode"]) 
 
                 ) {
                     $isvalid = false;
                     $templateVars = ['message' => 'errorForm'];
-                    echo 'FALSE';
+                }
+
+
+                if(!FormValidator::strong($_POST["Users"]["password"]) && $entity->getId()== ""){
+                    $isvalid = false;
+                    $templateVars = ['message' => 'strongPassword'];
                 }
 
                 //insert other field
                 if ($isvalid) {
 
-                    $entity = static::getEntity();
+                
 
                     //hash password before insert for a new user
                     if ($entity->getId() == "") {

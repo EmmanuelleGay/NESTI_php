@@ -1,6 +1,7 @@
 <?php
 
-class Recipe extends BaseEntity{
+class Recipe extends BaseEntity
+{
     private $idRecipe;
     private $dateCreation;
     private $name;
@@ -11,33 +12,41 @@ class Recipe extends BaseEntity{
     private $idChef;
     private $idImage;
 
-    public function getComments(): array{
+    public function getComments(): array
+    {
         return $this->getRelatedEntities("Comment");
     }
-    public function getParagraphs($options=[]): array{
-        return $this->getRelatedEntities("Paragraph",$options);
+    public function getParagraphs($options = []): array
+    {
+        return $this->getRelatedEntities("Paragraph", $options);
     }
-    public function getIngredientRecipes(): array{
+    public function getIngredientRecipes(): array
+    {
         return $this->getRelatedEntities("IngredientRecipe");
     }
 
-    public function getGrades($options=[]): array{
-        return $this->getRelatedEntities("Grades",$options);
+    public function getGrades($options = []): array
+    {
+        return $this->getRelatedEntities("Grades", $options);
     }
 
-    public function getImage(): ?Image{
+    public function getImage(): ?Image
+    {
         return $this->getRelatedEntity("Image");
     }
 
-    public function setImage(Image $i){
+    public function setImage(Image $i)
+    {
         $this->setRelatedEntity($i);
     }
 
-    public function getChef(): ?Chef{ 
+    public function getChef(): ?Chef
+    {
         return $this->getRelatedEntity("Chef");
     }
 
-    public function setChef(Chef $c){
+    public function setChef(Chef $c)
+    {
         $this->setRelatedEntity($c);
     }
 
@@ -204,7 +213,7 @@ class Recipe extends BaseEntity{
 
     /**
      * Get the value of idChef
-     */ 
+     */
     public function getIdChef()
     {
         return $this->idChef;
@@ -214,7 +223,7 @@ class Recipe extends BaseEntity{
      * Set the value of idChef
      *
      * @return  self
-     */ 
+     */
     public function setIdChef($idChef)
     {
         $this->idChef = $idChef;
@@ -222,19 +231,38 @@ class Recipe extends BaseEntity{
         return $this;
     }
 
-    public function getIngredients(): array{
-        return $this->getIndirectlyRelatedEntities("Ingredient", "IngredientRecipe"); 
+    public function getIngredients(): array
+    {
+        return $this->getIndirectlyRelatedEntities("Ingredient", "IngredientRecipe");
     }
 
-    public function getAverageGrade(){
-        $grade =null;
+    public function getAverageGrade()
+    {
+        $grade = null;
 
         $i = 0;
         $total = 0;
-        foreach($this->getGrades() as $grade){
+        foreach ($this->getGrades() as $grade) {
             $i++;
             $total += $grade->getRating();
         }
-        return $i == 0? null:$total/$i;
+        return $i == 0 ? null : $total / $i;
+    }
+
+    public function getTopOfRecipeByGrade()
+    {
+       try{
+        $pdo = DatabaseUtil::getConnection();
+        $sql  ='CALL GetRecipeByGrade() ';
+        
+        $query = $pdo->query($sql);
+        $result =  $query->fetchAll(PDO::FETCH_ASSOC);
+
+       } 
+       catch (Exception $e ){
+        echo 'Exception reçue : ',  $e->getMessage();
+       }
+
+       return $result;
     }
 }

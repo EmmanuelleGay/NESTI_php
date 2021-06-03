@@ -38,10 +38,14 @@ $(() => {
     });
 
 
-    constructParagraphs();
+  
     var addParagraphButton = document.getElementById("createPreparationButton");
     // on ne mets pas les parentheses pour que ca lance la fonction
-    addParagraphButton.onclick = addParagraph;
+    if(addParagraphButton){
+        constructParagraphs();
+        addParagraphButton.onclick = addParagraph;
+    }
+ 
 
 })
 

@@ -79,10 +79,9 @@
                         <?php
                         foreach ($vars["recipesByGrade"] as $recipe) { ?>
                             <div class="d-flex justify-content-between">
-                                <a class="seeBtn" href="<?= $vars['baseUrl'] ?>recipe/edit/<?= $recipe->getId() ?>"><?= $recipe->getName() ?></a>
-                                <p> par <?= $recipe->getChef()->getLastName() . $recipe->getChef()->getFirstName() ?></p>
+                                <a class="seeBtn" href="<?= $vars['baseUrl'] ?>recipe/edit/<?= $recipe["idRecipe"] ?>"><?= $recipe["name"] ?></a>
+                                <p> par <?= $recipe["firstName"] . $recipe["lastName"] ?></p>
                             </div>
-
                         <?php
                         }
                         ?>

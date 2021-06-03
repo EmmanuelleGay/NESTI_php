@@ -157,7 +157,7 @@ class FormValidator
 
         foreach (["09", "az", "AZ", " /"] as $range) {
             // If any character is within those ranges
-            if (preg_match("^.*[{$range[0]}-{$range[1]}].*$", $password)) {
+            if (preg_match("^.*[{$range[0]}-{$range[1]}].*$^", $password)) {
                 $possibleChars += ord($range[1]) - ord($range[0]) + 1; // add distance between the chars
             }
         }

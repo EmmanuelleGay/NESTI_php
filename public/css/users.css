@@ -26,9 +26,15 @@ height: 100%;
 .loginBackground {
     background-image : url("../images/background.png");
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
 }
 
 .loginContainer{
+    position: absolute;
+    top: 25%; 
+    width: 50%;
     background-color: white;
 }
 
@@ -68,4 +74,22 @@ height: 100%;
 
 .DetailsArticle{
     min-width: 25vw;
+}
+
+#passwordStrenght {
+    width: 0rem;
+    height: 1rem;
+    background-color: grey;
+}
+
+#passwordStrenght.high{
+    background-color: green;
+}
+
+#passwordStrenght.medium{
+    background-color: rgb(224, 178, 91);
+}
+
+#passwordStrenght.low{
+    background-color: rgb(238, 118, 96);
 }

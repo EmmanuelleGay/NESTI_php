@@ -13,16 +13,6 @@ class Article extends BaseEntity
     private $nameToDisplay;
 
 
-    //   $pdo = DatabaseUtil::connect();
-    /*$sql = "SELECT * FROM  articleprice a\n"
-    . "  INNER JOIN \n"
-    . "    (SELECT idArticle, MAX(dateStart) AS maxDate\n"
-    . "  FROM articleprice GROUP BY idArticle) \n"
-    . "    a3 ON a.idArticle = a3.idArticle AND a.dateStart = a3.maxDate\n"
-    . "    WHERE a.idArticle = ?";
-    */
-
-
     public function getLastPrice(): String
     {
         $price = "";

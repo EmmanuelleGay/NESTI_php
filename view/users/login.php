@@ -18,7 +18,7 @@
                     <label for="login" class="form-label mx-5 mt-5">Identifiant</label>
                     <div class="d-flex align-items-center">
                         <i class="far fa-user-circle fa-2x mb-3"></i>
-                        <input type="text" name="Users[login]" class="form-control mx-3 mb-3" id="login" aria-describedby="login field">
+                        <input type="text" name="Users[login]" class="form-control mx-3 mb-3" id="login">
                     </div>
 
                 </div>

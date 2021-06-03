@@ -13,10 +13,9 @@ class BaseController
 
     public static function processAction($forceAction = null)
     {
-        SiteUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
+        SiteUtil::sanitize($_POST);    // need recursive sanitizing for multidimensional array
         SiteUtil::sanitize($_GET);
-        //  @[$location, $action, $id] =SiteUtil::getUrlParameters();
-
+      
 
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
         $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
