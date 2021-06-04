@@ -2,11 +2,15 @@
 class City extends BaseEntity{
     private $idCity;
     private $name;
-
+    
+    /**
+     * getUsers
+     *
+     * @return array
+     */
     public function getUsers(): array{
         return $this->getRelatedEntities("Users", BaseDao::FLAGS['active']);
     }
-
 
 
     /**

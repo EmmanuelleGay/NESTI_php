@@ -12,7 +12,12 @@ class Article extends BaseEntity
     private $idProduct;
     private $nameToDisplay;
 
-
+    
+    /**
+     * getLastPrice
+     *
+     * @return String
+     */
     public function getLastPrice(): String
     {
         $price = "";
@@ -31,12 +36,23 @@ class Article extends BaseEntity
         }
         return $price;
     }
-
+    
+    /**
+     * getArticlePriceAt
+     *
+     * @param  mixed $date
+     */
     public function getArticlePriceAt($date){
         return $this->getArticlePrices(["dateStart <" => $date, "ORDER" => "dateStart DESC"])[0] ?? null;
     }
 
-
+    
+    /**
+     * getPriceAt
+     *
+     * @param  mixed $value
+     * @return String
+     */
     public function getPriceAt($value): String
     {
         $price = 0;
@@ -56,61 +72,124 @@ class Article extends BaseEntity
         }
         return $price;
     }
-
+    
+    /**
+     * getPriceAt2
+     *
+     * @param  mixed $date
+     * @return void
+     */
     public function getPriceAt2($date){
         //?? => si ce qui est a gaucghe n'existe pas on retourne null
         //indice 0 pour récup que la premi_re ligne puisuqe trié par date
         $this->getArticlePrices(["dateStart <"=>$date,"ORDER"=>"dateStart DESC"])[0] ?? null;
     }
 
-
+    
+    /**
+     * getArticlePrices
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getArticlePrices($options=[]): array
     {
         return $this->getRelatedEntities("ArticlePrice",$options);
     }
-
+    
+    /**
+     * getLots
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getLots($options=[]): array
     {
         return $this->getRelatedEntities("Lot",$options);
     }
-
+    
+    /**
+     * getOrderLines
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getOrderLines($options=[]): array
     {
         return $this->getRelatedEntities("OrderLine",$options);
     }
-
+    
+    /**
+     * getProduct
+     *
+     * @return Product
+     */
     public function getProduct(): ?Product
     {
         return $this->getRelatedEntity("Product");
     }
-
+    
+    /**
+     * getUnit
+     *
+     * @return Unit
+     */
     public function getUnit(): ?Unit
     {
         return $this->getRelatedEntity("Unit");
     }
-
+    
+    /**
+     * getImage
+     *
+     * @return Image
+     */
     public function getImage(): ?Image
     {
         return $this->getRelatedEntity("Image");
     }
-
+    
+    /**
+     * setUnit
+     *
+     * @param  mixed $u
+     * @return void
+     */
     public function setUnit(Unit $u)
     {
         $this->setRelatedEntity($u);
     }
 
-
+    
+    /**
+     * setProduct
+     *
+     * @param  mixed $p
+     * @return void
+     */
     public function setProduct(Product $p)
     {
         $this->setRelatedEntity($p);
     }
 
-
+    
+    /**
+     * setImage
+     *
+     * @param  mixed $i
+     * @return void
+     */
     public function setImage(Image $i)
     {
         $this->setRelatedEntity($i);
     }
-
+    
+    /**
+     * getOrders
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getOrders($options = 'a'): array
     {
         return $this->getIndirectlyRelatedEntities("Orders", "OrderLine", $options);
@@ -278,24 +357,6 @@ class Article extends BaseEntity
     }
 
     /**
-     * Get the value of dateModification
-     */
-    public function getDateModification()
-    {
-        // if ($this->dateModification != null && isset($this->dateModification)) {
-        //     $this->dateModification = date_create($this->dateModification);
-        //     // FormatUtil::dump($this->dateModification);
-        //     // echo 'test';
-        //     $this->dateModification = date_format($this->dateModification, 'd/m/Y H:i:s');
-        //     // FormatUtil::dump($this->dateModification);
-        // } else {
-        //     $this->dateModification = "-";
-        // }
-  
-        return $this->dateModification;
-    }
-
-    /**
      * Set the value of dateModification
      *
      * @return  self
@@ -307,6 +368,19 @@ class Article extends BaseEntity
         return $this;
     }
 
+    /**
+     * Get the value of dateModification
+     */ 
+    public function getDateModification()
+    {
+        return $this->dateModification;
+    }
+    
+    /**
+     * getStockByArticle
+     *
+     * @return void
+     */
     public function getStockByArticle()
     {
         $stock = ArticleDao::findStockById($this->getId());
@@ -315,11 +389,21 @@ class Article extends BaseEntity
         }
         return $stock;
     }
-
+    
+    /**
+     * getStock
+     *
+     * @return void
+     */
     public function getStock(){
         return (float) $this->getLots(["SELECT"=>"SUM(quantity)"])[0][0] ?? 0;
     }
-
+    
+    /**
+     * getQuantitySold
+     *
+     * @return void
+     */
     public function getQuantitySold(){
         $quantity = 0;
 
@@ -329,7 +413,12 @@ class Article extends BaseEntity
 
         return $quantity;
     }
-
+    
+    /**
+     * getTotalSales
+     *
+     * @return void
+     */
     public function getTotalSales(){
         $total = 0;
 
@@ -339,7 +428,12 @@ class Article extends BaseEntity
 
         return $total;
     }
-
+    
+    /**
+     * getQuantityPurchased
+     *
+     * @return void
+     */
     public function getQuantityPurchased(){
         $quantity = 0;
 
@@ -349,7 +443,12 @@ class Article extends BaseEntity
 
         return $quantity;
     }
-
+    
+    /**
+     * getTotalPurchases
+     *
+     * @return void
+     */
     public function getTotalPurchases(){
         $total = 0;
 
@@ -360,5 +459,4 @@ class Article extends BaseEntity
         return $total;
     }
 
-    
 }

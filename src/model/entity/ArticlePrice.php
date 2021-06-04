@@ -6,11 +6,22 @@ class ArticlePrice extends BaseEntity{
     private $price;
     private $idArticle;
     
-
+    
+    /**
+     * getArticle
+     *
+     * @return Article
+     */
     public function getArticle(): ?Article{
         return $this->getRelatedEntity("Article");
     }
-
+    
+    /**
+     * setArticle
+     *
+     * @param  mixed $a
+     * @return void
+     */
     public function setArticle(Article $a){
         $this->setRelatedEntity($a);
     }

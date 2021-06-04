@@ -43,7 +43,12 @@ class DatabaseUtil
         }
         return self::$conn;
     }
-
+    
+    /**
+     * disconnect
+     *
+     * @return void
+     */
     public static function disconnect() {
         self::$conn = null;
     }

@@ -5,6 +5,13 @@ class ArticleController extends BaseEntityController
 
     protected static $entityClass = "Article";
 
+    
+    /**
+     * callActionMethod
+     *
+     * @param  mixed $action
+     * @return void
+     */
     public static function callActionMethod($action)
     {
 
@@ -14,6 +21,14 @@ class ArticleController extends BaseEntityController
     }
 
 
+    
+    /**
+     * setupTemplateVars
+     *
+     * @param  mixed $vars
+     * @param  mixed $templates
+     * @return void
+     */
     public static function setupTemplateVars(&$vars, &$templates)
     {
         parent::setupTemplateVars($vars, $templates);
@@ -24,7 +39,12 @@ class ArticleController extends BaseEntityController
             'searchField' =>  "name"
         ]);
     }
-
+ 
+    /**
+     *  delete article into database
+     *
+     * @return void
+     */
     public static function confirmDelete()
     {
         static::getEntity()->setFlag('b');
@@ -135,6 +155,9 @@ class ArticleController extends BaseEntityController
         static::render($templateName);
     }
 
+    /**
+     * Save or update article
+     */
     public static function edit()
     {
         $templateName = 'edit';
@@ -205,6 +228,9 @@ class ArticleController extends BaseEntityController
         self::render($templateName, $templateVars);
     }
 
+    /**
+     * show page order
+     */
     public static function order()
     {
         $templateName = 'order';
@@ -213,10 +239,13 @@ class ArticleController extends BaseEntityController
         ]);
     }
 
-    /**
-     * to display details of order on a click
-     */
-    public static function orderDetailsAjax()
+
+     /**
+      * orderDetailsAjax
+      * to display details of order on a click
+      * @return void
+      */
+     public static function orderDetailsAjax()
     {
         $idOrder = $_POST['orderId'];
 

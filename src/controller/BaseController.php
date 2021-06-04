@@ -3,14 +3,26 @@
 
 class BaseController
 {
-
+    
+    /**
+     * callActionMethod
+     *
+     * @param  mixed $action
+     * @return void
+     */
     public static function callActionMethod($action)
     {
         method_exists(get_called_class(), $action) ?
         get_called_class()::$action() : // if action in URL exists, call it
         get_called_class()::error(); // else call default one
     }
-
+    
+    /**
+     * processAction
+     *
+     * @param  mixed $forceAction
+     * @return void
+     */
     public static function processAction($forceAction = null)
     {
         SiteUtil::sanitize($_POST);    // need recursive sanitizing for multidimensional array
@@ -52,7 +64,14 @@ class BaseController
             include_once SiteUtil::toAbsolute('view/' . $templates['base'] . '.php');
         }
     }
-
+    
+    /**
+     * setupTemplateVars
+     *
+     * @param  mixed $vars
+     * @param  mixed $templates
+     * @return void
+     */
     public static function setupTemplateVars(&$vars, &$templates)
     {
         // Add shared parameters to the existing ones
@@ -66,16 +85,29 @@ class BaseController
             //en prod il faudra chnager pour avoir la bonne version
             'version' => random_int(0,80000000000)
         ]);
-    }
+    }    
+
+
+    /**
+     * getAssetName
+     *
+     * @return void
+     */
     public static function getAssetName()
     {
         $name = static::class;
         return strtolower(substr($name, 0, strlen($name) - 10));
     }
 
-    //ca va chercher dans le dossier error et avec un / si c'est autre part que dan sle dossier de l'entité en cours
+    
+   
+    /**
+     * error
+     *
+     * @return void
+     */
     protected static function error()
     {
-        self::render('error/error404');
+        self::render('error/error404'); //ca va chercher dans le dossier error et avec un / si c'est autre part que dan sle dossier de l'entité en cours
     }
 }

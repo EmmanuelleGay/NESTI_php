@@ -79,7 +79,13 @@ class FormValidator
             $testSting
         );
     }
-
+    
+    /**
+     * numbers
+     * validate if property value is made of numbers
+     * @param  mixed $testSting
+     * @return bool
+     */
     public static function numbers(?string $testSting): bool
     {
         return preg_match("/^\d+$/", $testSting);
@@ -150,7 +156,13 @@ class FormValidator
     }
 
 
-
+    
+    /**
+     * calculatePasswordStrength
+     * calcultae strength of value with official ssi algorithme
+     * @param  mixed $password
+     * @return void
+     */
     private static function calculatePasswordStrength($password)
     {
         $possibleChars = 0; // set of potentially different characters in password

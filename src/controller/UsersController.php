@@ -4,7 +4,13 @@ class UsersController extends BaseEntityController
 {
     protected static $entityClass = "Users";
     protected static $loggedInUser;
-
+    
+    /**
+     * callActionMethod
+     *
+     * @param  mixed $action
+     * @return void
+     */
     public static function callActionMethod($action)
     {
 
@@ -12,7 +18,12 @@ class UsersController extends BaseEntityController
             get_called_class()::$action() : // if action in URL exists, call it
             get_called_class()::list(); // else call default one
     }
-
+    
+    /**
+     * login : connect the user
+     *
+     * @return void
+     */
     public static function login()
     {
         $templateVars = [];
@@ -37,7 +48,12 @@ class UsersController extends BaseEntityController
         }
         self::render(['action' => 'login', 'base' => 'users/baseLogin'], $templateVars);
     }
-
+    
+    /**
+     * logout
+     *
+     * @return void
+     */
     public static function logout()
     {
         self::setLoggedInUser(null);
@@ -49,7 +65,10 @@ class UsersController extends BaseEntityController
 
 
     /**
-     * Get the value of user
+     * getLoggedInUser
+     *
+     *  Get the value of user
+     * @param  mixed $refresh
      */
     public static function getLoggedInUser($refresh = false)
     {
@@ -62,6 +81,14 @@ class UsersController extends BaseEntityController
         return self::$loggedInUser;
     }
 
+     
+    /**
+     * setLoggedInUser
+     *
+     * @param  mixed $user
+     * @param  mixed $plaintextPassword
+     * @return void
+     */
     public static function setLoggedInUser($user, $plaintextPassword = null)
     {
         if ($user != null) {
@@ -70,7 +97,14 @@ class UsersController extends BaseEntityController
             setcookie("user[password]", $plaintextPassword, 2147483647, '/');
         }
     }
-
+    
+    /**
+     * setupTemplateVars
+     *
+     * @param  mixed $vars
+     * @param  mixed $templates
+     * @return void
+     */
     public static function setupTemplateVars(&$vars, &$templates)
     {
         parent::setupTemplateVars($vars, $templates);
@@ -81,7 +115,12 @@ class UsersController extends BaseEntityController
         ]);
     }
 
-
+    
+    /**
+     * list all the users
+     *
+     * @return void
+     */
     public static function list()
     {
         if (isset($_POST["search"])) {
@@ -93,7 +132,12 @@ class UsersController extends BaseEntityController
             'entities' => static::getDao()::findAll()
         ]);
     }
-
+    
+    /**
+     * confirmDelete
+     *
+     * @return void
+     */
     public static function confirmDelete()
     {
         static::getEntity()->setFlag('b');
@@ -102,7 +146,12 @@ class UsersController extends BaseEntityController
         header('Location: ' . SiteUtil::url() . 'users/list');
     }
 
-
+    
+    /**
+     * edit
+     *
+     * @return void
+     */
     public static function edit()
     {
         $templateName = 'edit';
@@ -210,17 +259,13 @@ class UsersController extends BaseEntityController
         // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid
         self::render($templateName, $templateVars);
     }
-
-    public static function approveComment()
-    {
-      //  $idcomment =  SiteUtil::getUrlParameters()[2];
-     //   $entity = static::getEntity();
-        // static::getEntity()->setFlag('a');
-        // static::getDao()::saveOrUpdate(static::getEntity());
-
-   //     header('Location: ' . SiteUtil::url() . 'users/edit'.$entity->getId());
-    }
-
+    
+    
+    /**
+     * blockComment
+     *
+     * @return void
+     */
     public static function blockComment()
     {
         $entity = static::getEntity();
@@ -228,7 +273,12 @@ class UsersController extends BaseEntityController
         FormatUtil::dump("test".   $idRecipe );
         header('Location: ' . SiteUtil::url() . 'users/edit/' .$entity->getId());
     }
-
+    
+    /**
+     * moderateComment
+     *
+     * @return void
+     */
     public static function moderateComment(){
 
         $comment = CommentDao::findOne(["idRecipe"=>$_POST["idrecipe"],"idUsers"=>$_POST["iduser"] ]);

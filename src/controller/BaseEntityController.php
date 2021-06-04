@@ -18,7 +18,13 @@ class BaseEntityController extends BaseController
     protected static $entity;
     protected static $entityClass;
     protected static $dao;
-
+    
+    /**
+     * processAction
+     *
+     * @param  mixed $forceAction
+     * @return void
+     */
     public static function processAction($forceAction = null)
     {
         SiteUtil::sanitize($_POST); // need recursive sanitizing for multidimensional array
@@ -40,7 +46,14 @@ class BaseEntityController extends BaseController
 
         static::callActionMethod($action);
     }
-
+    
+    /**
+     * setupTemplateVars
+     *
+     * @param  mixed $vars
+     * @param  mixed $templates
+     * @return void
+     */
     public static function setupTemplateVars(&$vars, &$templates)
     {
         parent::setupTemplateVars($vars, $templates);
@@ -62,10 +75,11 @@ class BaseEntityController extends BaseController
         ]);
     }
 
-
+ 
     /**
      * initializeEntity
      * Sets user class parameter to a user from data source if specified in url, otherwise a new user
+     * @param  mixed $id
      * @return void
      */
     protected static function initializeEntity($id)
@@ -131,7 +145,12 @@ class BaseEntityController extends BaseController
         static::render($templateName);
       
     }
-
+    
+    /**
+     * list
+     *
+     * @return void
+     */
     public static function list()
     {
         $queryOptions = ['flag' => 'a'];
@@ -163,6 +182,11 @@ class BaseEntityController extends BaseController
         static::$entity = $entity;
     }
 
+        
+    
+    /**
+     * getDao
+     */
     public static function getDao()
     {
         return static::$dao;

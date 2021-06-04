@@ -70,17 +70,19 @@ const constructParagraphs = () => { // var paragraphContentContainer = document.
 
 const constructParagraph = (paragraph) => {
     return `
-   <div class="mb-3 d-flex paragraph" data-id="${
+   <div class="mb-3 row paragraph" data-id="${
         paragraph.idParagraph
     }">
-        <div class="containerButton" >
+        <div class="col-3 containerButton" >
             <button onclick="moveParagraph(-1)" class="btn upButton"><img src="${baseUrl}public/images/up-svg.png" alt="monter" width="100%"></button>
             <button onclick="moveParagraph(1)" class="btn downButton"><img src="${baseUrl}public/images/down-svg.png" alt="descendre" width="100%"></button>
             <button onclick="deleteParagraph()" class="btn binButton"><img src="${baseUrl}public/images/delete-svg.png" alt="supprimer" width="100%"></button>
         </div>
-        <textarea onblur="saveParagraph()"  class="form-control" rows="6">${
-        paragraph.content
-    }</textarea>
+        <div class = "col-9">
+            <textarea onblur="saveParagraph()"  class="form-control" rows="6">${
+            paragraph.content
+        }</textarea>
+        </div>
     </div>`;
 }
 

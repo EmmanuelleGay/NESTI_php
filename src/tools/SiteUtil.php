@@ -68,7 +68,12 @@ class SiteUtil
 
         return explode('/', self::sanitize($parameterString));
     }
-
+    
+    /**
+     * autoloadRegister
+     *
+     * @return void
+     */
     public static function autoloadRegister()
     {
         spl_autoload_register(function ($className) {
@@ -82,7 +87,10 @@ class SiteUtil
     }
 
     private static $includeDirs;
-
+    
+    /**
+     * getIncludeDirs
+     */
     public static function getIncludeDirs()
     {
         if ( self::$includeDirs == null ){

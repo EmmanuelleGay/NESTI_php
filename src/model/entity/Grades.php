@@ -5,19 +5,41 @@ class Grades extends BaseEntity{
     private $idRecipe;
     private $rating;
 
-
+    
+    /**
+     * getRecipe
+     *
+     * @return Recipe
+     */
     public function getRecipe(): ?Recipe{ 
         return $this->getRelatedEntity("Recipe");
     }
-
+    
+    /**
+     * setRecipe
+     *
+     * @param  mixed $r
+     * @return void
+     */
     public function setRecipe(Recipe $r){
         $this->setRelatedEntity($r);
     }
-
+    
+    /**
+     * getUser
+     *
+     * @return Users
+     */
     public function getUser(): ?Users{ 
         return $this->getRelatedEntity("Users");
     }
-
+    
+    /**
+     * setUser
+     *
+     * @param  mixed $u
+     * @return void
+     */
     public function setUser(Users $u){
         $this->setRelatedEntity($u);
     }

@@ -7,28 +7,54 @@ class Lot extends BaseEntity
     private $dateReception;
     private $quantity;
     private $idArticle;
-
+    
+    /**
+     * getArticle
+     *
+     * @return Article
+     */
     public function getArticle(): ?Article
     {
         return $this->getRelatedEntity("Article");
     }
-
+    
+    /**
+     * setArticle
+     *
+     * @param  mixed $a
+     * @return void
+     */
     public function setArticle(Article $a)
     {
         $this->setRelatedEntity($a);
     }
 
-
+    
+    /**
+     * getImportations
+     *
+     * @return array
+     */
     public function getImportations(): array
     {
         return $this->getRelatedEntities("Importation");
     }
-
+    
+    /**
+     * getAdmins
+     *
+     * @return array
+     */
     public function getAdmins(): array
     {
         return $this->getIndirectlyRelatedEntities("Users", "Importation", BaseDao::FLAGS['active']);
     }
-
+    
+    /**
+     * getSubTotal
+     *
+     * @return void
+     */
     public function getSubTotal()
     {
         return $this->getUnitCost() * $this->getQuantity();

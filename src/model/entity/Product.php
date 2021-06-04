@@ -5,7 +5,12 @@ class Product extends BaseEntity{
     private $idProduct;
     private $name;
 
-
+    
+    /**
+     * getArticles
+     *
+     * @return array
+     */
     public function getArticles(): array{
         return $this->getRelatedEntities("Article", BaseDao::FLAGS['active']);
     }
@@ -50,19 +55,39 @@ class Product extends BaseEntity{
 
         return $this;
     }
-
+    
+    /**
+     * getIngredient
+     *
+     * @return void
+     */
     public function getIngredient(){
         return $this->getChildEntity("Ingredient");
     }
-
+    
+    /**
+     * makeIngredient
+     *
+     * @return void
+     */
     public function makeIngredient(){
         return $this->makeChildEntity("Ingredient");
     }
-
+    
+    /**
+     * isIngredient
+     *
+     * @return void
+     */
     public function isIngredient(){
         return $this->getIngredient()!=null;
     }
-
+    
+    /**
+     * getType
+     *
+     * @return void
+     */
     public function getType(){
         return $this->isIngredient() ? 'ingrédient' : 'ustensil';
     }

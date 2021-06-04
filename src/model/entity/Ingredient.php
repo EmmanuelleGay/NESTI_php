@@ -3,11 +3,17 @@
 class Ingredient extends Product{
     
     private $idIngredient;
+    
 
+    /**
+     * getIngredientRecipes
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getIngredientRecipes($options=[]): array{
         return $this->getRelatedEntities("IngredientRecipe",$options);
     }
-
 
     /**
      * Get the value of idIngredient

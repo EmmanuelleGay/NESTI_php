@@ -5,19 +5,41 @@ class OrderLine extends BaseEntity{
     private $idArticle;
     private $quantity;
     
-
+    
+    /**
+     * getOrder
+     *
+     * @return Orders
+     */
     public function getOrder(): ?Orders{
         return $this->getRelatedEntity("Orders");
     }
-
+    
+    /**
+     * setOrder
+     *
+     * @param  mixed $o
+     * @return void
+     */
     public function setOrder(Orders $o){
         $this->setRelatedEntity($o);
     }
-
+    
+    /**
+     * getArticle
+     *
+     * @return Article
+     */
     public function getArticle(): ?Article{ 
         return $this->getRelatedEntity("Article");
     }
-
+    
+    /**
+     * setArticle
+     *
+     * @param  mixed $a
+     * @return void
+     */
     public function setArticle(Article $a){
         $this->setRelatedEntity($a);
     }
@@ -83,7 +105,10 @@ class OrderLine extends BaseEntity{
 
         return $this;
     }
-
+    
+    /**
+     * getSubTotal
+     */
     public function getSubTotal(){
         
         $dateCreation = $this->getOrder()->getDateCreation();

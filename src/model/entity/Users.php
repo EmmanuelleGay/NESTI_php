@@ -14,39 +14,65 @@ class Users extends BaseEntity
     private $address2;
     private $zipCode;
     private $idCity;
-
+    
+    /**
+     * getOrders
+     *
+     * @return array
+     */
     public function getOrders(): array
     {
         return $this->getRelatedEntities("Orders");
     }
-
+    
+    /**
+     * getConnectionLogs
+     *
+     * @return array
+     */
     public function getConnectionLogs(): array
     {
         return $this->getRelatedEntities("ConnectionLog");
     }
 
-
+    
+    /**
+     * getComments
+     *
+     * @return array
+     */
     public function getComments(): array
     {
         return $this->getRelatedEntities("Comment");
     }
 
-    // public function getRecipes(): array
-    // {
-    //     return $this->getIndirectlyRelatedEntities("Recipe", "Grades", BaseDao::FLAGS['active']);
-    // }
-
+    /**
+     * getRecipes
+     *
+     * @return array
+     */
     public function getRecipes(): array
     {
         return $this->getRelatedEntities("Comment", BaseDao::FLAGS['active']);
     }
-
+    
+    /**
+     * getCity
+     *
+     * @return City
+     */
     public function getCity(): ?City
     {
 
         return $this->getRelatedEntity("City");
     }
-
+    
+    /**
+     * setCity
+     *
+     * @param  mixed $c
+     * @return void
+     */
     public function setCity(City $c)
     {
         $this->setRelatedEntity($c);
@@ -80,7 +106,12 @@ class Users extends BaseEntity
     {
         return $this->flag;
     }
-
+    
+    /**
+     * getState
+     *
+     * @return void
+     */
     public function getState()
     {
         $state = "";
@@ -226,14 +257,26 @@ class Users extends BaseEntity
 
         return $this;
     }
-
+    
+    /**
+     * isPassword
+     *
+     * @param  mixed $plainTextPassword
+     * @return void
+     */
     public function isPassword(String $plainTextPassword)
     {
         return password_verify($plainTextPassword, $this->getPasswordHash());
     }
 
 
-
+    
+    /**
+     * setPasswordHashFromPlaintext
+     *
+     * @param  mixed $plaintextPassword
+     * @return void
+     */
     public function setPasswordHashFromPlaintext($plaintextPassword)
     {
         $this->setPasswordHash(password_hash($plaintextPassword, PASSWORD_DEFAULT));
@@ -327,13 +370,22 @@ class Users extends BaseEntity
         return ChefDao::findById($this->getId());
         // OPTION 2    return ChefDao::findAll(["flag"=>'a',"idChef"=>$this->getId()]);
     }
-    //retourne un boolean
+
+    /**
+     * isChef
+     *
+     * @return boolean
+     */
     public function isChef()
     {
         return $this->getChef() != null;
     }
 
-    // a vérifier si ca fonctionne
+    // a vérifier si ca fonctionne    
+    /**
+     * makeChef
+     *
+     */
     public function makeChef()
     {
         if (!$this->isChef()) {
@@ -342,7 +394,12 @@ class Users extends BaseEntity
             ChefDao::save($chef);
         }
     }
-
+    
+    /**
+     * isModerator
+     *
+     * @return boolean
+     */
     public function isModerator()
     {
         return $this->getModerator() != null;
@@ -357,16 +414,32 @@ class Users extends BaseEntity
         }
     }
 
+        
+    /**
+     * getModerator
+     *
+     * @return void
+     */
     public function getModerator()
     {
         return ModeratorDao::findById($this->getId());
     }
-
+    
+    /**
+     * isAdministrator
+     *
+     * @return void
+     */
     public function isAdministrator()
     {
         return $this->getAdministrator() != null;
     }
-
+    
+    /**
+     * makeAdministrator
+     *
+     * @return void
+     */
     public function makeAdministrator()
     {
         if (!$this->isAdministrator()) {
@@ -375,12 +448,22 @@ class Users extends BaseEntity
             AdministratorDao::save($administrator);
         }
     }
-
+    
+    /**
+     * getAdministrator
+     *
+     * @return void
+     */
     public function getAdministrator()
     {
         return AdministratorDao::findById($this->getId());
     }
-
+    
+    /**
+     * getRoles
+     *
+     * @return void
+     */
     public function getRoles()
     {
         $roles = [];
@@ -395,7 +478,12 @@ class Users extends BaseEntity
         }
         return $roles;
     }
-
+    
+    /**
+     * getLatestConnection
+     *
+     * @return void
+     */
     public function getLatestConnection()
     {
         $lastDate = UsersDao::findLatestConnection($this->getId());
@@ -407,7 +495,12 @@ class Users extends BaseEntity
         }
         return $lastDate;
     }
-
+    
+    /**
+     * getRecipesNumber
+     *
+     * @return void
+     */
     public function getRecipesNumber()
     {
         $result =  UsersDao::findRecipesNumber($this->getId());
@@ -416,7 +509,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getOrdersNumber
+     *
+     * @return void
+     */
     public function getOrdersNumber()
     {
         $result =  UsersDao::findOrdersNumber($this->getId());
@@ -425,7 +523,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getImportationNumber
+     *
+     * @return void
+     */
     public function getImportationNumber()
     {
         $result =  UsersDao::findImportationsNumber($this->getId());
@@ -434,7 +537,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getLastImportation
+     *
+     * @return void
+     */
     public function getLastImportation()
     {
         $result = UsersDao::findLastImportation($this->getId());
@@ -443,7 +551,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getBlockedCommentNumber
+     *
+     * @return void
+     */
     public function getBlockedCommentNumber()
     {
         $result =  UsersDao::findBlockedCommentNumber($this->getId());
@@ -452,7 +565,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getApprouvedCommentNumber
+     *
+     * @return void
+     */
     public function getApprouvedCommentNumber()
     {
         $result =  UsersDao::findApprouvedCommentNumber($this->getId());
@@ -461,7 +579,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getLastRecipe
+     *
+     * @return void
+     */
     public function getLastRecipe()
     {
         $result =  UsersDao::findLastRecipe($this->getId());
@@ -470,7 +593,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getlastOrder
+     *
+     * @return void
+     */
     public function getlastOrder()
     {
         $result =  UsersDao::findLastOrder($this->getId());
@@ -479,7 +607,12 @@ class Users extends BaseEntity
         }
         return $result;
     }
-
+    
+    /**
+     * getSumOrder
+     *
+     * @return void
+     */
     public function getSumOrder()
     {
         $result = 0.0;

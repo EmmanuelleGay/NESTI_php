@@ -11,40 +11,86 @@ class Recipe extends BaseEntity
     private $preparationTime;
     private $idChef;
     private $idImage;
-
+    
+    /**
+     * getComments
+     *
+     * @return array
+     */
     public function getComments(): array
     {
         return $this->getRelatedEntities("Comment");
     }
+        
+    /**
+     * getParagraphs
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getParagraphs($options = []): array
     {
         return $this->getRelatedEntities("Paragraph", $options);
     }
+        
+    /**
+     * getIngredientRecipes
+     *
+     * @return array
+     */
     public function getIngredientRecipes(): array
     {
         return $this->getRelatedEntities("IngredientRecipe");
     }
-
+    
+    /**
+     * getGrades
+     *
+     * @param  mixed $options
+     * @return array
+     */
     public function getGrades($options = []): array
     {
         return $this->getRelatedEntities("Grades", $options);
     }
-
+    
+    /**
+     * getImage
+     *
+     * @return Image
+     */
     public function getImage(): ?Image
     {
         return $this->getRelatedEntity("Image");
     }
-
+    
+    /**
+     * setImage
+     *
+     * @param  mixed $i
+     * @return void
+     */
     public function setImage(Image $i)
     {
         $this->setRelatedEntity($i);
     }
-
+    
+    /**
+     * getChef
+     *
+     * @return Chef
+     */
     public function getChef(): ?Chef
     {
         return $this->getRelatedEntity("Chef");
     }
-
+    
+    /**
+     * setChef
+     *
+     * @param  mixed $c
+     * @return void
+     */
     public function setChef(Chef $c)
     {
         $this->setRelatedEntity($c);
@@ -230,12 +276,22 @@ class Recipe extends BaseEntity
 
         return $this;
     }
-
+    
+    /**
+     * getIngredients
+     *
+     * @return array
+     */
     public function getIngredients(): array
     {
         return $this->getIndirectlyRelatedEntities("Ingredient", "IngredientRecipe");
     }
-
+    
+    /**
+     * getAverageGrade
+     *
+     * @return void
+     */
     public function getAverageGrade()
     {
         $grade = null;
@@ -248,7 +304,12 @@ class Recipe extends BaseEntity
         }
         return $i == 0 ? null : $total / $i;
     }
-
+    
+    /**
+     * getTopOfRecipeByGrade
+     *
+     * @return void
+     */
     public function getTopOfRecipeByGrade()
     {
        try{

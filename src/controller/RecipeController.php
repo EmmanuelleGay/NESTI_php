@@ -5,13 +5,19 @@ class RecipeController extends BaseEntityController
 
     protected static $entityClass = "Recipe";
 
+
+    /**
+     * callActionMethod
+     *
+     * @param  mixed $action
+     * @return void
+     */
     public static function callActionMethod($action)
     {
         method_exists(get_called_class(), $action) ?
             get_called_class()::$action() : // if action in URL exists, call it
             get_called_class()::list(); // else call default one
     }
-
 
 
     /**
@@ -158,6 +164,14 @@ class RecipeController extends BaseEntityController
         self::render($templateName, $templateVars);
     }
 
+        
+    /**
+     * setupTemplateVars
+     *
+     * @param  mixed $vars
+     * @param  mixed $templates
+     * @return void
+     */
     public static function setupTemplateVars(&$vars, &$templates)
     {
         parent::setupTemplateVars($vars, $templates);
@@ -168,7 +182,12 @@ class RecipeController extends BaseEntityController
             'searchField' =>  "name"
         ]);
     }
-
+    
+    /**
+     * confirmDelete
+     *
+     * @return void
+     */
     public static function confirmDelete()
     {
         static::getEntity()->setFlag('b');
@@ -177,7 +196,12 @@ class RecipeController extends BaseEntityController
         header('Location: ' . SiteUtil::url() . 'recipe/list');
     }
 
-
+    
+    /**
+     * getParagraphs
+     *
+     * @return void
+     */
     public static function getParagraphs()
     {
         $arrayParagraph = [];
@@ -193,7 +217,12 @@ class RecipeController extends BaseEntityController
         //on l'envoie en json pour communiquer en js
         echo json_encode($arrayParagraph);
     }
-
+    
+    /**
+     * addParagraph
+     *
+     * @return void
+     */
     public static function addParagraph()
     {
         $recipe = static::getEntity();
@@ -202,7 +231,12 @@ class RecipeController extends BaseEntityController
         $paragraph->setParagraphOrder(count($recipe->getParagraphs()));
         ParagraphDao::saveOrUpdate($paragraph);
     }
-
+    
+    /**
+     * saveParagraph
+     *
+     * @return void
+     */
     public static function saveParagraph()
     {
         $recipe = static::getEntity();
@@ -212,7 +246,12 @@ class RecipeController extends BaseEntityController
             ParagraphDao::saveOrUpdate($paragraph);
         }
     }
-
+    
+    /**
+     * deleteParagraph
+     *
+     * @return void
+     */
     public static function deleteParagraph()
     {
         $recipe = static::getEntity();
@@ -223,7 +262,12 @@ class RecipeController extends BaseEntityController
             static::reOrderParagraphs($paragraphs);
         }
     }
-
+    
+    /**
+     * moveParagraph
+     *
+     * @return void
+     */
     public static function moveParagraph()
     {
         $recipe = static::getEntity();
@@ -236,7 +280,13 @@ class RecipeController extends BaseEntityController
             static::reOrderParagraphs($paragraphs);
         }
     }
-
+    
+    /**
+     * reOrderParagraphs
+     *
+     * @param  mixed $paragraphs
+     * @return void
+     */
     public static function reOrderParagraphs($paragraphs)
     {
         foreach ($paragraphs as $i => $paragraph) {

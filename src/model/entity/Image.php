@@ -5,11 +5,21 @@ class Image extends BaseEntity{
     private $name;
     private $fileExtension;
 
-    
+        
+    /**
+     * getRecipes
+     *
+     * @return array
+     */
     public function getRecipes(): array{
         return $this->getRelatedEntities("Recipe");
     }
-
+    
+    /**
+     * getArticles
+     *
+     * @return array
+     */
     public function getArticles(): array{
         return $this->getRelatedEntities("Article");
     }

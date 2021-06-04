@@ -147,11 +147,23 @@ class BaseEntity{
         return self::getDaoClass()::findManyToMany($this,  $joinClass , $relatedEntityClass, $options);
     }
 
-
+    
+    /**
+     * getChildEntity
+     *
+     * @param  mixed $childEntityClass
+     * @return void
+     */
     public function getChildEntity(string $childEntityClass){
         return $childEntityClass::getDaoClass()::findById($this->getId());
     }
-
+    
+    /**
+     * makeChildEntity
+     *
+     * @param  mixed $childEntityClass
+     * @return void
+     */
     public function makeChildEntity(string $childEntityClass){
         if ( $this->getChildEntity($childEntityClass) == null ) {
             $child = new $childEntityClass;
@@ -161,14 +173,25 @@ class BaseEntity{
 
         return $this;
     }
-
+    
+    /**
+     * equals
+     *
+     * @param  mixed $other
+     * @return void
+     */
     public function equals( $other ){
         return $other != null
             &&     is_a($this,get_class($other)) // $this must either be class/sublass of $other
                 || is_a($other,get_class($this)) // or vice-versa
             && $this->hasSamePrimaryKey($other);
     }
-
+    
+    /**
+     * hasPrimaryKey
+     *
+     * @return void
+     */
     public function hasPrimaryKey(){
         if ( !$this->hasCompositeKey() ){
             $keys = [$this->getId()];
@@ -184,12 +207,23 @@ class BaseEntity{
 
         return $hasPk;
     }
-
+    
+    /**
+     * hasCompositeKey
+     *
+     * @return void
+     */
     public function hasCompositeKey(){
         return is_array(static::getDaoClass()::getPkColumnName());
     }
 
-
+    
+    /**
+     * hasSamePrimaryKey
+     *
+     * @param  mixed $other
+     * @return void
+     */
     public function hasSamePrimaryKey($other){
         $otherDao = get_class($other)::getDaoClass();
 
@@ -211,7 +245,12 @@ class BaseEntity{
 
         return $samePk;
     }
-
+    
+    /**
+     * existsInDataSource
+     *
+     * @return void
+     */
     public function existsInDataSource(){
         if ( !$this->hasCompositeKey()){
             $exists = !empty($this->getOriginalId());
@@ -227,7 +266,13 @@ class BaseEntity{
         return $exists;
     }
 
-
+    
+    /**
+     * getOriginalId
+     *
+     * @param  mixed $columnName
+     * @return void
+     */
     public function getOriginalId($columnName = null)
     {
         if ( $columnName == null ){
@@ -243,7 +288,14 @@ class BaseEntity{
         }
         return $result;
     }
-
+    
+    /**
+     * setOriginalId
+     *
+     * @param  mixed $value
+     * @param  mixed $columnName
+     * @return void
+     */
     public function setOriginalId($value, $columnName = null )
     {
         if ( $columnName == null ){

@@ -4,11 +4,21 @@ class Unit extends BaseEntity{
     private $idUnit;
     private $name;
     
-
+    
+    /**
+     * getArticles
+     *
+     * @return array
+     */
     public function getArticles(): array{
         return $this->getRelatedEntities("Article", BaseDao::FLAGS['active']);
     }
-
+    
+    /**
+     * getIngredientRecipes
+     *
+     * @return array
+     */
     public function getIngredientRecipes(): array{
         return $this->getRelatedEntities("IngredientRecipes");
     }

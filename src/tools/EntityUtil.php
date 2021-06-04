@@ -1,7 +1,14 @@
 <?php
 
 class EntityUtil
-{
+{    
+    /**
+     * get
+     *
+     * @param  mixed $entity
+     * @param  mixed $propertyName
+     * @return void
+     */
     public static function get($entity, $propertyName)
     {
         $method =  'get' . ucFirst($propertyName);
@@ -11,7 +18,15 @@ class EntityUtil
 
         return $entity->$method();
     }
-
+    
+    /**
+     * set
+     *
+     * @param  mixed $entity
+     * @param  mixed $propertyName
+     * @param  mixed $propertyValue
+     * @return void
+     */
     public static function set(&$entity, $propertyName, $propertyValue)
     {
         $method =  'set' . ucFirst($propertyName);
@@ -20,14 +35,27 @@ class EntityUtil
         }
         return $entity->$method($propertyValue);
     }
-
+    
+    /**
+     * setFromArray
+     *
+     * @param  mixed $entity
+     * @param  mixed $properties
+     * @return void
+     */
     public static function setFromArray($entity, $properties)
     {
         foreach ($properties as $propertyName => $propertyValue) {
             static::set($entity, $propertyName, $propertyValue);
         }
     }
-
+    
+    /**
+     * toArray
+     *
+     * @param  mixed $entity
+     * @return void
+     */
     public static function toArray($entity)
     {
         $result = [];

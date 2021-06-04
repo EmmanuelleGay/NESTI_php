@@ -10,34 +10,78 @@ class Comment extends BaseEntity{
     private $idUsers;
     private $idModerator;
 
-    
+        
+    /**
+     * getModerator
+     *
+     * @return Moderator
+     */
     public function getModerator(): ?Moderator{
         return $this->getRelatedEntity("Moderator");
-    }
+    }    
+    /**
+     * setModerator
+     *
+     * @param  mixed $m
+     * @return void
+     */
     public function setModerator(Moderator $m){
         $this->setRelatedEntity($m);
     }
-
+    
+    /**
+     * getUser
+     *
+     * @return Users
+     */
     public function getUser(): ?Users{
         return $this->getRelatedEntity("Users");
     }
-
+    
+    /**
+     * setUser
+     *
+     * @param  mixed $user
+     * @return void
+     */
     public function setUser(Users $user){
         $this->setRelatedEntity($user);
     }
-
+    
+    /**
+     * getRecipe
+     *
+     * @return Recipe
+     */
     public function getRecipe(): ?Recipe{
         return $this->getRelatedEntity("Recipe");
     }
-
+    
+    /**
+     * setRecipe
+     *
+     * @param  mixed $recipe
+     * @return void
+     */
     public function setRecipe(Recipe $recipe){
         $this->setRelatedEntity($recipe);
     }
-    
+        
+    /**
+     * getImage
+     *
+     * @return Image
+     */
     public function getImage(): ?Image{
         return $this->getRelatedEntity("Image");
     }
-    
+        
+    /**
+     * setImage
+     *
+     * @param  mixed $i
+     * @return void
+     */
     public function setImage(Image $i){
         $this->setRelatedEntity($i);
     }
@@ -201,7 +245,12 @@ class Comment extends BaseEntity{
 
         return $this;
     }
-
+    
+    /**
+     * getState
+     *
+     * @return void
+     */
     public function getState(){
         $state = "Approuvé";
         if($this->getFlag()=='w'){

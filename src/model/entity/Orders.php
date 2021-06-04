@@ -7,23 +7,34 @@ class Orders extends BaseEntity
     private $dateCreation;
     private $idUsers;
 
-
+    
+    /**
+     * getOrderLines
+     *
+     * @return array
+     */
     public function getOrderLines(): array
     {
         return $this->getRelatedEntities("OrderLine");
     }
 
-
-    // public function getUsers(): array{
-    //     return $this->getRelatedEntities("Users");
-    // }
-
-
+    
+    /**
+     * getUsers
+     *
+     * @return Users
+     */
     public function getUsers(): ?Users
     {
         return $this->getRelatedEntity("Users");
     }
-
+    
+    /**
+     * setUsers
+     *
+     * @param  mixed $user
+     * @return void
+     */
     public function setUsers(Users $user)
     {
         $this->setRelatedEntity($user);
@@ -109,7 +120,12 @@ class Orders extends BaseEntity
 
         return $this;
     }
-
+    
+    /**
+     * getTotal
+     *
+     * @return void
+     */
     public function getTotal()
     {
         $total = 0;
@@ -121,7 +137,12 @@ class Orders extends BaseEntity
         return $total;
     }
 
-
+    
+    /**
+     * getState
+     *
+     * @return void
+     */
     public function getState(){
         $state = "Payé";
         if($this->getFlag()=='w'){
@@ -132,7 +153,12 @@ class Orders extends BaseEntity
         }
         return $state ;
     }
-
+    
+    /**
+     * getQuantity
+     *
+     * @return void
+     */
     public function getQuantity(){
         $quantity=0;
         foreach($this->getOrderLines() as $ol){

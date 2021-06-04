@@ -2,11 +2,22 @@
 class Moderator extends Users{
     private $idModerator;
 
-
+    
+    /**
+     * getApprovedComment
+     *
+     * @return array
+     */
     public function getApprovedComment(): array{
         return $this->getRelatedEntities("Comment");
     }
-
+    
+    /**
+     * setApprovedComment
+     *
+     * @param  mixed $c
+     * @return void
+     */
     public function setApprovedComment(Comment $c){
         $this->setRelatedEntity($c);
     }

@@ -56,14 +56,27 @@ class FormatUtil
         return substr($haystack, -$length) === $needle;
     }
 
-
+    
+    /**
+     * dd
+     * dump and die
+     *
+     * @param  mixed $var
+     * @return void
+     */
     public static function dd($var)
     {
         self::dump($var);
         die();
     }
 
-
+    
+    /**
+     * formatTime
+     *
+     * @param  mixed $minutes
+     * @return void
+     */
     public static function formatTime($minutes)
     {
         $hours = floor($minutes / 60);
@@ -81,7 +94,15 @@ class FormatUtil
 
         return $result;
     }
-
+    
+    /**
+     * getFormattedQuantity
+     *
+     * @param  mixed $unitName
+     * @param  mixed $quantity
+     * @param  mixed $nameIngredient
+     * @return void
+     */
     public static function getFormattedQuantity($unitName, $quantity, $nameIngredient)
     {
         $result = "";
@@ -102,7 +123,13 @@ class FormatUtil
 
         return $result;
     }
-
+    
+    /**
+     * formatDate
+     *
+     * @param  mixed $date
+     * @return void
+     */
     public static function formatDate($date)
     {
         $result = "";
@@ -115,7 +142,4 @@ class FormatUtil
         return $result;
     }
 
-    public static function translateDate($date){
-      
-    }
 }

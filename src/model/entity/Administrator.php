@@ -2,11 +2,21 @@
 class Administrator extends Users{
     private $idAdministrator;
 
-
+    
+    /**
+     * getImportations
+     *
+     * @return array
+     */
     public function getImportations(): array{
         return $this->getRelatedEntities("Importation"); 
     }
-
+    
+    /**
+     * getLots
+     *
+     * @return array
+     */
     public function getLots(): array{
         return $this->getIndirectlyRelatedEntities("Lot", "Importation"); 
     }

@@ -6,11 +6,22 @@ class Paragraph extends BaseEntity{
     private $paragraphOrder;
     private $dateCreation;
     private $idRecipe;
-
+    
+    /**
+     * getRecipe
+     *
+     * @return Recipe
+     */
     public function getRecipe(): Recipe{
         return $this->getRelatedEntity("Recipe",BaseDao::FLAGS['active']);
     }
-
+    
+    /**
+     * setRecipe
+     *
+     * @param  mixed $r
+     * @return void
+     */
     public function setRecipe(Recipe $r){
         $this->setRelatedEntity($r);
         return $this;

@@ -6,27 +6,60 @@ class Importation extends BaseEntity{
     private $idSupplierOrder;
     private $dateImportation;
 
-    
+        
+    /**
+     * getAdministrator
+     *
+     * @return Administrator
+     */
     public function getAdministrator(): ?Administrator{ 
         return $this->getRelatedEntity("Administrator");
     }
-
+    
+    /**
+     * setAdministrator
+     *
+     * @param  mixed $a
+     * @return void
+     */
     public function setAdministrator(Administrator $a){
         $this->setRelatedEntity($a);
     }
-
+    
+    /**
+     * getArticle
+     *
+     * @return Article
+     */
     public function getArticle(): ?Article{ 
         return $this->getRelatedEntity("Article");
     }
-
+    
+    /**
+     * setArticle
+     *
+     * @param  mixed $a
+     * @return void
+     */
     public function setArticle(Article $a){
         $this->setRelatedEntity($a);
     }
-
+    
+    /**
+     * getLot
+     *
+     * @return Lot
+     */
     public function getLot(): ?Lot{ 
         return $this->getRelatedEntity("Lot");
     }
-
+    
+    /**
+     * setLot
+     *
+     * @param  mixed $l
+     * @return void
+     */
     public function setLot(Lot $l){
         $this->setRelatedEntity($l);
     }

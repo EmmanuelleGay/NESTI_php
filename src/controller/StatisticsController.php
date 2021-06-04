@@ -5,6 +5,13 @@ class StatisticsController extends BaseController
 
     protected static $entityClass = "Statistics";
 
+        
+    /**
+     * callActionMethod
+     *
+     * @param  mixed $action
+     * @return void
+     */
     public static function callActionMethod($action)
     {
         method_exists(get_called_class(), $action) ?
@@ -13,7 +20,13 @@ class StatisticsController extends BaseController
     }
 
 
-
+    /**
+     * setupTemplateVars
+     *
+     * @param  mixed $vars
+     * @param  mixed $templates
+     * @return void
+     */
     public static function setupTemplateVars(&$vars, &$templates)
     {
         parent::setupTemplateVars($vars, $templates);
@@ -23,7 +36,12 @@ class StatisticsController extends BaseController
             'controllerSlug' =>  "statistics"
         ]);
     }
-
+    
+    /**
+     * dashboard
+     *
+     * @return void
+     */
     public static function dashboard()
     {
         ConnectionLogDao::findAll(["HOUR(dateConnection)"]);

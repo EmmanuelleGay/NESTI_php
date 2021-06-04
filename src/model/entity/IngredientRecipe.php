@@ -6,26 +6,59 @@ class IngredientRecipe extends BaseEntity{
     private $quantity;
     private $recipePosition;
     private $idUnit;
-    
+        
+    /**
+     * getIngredient
+     *
+     * @return Ingredient
+     */
     public function getIngredient(): Ingredient{
         return $this->getRelatedEntity("Ingredient");
     }
-
+    
+    /**
+     * setIngredient
+     *
+     * @param  mixed $i
+     * @return void
+     */
     public function setIngredient(Ingredient $i){
         $this->setRelatedEntity($i);
     }
-
+    
+    /**
+     * getRecipe
+     *
+     * @return Recipe
+     */
     public function getRecipe(): Recipe{
         return $this->getRelatedEntity("Recipe");
-    }
+    }    
+    /**
+     * setRecipe
+     *
+     * @param  mixed $r
+     * @return void
+     */
     public function setRecipe(Recipe $r){
         $this->setRelatedEntity($r);
     }
-
+    
+    /**
+     * getUnit
+     *
+     * @return Unit
+     */
     public function getUnit(): Unit{
         return $this->getRelatedEntity("Unit");
     }
-
+    
+    /**
+     * setUnit
+     *
+     * @param  mixed $u
+     * @return void
+     */
     public function setUnit(Unit $u){
         $this->setRelatedEntity($u);
     }
