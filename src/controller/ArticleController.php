@@ -202,7 +202,7 @@ class ArticleController extends BaseEntityController
 
                     //if image is valid, insert into db
                     if (isset($_FILES["linkImage"]["tmp_name"])) {
-                        $idImage = $entity->getImage()->getId();
+                        $idImage = $entity->getIdImage();
                         if($idImage==null){
                             $image = new Image();
                         }
