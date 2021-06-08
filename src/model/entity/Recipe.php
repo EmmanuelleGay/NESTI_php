@@ -11,6 +11,7 @@ class Recipe extends BaseEntity
     private $preparationTime;
     private $idChef;
     private $idImage;
+    private $dateModification;
     
     /**
      * getComments
@@ -325,5 +326,25 @@ class Recipe extends BaseEntity
        }
 
        return $result;
+    }
+
+    /**
+     * Get the value of dateModification
+     */ 
+    public function getDateModification()
+    {
+        return $this->dateModification;
+    }
+
+    /**
+     * Set the value of dateModification
+     *
+     * @return  self
+     */ 
+    public function setDateModification($dateModification)
+    {
+        $this->dateModification = $dateModification;
+
+        return $this;
     }
 }

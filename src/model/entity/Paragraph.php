@@ -20,7 +20,7 @@ class Paragraph extends BaseEntity{
      * setRecipe
      *
      * @param  mixed $r
-     * @return void
+     * @return  self
      */
     public function setRecipe(Recipe $r){
         $this->setRelatedEntity($r);

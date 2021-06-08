@@ -20,7 +20,6 @@ $(() => {
         titleOrderLine.addClass(titleOrderLine);
 
         // on récupère l'id de la cde
-        // console.log(orderLink.data("id"));
         var orderId = orderLink.data("id");
         numberOrderContainer.empty();
         numberOrderContainer.append("N° " + orderId);

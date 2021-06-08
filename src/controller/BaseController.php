@@ -108,6 +108,6 @@ class BaseController
      */
     protected static function error()
     {
-        self::render('error/error404'); //ca va chercher dans le dossier error et avec un / si c'est autre part que dan sle dossier de l'entité en cours
+        self::render('error/error404');
     }
 }

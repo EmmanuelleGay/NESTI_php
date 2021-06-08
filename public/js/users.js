@@ -37,6 +37,7 @@ $(() => {
     });
 
     let moderateButtons = $(".commentTable .editBtn");
+    console.log(moderateButtons);
     moderateButtons.each((i, moderateButton) => {
         const commentRow = moderateButton.closest("tr");
         const statusCell = commentRow.querySelector("tr .statusCell");

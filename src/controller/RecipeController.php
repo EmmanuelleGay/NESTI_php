@@ -53,7 +53,7 @@ class RecipeController extends BaseEntityController
 
                 $entity->setIdChef(UsersController::getLoggedInUser()->getId());
 
-
+                $entity->setDateModification(FormatUtil::currentSqlDate());
 
                 if (isset($_FILES["Recipe"]["tmp_name"]["linkImage"]) && $_FILES["Recipe"]["error"]["linkImage"] == 0) {
                     
@@ -99,6 +99,7 @@ class RecipeController extends BaseEntityController
                     }
                 }
             }
+
                 self::getDao()::saveOrUpdate($entity);
                 //        $templateVars['message']="success";
 
@@ -221,7 +222,6 @@ class RecipeController extends BaseEntityController
     /**
      * addParagraph
      *
-     * @return void
      */
     public static function addParagraph()
     {

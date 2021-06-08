@@ -1,5 +1,3 @@
-console.log(vars.articleSales);
-
 const dataOrderByDay = {
 
     categories: [

@@ -20,7 +20,6 @@ class FormatUtil
         echo "<pre>" . htmlentities(print_r($var, true)) . "</pre>";
     }
 
-
     /**
      * endsWith
      * check if a string starts with another string
@@ -140,6 +139,14 @@ class FormatUtil
             $result = "-";
         }
         return $result;
+    }
+
+    public static function currentSqlDate(){
+        return static::dateTimeToSqlDate(new DateTime());
+    }
+
+    public static function dateTimeToSqlDate($dt){
+        return $dt->format('Y-m-d H:i:s');
     }
 
 }

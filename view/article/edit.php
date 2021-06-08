@@ -64,7 +64,7 @@
                 <div class="row">
                     <div class="col-12">Télécharger une nouvelle image</div>
                     <div class="col-8">
-                        <input type="file" name="linkImage" class="form-control" id="nameArticle">
+                        <input type="file" name="linkImage" class="form-control">
                     </div>
 
                 </div>

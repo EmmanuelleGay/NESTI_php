@@ -57,7 +57,7 @@
                 </div>
                 <div class="row">
                     <div>Télécharger une nouvelle image</div>
-                    <input type="file" name="Recipe[linkImage]" class="form-control mb-3" id="nameRecipe" accept="image/png, image/jpeg">
+                    <input type="file" name="Recipe[linkImage]" class="form-control mb-3" accept="image/png, image/jpeg">
                 </div>
 
             </div>
@@ -113,5 +113,4 @@
         </div>
 
     </div>
-</div>
 </div>

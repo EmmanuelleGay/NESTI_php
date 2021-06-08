@@ -57,8 +57,8 @@ class UsersController extends BaseEntityController
     public static function logout()
     {
         self::setLoggedInUser(null);
-        setcookie("user[login]", null, 2147483647, '/');
-        setcookie("user[password]", null, 2147483647, '/');
+        setcookie("userAdmin[login]", null, 2147483647, '/');
+        setcookie("userAdmin[password]", null, 2147483647, '/');
         $templateVars = ['message' => 'disconnect'];
         self::render(['action' => 'login', 'base' => 'users/baseLogin'], $templateVars);
     }
@@ -72,9 +72,9 @@ class UsersController extends BaseEntityController
      */
     public static function getLoggedInUser($refresh = false)
     {
-        if ($refresh ||  self::$loggedInUser == null && isset($_COOKIE['user']['login']) && isset($_COOKIE['user']['password']) ) {
-            $candidate = UsersDao::findOneBy('login', $_COOKIE['user']['login'], 'a');
-            if ($candidate != null && $candidate->isPassword($_COOKIE['user']['password'])) {
+        if ($refresh ||  self::$loggedInUser == null && isset($_COOKIE['userAdmin']['login']) && isset($_COOKIE['userAdmin']['password']) ) {
+            $candidate = UsersDao::findOneBy('login', $_COOKIE['userAdmin']['login'], 'a');
+            if ($candidate != null && $candidate->isPassword($_COOKIE['userAdmin']['password'])) {
                 self::$loggedInUser = $candidate;
             };
         }
@@ -93,8 +93,8 @@ class UsersController extends BaseEntityController
     {
         if ($user != null) {
             self::$loggedInUser = $user;
-            setcookie("user[login]", $user->getLogin(), 2147483647, '/');
-            setcookie("user[password]", $plaintextPassword, 2147483647, '/');
+            setcookie("userAdmin[login]", $user->getLogin(), 2147483647, '/');
+            setcookie("userAdmin[password]", $plaintextPassword, 2147483647, '/');
         }
     }
     
@@ -156,8 +156,6 @@ class UsersController extends BaseEntityController
     {
         $templateName = 'edit';
         $templateVars = ["isSubmitted" => !empty($_POST[self::getEntityClass()])];
-
-       
 
         if (isset($_POST['Users'])) {
             $isvalid = true;

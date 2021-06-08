@@ -57,26 +57,6 @@ class StatisticsController extends BaseController
             }
         }
 
-        // $startDate = new DateTime;
-        // $startDate->add(DateInterval::createFromDateString("-10 days"));
-
-        // $soldTotalByDay = [];
-
-        // for ($i = 9; $i >= 0; $i--) {
-        //     $date = new DateTime;
-        //     $date->add(DateInterval::createFromDateString("-{$i} days"));
-        //     $day = intval($date->format('d'));
-        //     $orders = OrdersDao::findAll(["dateCreation >" => $startDate->format('Y-m-d H:i:s'), "DAY(dateCreation)" => $day,"flag"=>"a"]);
-        //     //        $purchaseTotal = 0;
-        //     $soldTotal = 0;
-        //     //    $purchaseTotal = 0;
-
-        //     foreach ($orders as $order) {
-        //         $soldTotal += $order->getTotal();
-        //     }
-        //     $soldTotalByDay[] = $soldTotal;
-        // }
-
         //to have sales and cost for order per days
         $startDate = new DateTime;
         $startDate->add(DateInterval::createFromDateString("-10 days"));
@@ -119,7 +99,7 @@ class StatisticsController extends BaseController
         usort($connectionsByIdUser, function ($v1, $v2) {
             return count($v2) <=> count($v1);
         });
-
+        
         //  get corresponding user for each group of connection logs
         $usersWithMostConnections = array_map(function ($v) {
             return $v[0]->getUser();

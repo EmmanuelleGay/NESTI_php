@@ -23,8 +23,8 @@ if (@$vars['message'] == 'strongPassword') {
 
 ?>
 
-    <!------------------------------------ Edition of user------------------------- -->
-    <div class="container d-flex justify-content-between">
+    <!--  Edition of user -->
+    <div class="container d-flex justify-content-between"> 
 
         <form class="d-flex justify-content-around mx-5" method="post" action="<?= $vars['baseUrl'] ?>users/edit/<?= $vars['entity']->getId() ?>">
             <div>
@@ -59,21 +59,21 @@ if (@$vars['message'] == 'strongPassword') {
                     Role
                     <div class="d-flex">
                         <div>
-                            <input class="form-check-input mx-2" name=Users[chef] type="checkbox" value="chef" id="flexCheckDefault" <?php if ($vars['entity']->isChef()) {
+                            <input class="form-check-input mx-2" name=Users[chef] type="checkbox" value="chef" id="chef" <?php if ($vars['entity']->isChef()) {
                                                                                                                                         ?>checked <?php
                                                                                                                                                 } ?>>
                             <label class="form-check-label" for="chef">Chef</label>
                         </div>
 
                         <div>
-                            <input class="form-check-input mx-2" name=Users[moderator] type="checkbox" value="moderator" id="flexCheckDefault" <?php if ($vars['entity']->isModerator()) {
+                            <input class="form-check-input mx-2" name=Users[moderator] type="checkbox" value="moderator" id="moderator" <?php if ($vars['entity']->isModerator()) {
                                                                                                                                                 ?>checked <?php
                                                                                                                                                         } ?>>
                             <label class="form-check-label" for="moderator">Modérateur</label>
                         </div>
 
                         <div>
-                            <input class="form-check-input mx-2" name=Users[administrator] type="checkbox" value="administrator" id="flexCheckDefault" <?php if ($vars['entity']->isAdministrator()) {
+                            <input class="form-check-input mx-2" name=Users[administrator] type="checkbox" value="administrator" id="administrator" <?php if ($vars['entity']->isAdministrator()) {
                                                                                                                                                         ?>checked <?php
                                                                                                                                                                 } ?>>
                             <label class="form-check-label" for="administrator">Administrateur</label>
@@ -172,7 +172,7 @@ if (@$vars['message'] == 'strongPassword') {
 
     </div>
 
-    <!------------------------------------ users' orders------------------------- -->
+    <!-- users' orders -->
     <div class="my-5 orders p-5">
         <h1 class="h1 mt-4">Ses commandes</h1>
         <div class="fst-italic">Consultation des commandes</div>
@@ -216,7 +216,7 @@ if (@$vars['message'] == 'strongPassword') {
 
             <div class="mx-5 DetailsArticle">
                 <div class="d-flex justify-content-between mb-2">
-                    <h2 id="titleOrderLine"></h2>
+                    <div id="titleOrderLine"></div>
                     <div id="numberOrderContainer"></div>
                 </div>
                 <div id="orderLinesContainer"></div>
@@ -225,7 +225,7 @@ if (@$vars['message'] == 'strongPassword') {
 
 
     </div>
-    <!------------------------------------users' comment------------------------- -->
+    <!-- users' comment -->
     <div class="my-5 p-5">
         <h1 class="h1 mt-4">Ses commentaires</h1>
         <div class="fst-italic">Modération des commentaires</div>

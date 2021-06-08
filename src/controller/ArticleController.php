@@ -54,10 +54,12 @@ class ArticleController extends BaseEntityController
     }
 
 
-    /**
-     * import CSV files with articles and orders, and insert into db
-     */
-    public static function importation()
+         
+     /**
+      * importation : import CSV files with articles and orders, and insert into db
+      *
+      */
+     public static function importation()
     {
         $templateName = 'importation';
         $templateVars = [];
