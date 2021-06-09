@@ -98,13 +98,16 @@ class RecipeController extends BaseEntityController
                         $entity->setIdImage($idImage);
                     }
                 }
-            }
 
                 self::getDao()::saveOrUpdate($entity);
-                //        $templateVars['message']="success";
-
+            
                 header('Location:' . SiteUtil::url() . 'recipe/edit/' . $entity->getId() . "/success");
                 exit();
+
+            } else {
+                $templateVars = ['message' => 'error'];
+            }
+
             }
 
         //create ingredient's recipe
@@ -144,21 +147,24 @@ class RecipeController extends BaseEntityController
                 $ingredient = $product->getIngredient();
 
                 $options = ['idIngredient' => $ingredient->getId(), 'idRecipe' => static::$entity->getIdRecipe()];
-                $ir = IngredientRecipeDao::findAll($options);
+                $ingredientRecipe = IngredientRecipeDao::findOne($options);
 
                 //      //add ingredient to the recipe
-                if (empty($ir)) {
+                if ($ingredientRecipe == null){
                     $ingredientRecipe = new IngredientRecipe();
                     $ingredientRecipe->setIdRecipe(static::$entity->getIdRecipe());
 
                     $ingredientRecipe->setIdIngredient($ingredient->getId());
-                    $ingredientRecipe->setQuantity($_POST['ingredient']['quantity']);
-                    $ingredientRecipe->setIdUnit($unit->getId());
+                  
+                  
+                } 
+                   
+                $ingredientRecipe->setQuantity($_POST['ingredient']['quantity']);
+                $ingredientRecipe->setIdUnit($unit->getId());
+                IngredientRecipeDao::saveOrUpdate($ingredientRecipe);
 
-                    IngredientRecipeDao::save($ingredientRecipe);
-                } else {
-                    $ingredientRecipe = $ir[0];
-                }
+            } else {
+                $templateVars = ['message' => 'error'];
             }
         }
         // template remains "edit" if no POST user parameters, or if user parameters in POST are invalid

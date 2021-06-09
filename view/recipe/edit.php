@@ -4,11 +4,13 @@
         <p class="linkHead"> Recette</p>
     </div>
 
-    <?php
+    <?php if (($_GET['message'] ?? "") == 'success') :  ?>
+        <div class='importSuccessMessage successMessage text-center fw-bold my-5 py-3 w-50'>Edition réussie</div>
+    <?php endif ?>
 
-    if (($_GET['message'] ?? "") == 'success') :
-        echo "<div class='importSuccessMessage successMessage text-center fw-bold my-5 py-3 w-50'>Edition réussie</div>";
-    endif ?>
+    <?php if (($vars['message'] ?? "") == 'error') : ?>
+        <div class='errorMessage text-center fw-bold my-5 py-3 w-50'>Erreur de saisie, la modification n'a pas été enregistrée</div>
+    <?php endif ?>
 
     <form class="row" method="post" enctype="multipart/form-data" action="<?= $vars['baseUrl'] ?>recipe/edit/<?= $vars['entity']->getId() ?>">
         <div class="col-lg-6 col-md-12">
